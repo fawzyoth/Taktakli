@@ -172,60 +172,60 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
 
       {isOpen && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-blue-950/40 backdrop-blur-md animate-fade-in"
           onClick={() => setIsOpen(false)}
           role="dialog"
           aria-modal="true"
           aria-labelledby="status-modal-title"
         >
           <div
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 w-full max-w-md max-h-[80vh] overflow-hidden animate-scale-in"
+            className="bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-900 dark:to-blue-950/30 rounded-2xl shadow-2xl border-2 border-blue-200 dark:border-blue-800/50 w-full max-w-md max-h-[85vh] overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 id="status-modal-title" className="text-lg font-semibold text-gray-900 dark:text-white">
+            <div className="flex items-center justify-between px-6 py-5 border-b-2 border-blue-100 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
+              <h2 id="status-modal-title" className="text-lg font-bold text-blue-900 dark:text-blue-100">
                 Select Contact Status
               </h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-blue-200 dark:hover:bg-blue-900/50 rounded-lg transition-all"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <X className="w-5 h-5 text-blue-700 dark:text-blue-300" />
               </button>
             </div>
 
-            <div className="overflow-y-auto max-h-[calc(80vh-5rem)] overscroll-contain">
-              <div className="p-3">
+            <div className="overflow-y-auto max-h-[calc(85vh-5rem)] overscroll-contain">
+              <div className="p-4">
                 {statusOptions.map((option, index) => (
                   <button
                     key={option.value}
                     onClick={() => handleStatusChange(option.value)}
                     disabled={updating}
-                    className={`w-full flex items-start space-x-3 px-4 py-3 rounded-xl transition-all duration-150 ${
+                    className={`w-full flex items-start space-x-3 px-4 py-3.5 rounded-xl transition-all duration-200 mb-2 ${
                       option.value === currentStatus
-                        ? 'bg-gray-100 dark:bg-gray-700 ring-2 ring-gray-300 dark:ring-gray-600'
-                        : 'hover:bg-gray-50 dark:hover:bg-gray-750'
+                        ? 'bg-blue-100 dark:bg-blue-900/40 ring-2 ring-blue-300 dark:ring-blue-700 shadow-md'
+                        : 'hover:bg-blue-50/50 dark:hover:bg-blue-950/30 hover:shadow-sm'
                     } ${updating ? 'opacity-50 cursor-not-allowed' : ''}`}
                     tabIndex={0}
                     role="option"
                     aria-selected={option.value === currentStatus}
                   >
-                    <div className={`flex-shrink-0 p-2.5 rounded-lg ${option.bgClass}`}>
+                    <div className={`flex-shrink-0 p-2.5 rounded-lg ${option.bgClass} shadow-sm`}>
                       <div className={option.colorClass}>{option.icon}</div>
                     </div>
                     <div className="flex-1 text-left min-w-0">
-                      <div className={`font-semibold text-sm ${option.colorClass}`}>
+                      <div className={`font-bold text-sm ${option.colorClass}`}>
                         {option.label}
                       </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      <div className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
                         {option.description}
                       </div>
                     </div>
                     {option.value === currentStatus && (
                       <div className="flex-shrink-0 self-center">
-                        <div className="w-6 h-6 rounded-full bg-gray-900 dark:bg-gray-100 flex items-center justify-center">
-                          <Check className="w-4 h-4 text-white dark:text-gray-900" />
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 dark:from-blue-500 dark:to-blue-600 flex items-center justify-center shadow-md">
+                          <Check className="w-4 h-4 text-white" />
                         </div>
                       </div>
                     )}
