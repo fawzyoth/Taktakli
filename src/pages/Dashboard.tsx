@@ -96,55 +96,61 @@ export const Dashboard: React.FC<{
           </button>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-          <div className="flex border-b border-gray-200 dark:border-gray-700">
-            <button
-              onClick={() => setActiveTab('captures')}
-              className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-semibold text-base transition-all relative ${
-                activeTab === 'captures'
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-              }`}
-            >
-              <Video className="w-5 h-5" />
-              <span>Captures</span>
-              <span className="ml-1 px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300">
-                {captures.length}
-              </span>
-              {activeTab === 'captures' && (
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500 rounded-t-full" />
-              )}
-            </button>
+        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg overflow-hidden">
+          <div className="bg-gray-50 dark:bg-gray-800/50 border-b-2 border-gray-200 dark:border-gray-700">
+            <div className="flex">
+              <button
+                onClick={() => setActiveTab('captures')}
+                className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-bold text-sm uppercase tracking-wide transition-all relative ${
+                  activeTab === 'captures'
+                    ? 'text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-900/50'
+                }`}
+              >
+                <Video className="w-5 h-5" />
+                <span>Captures</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                  activeTab === 'captures'
+                    ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                }`}>
+                  {captures.length}
+                </span>
+                {activeTab === 'captures' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500" />
+                )}
+              </button>
 
-            <button
-              onClick={() => setActiveTab('activity')}
-              className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-semibold text-base transition-all relative ${
-                activeTab === 'activity'
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-              }`}
-            >
-              <Clock className="w-5 h-5" />
-              <span>Activity</span>
-              {activeTab === 'activity' && (
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500 rounded-t-full" />
-              )}
-            </button>
+              <button
+                onClick={() => setActiveTab('activity')}
+                className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-bold text-sm uppercase tracking-wide transition-all relative ${
+                  activeTab === 'activity'
+                    ? 'text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-900/50'
+                }`}
+              >
+                <Clock className="w-5 h-5" />
+                <span>Activity</span>
+                {activeTab === 'activity' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500" />
+                )}
+              </button>
 
-            <button
-              onClick={() => setActiveTab('analytics')}
-              className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-semibold text-base transition-all relative ${
-                activeTab === 'analytics'
-                  ? 'text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50'
-              }`}
-            >
-              <BarChart3 className="w-5 h-5" />
-              <span>Analytics</span>
-              {activeTab === 'analytics' && (
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500 rounded-t-full" />
-              )}
-            </button>
+              <button
+                onClick={() => setActiveTab('analytics')}
+                className={`flex-1 flex items-center justify-center space-x-2 px-6 py-4 font-bold text-sm uppercase tracking-wide transition-all relative ${
+                  activeTab === 'analytics'
+                    ? 'text-blue-600 dark:text-blue-400 bg-white dark:bg-gray-900'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-white/50 dark:hover:bg-gray-900/50'
+                }`}
+              >
+                <BarChart3 className="w-5 h-5" />
+                <span>Analytics</span>
+                {activeTab === 'analytics' && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-blue-600 dark:bg-blue-500" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="p-6">
