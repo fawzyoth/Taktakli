@@ -225,18 +225,18 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                     </div>
                   </div>
 
-                  <div className="p-6 pt-8 pl-20">
+                  <div className="p-6 pt-8 pl-16 sm:pl-20">
                     <div className="flex flex-col gap-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3 flex-1">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
+                        <div className="flex items-center space-x-3 flex-1 min-w-0">
                           <div className="flex-shrink-0">
-                            <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-700 dark:text-gray-300 font-semibold text-base">
+                            <div className="w-11 h-11 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-700 dark:text-gray-300 font-semibold text-sm">
                               {phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?'}
                             </div>
                           </div>
 
                           <div className="flex-1 min-w-0">
-                            <p className="text-base font-semibold text-gray-900 dark:text-white">
+                            <p className="text-base font-semibold text-gray-900 dark:text-white truncate">
                               {phoneData.username || 'Anonymous User'}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
@@ -245,11 +245,11 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                           </div>
                         </div>
 
-                        <div className="flex-shrink-0">
-                          <div className="bg-gray-900 dark:bg-gray-100 px-4 py-2.5 rounded-lg">
+                        <div className="flex-shrink-0 sm:ml-4">
+                          <div className="bg-gray-900 dark:bg-gray-100 px-4 py-2.5 rounded-lg inline-flex">
                             <div className="flex items-center space-x-2">
                               <Phone className="w-4 h-4 text-white dark:text-gray-900" />
-                              <span className="text-lg font-bold text-white dark:text-gray-900 tracking-wide whitespace-nowrap">
+                              <span className="text-base font-bold text-white dark:text-gray-900 tracking-wide">
                                 {phoneData.phone_number}
                               </span>
                             </div>
@@ -257,11 +257,11 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                         </div>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-t border-gray-200 dark:border-gray-700 pt-4">
-                        <div className="flex-1">
-                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                            Contact Status
-                          </label>
+                      <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2.5">
+                          Contact Status
+                        </label>
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                           <ContactStatusDropdown
                             phoneNumberId={phoneData.id}
                             currentStatus={phoneData.contact_status}
@@ -273,9 +273,9 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                               ));
                             }}
                           />
-                        </div>
-                        <div className="text-xs text-gray-400 dark:text-gray-500 sm:text-right sm:pt-6">
-                          Updated: {new Date(phoneData.status_updated_at).toLocaleString()}
+                          <div className="text-xs text-gray-400 dark:text-gray-500">
+                            Updated: {new Date(phoneData.status_updated_at).toLocaleString()}
+                          </div>
                         </div>
                       </div>
                     </div>
