@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, Capture, DetectedPhoneNumber, PhoneNumberComment } from '../lib/supabase';
 import { ArrowLeft, Phone, Heart, MessageCircle, Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { ContactStatusDropdown } from '../components/ContactStatusDropdown';
 
 interface CaptureMonitorProps {
   captureId: string;
@@ -216,9 +217,15 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
               return (
                 <div
                   key={phoneData.id}
-                  className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all duration-300 overflow-hidden"
+                  className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all duration-300 overflow-hidden relative"
                 >
-                  <div className="p-6">
+                  <div className="absolute top-4 left-4 z-10">
+                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-3 border-white dark:border-gray-800 font-black text-xl">
+                      {phoneData.sequence_number}
+                    </div>
+                  </div>
+
+                  <div className="p-6 pt-8 pl-20">
                     <div className="flex flex-col lg:flex-row lg:items-start gap-6">
                       <div className="flex items-start space-x-4 flex-1">
                         <div className="flex-shrink-0">
@@ -246,6 +253,22 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                             </span>
                           </div>
                         </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                      <div className="flex-1">
+                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">
+                          Contact Status
+                        </label>
+                        <ContactStatusDropdown
+                          phoneNumberId={phoneData.id}
+                          currentStatus={phoneData.contact_status}
+                          onStatusChange={() => loadData()}
+                        />
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                        Last updated: {new Date(phoneData.status_updated_at).toLocaleString()}
                       </div>
                     </div>
 

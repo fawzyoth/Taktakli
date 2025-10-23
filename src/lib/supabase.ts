@@ -24,6 +24,16 @@ export interface Capture {
   pages?: Page[];
 }
 
+export type ContactStatus =
+  | 'not_called'
+  | 'called_no_answer'
+  | 'called_answered'
+  | 'confirmed'
+  | 'declined'
+  | 'callback_requested'
+  | 'invalid_contact'
+  | 'completed';
+
 export interface DetectedPhoneNumber {
   id: string;
   capture_id: string;
@@ -33,6 +43,9 @@ export interface DetectedPhoneNumber {
   page_id: string | null;
   detected_at: string;
   created_at: string;
+  contact_status: ContactStatus;
+  sequence_number: number;
+  status_updated_at: string;
   comments?: PhoneNumberComment[];
   page?: Page;
 }
