@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Check, Phone, PhoneOff, PhoneMissed, PhoneCall, XCircle, Clock, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Check, Phone, PhoneOff, PhoneMissed, PhoneCall, XCircle, Clock, AlertCircle, X } from 'lucide-react';
 import { ContactStatus, supabase } from '../lib/supabase';
 
 interface StatusOption {
@@ -103,6 +103,24 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
 
   const currentOption = statusOptions.find((opt) => opt.value === currentStatus) || statusOptions[0];
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const handleStatusChange = async (newStatus: ContactStatus) => {
     if (newStatus === currentStatus) {
       setIsOpen(false);
@@ -128,20 +146,22 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
   };
 
   return (
-    <div className="relative">
+    <>
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen(true)}
         disabled={updating}
         className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 font-semibold text-sm transition-all duration-200 hover:shadow-md ${
           currentOption.colorClass
         } ${currentOption.bgClass} ${currentOption.borderClass} ${
           updating ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
         }`}
+        aria-label="Change contact status"
+        aria-haspopup="dialog"
       >
         {currentOption.icon}
         <span>{currentOption.label}</span>
         <svg
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -151,36 +171,101 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
       </button>
 
       {isOpen && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
-          <div className="absolute left-0 mt-2 w-72 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 z-20 overflow-hidden">
-            <div className="py-2">
-              {statusOptions.map((option) => (
-                <button
-                  key={option.value}
-                  onClick={() => handleStatusChange(option.value)}
-                  className={`w-full flex items-start space-x-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                    option.value === currentStatus ? 'bg-gray-50 dark:bg-gray-700' : ''
-                  }`}
-                >
-                  <div className={`flex-shrink-0 p-2 rounded-lg ${option.bgClass}`}>
-                    <div className={option.colorClass}>{option.icon}</div>
-                  </div>
-                  <div className="flex-1 text-left">
-                    <div className={`font-semibold text-sm ${option.colorClass}`}>{option.label}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                      {option.description}
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in"
+          onClick={() => setIsOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="status-modal-title"
+        >
+          <div
+            className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 w-full max-w-md max-h-[80vh] overflow-hidden animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+              <h2 id="status-modal-title" className="text-lg font-semibold text-gray-900 dark:text-white">
+                Select Contact Status
+              </h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+              </button>
+            </div>
+
+            <div className="overflow-y-auto max-h-[calc(80vh-5rem)] overscroll-contain">
+              <div className="p-3">
+                {statusOptions.map((option, index) => (
+                  <button
+                    key={option.value}
+                    onClick={() => handleStatusChange(option.value)}
+                    disabled={updating}
+                    className={`w-full flex items-start space-x-3 px-4 py-3 rounded-xl transition-all duration-150 ${
+                      option.value === currentStatus
+                        ? 'bg-gray-100 dark:bg-gray-700 ring-2 ring-gray-300 dark:ring-gray-600'
+                        : 'hover:bg-gray-50 dark:hover:bg-gray-750'
+                    } ${updating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    tabIndex={0}
+                    role="option"
+                    aria-selected={option.value === currentStatus}
+                  >
+                    <div className={`flex-shrink-0 p-2.5 rounded-lg ${option.bgClass}`}>
+                      <div className={option.colorClass}>{option.icon}</div>
                     </div>
-                  </div>
-                  {option.value === currentStatus && (
-                    <Check className="w-5 h-5 text-gray-900 dark:text-gray-100 flex-shrink-0" />
-                  )}
-                </button>
-              ))}
+                    <div className="flex-1 text-left min-w-0">
+                      <div className={`font-semibold text-sm ${option.colorClass}`}>
+                        {option.label}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        {option.description}
+                      </div>
+                    </div>
+                    {option.value === currentStatus && (
+                      <div className="flex-shrink-0 self-center">
+                        <div className="w-6 h-6 rounded-full bg-gray-900 dark:bg-gray-100 flex items-center justify-center">
+                          <Check className="w-4 h-4 text-white dark:text-gray-900" />
+                        </div>
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </>
+        </div>
       )}
-    </div>
+
+      <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes scale-in {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.2s ease-out;
+        }
+
+        .animate-scale-in {
+          animation: scale-in 0.2s ease-out;
+        }
+      `}</style>
+    </>
   );
 };
