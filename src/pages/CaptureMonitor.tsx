@@ -256,12 +256,13 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
             )}
 
             {activeTab === 'chat' && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Messages</h2>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    Total: <span className="font-bold text-gray-900 dark:text-white">
-                      {phoneNumbers.filter(p => p.comments?.length > 0).length}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Live Chat</h2>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                      {phoneNumbers.reduce((sum, p) => sum + (p.comments?.length || 0), 0)} messages
                     </span>
                   </div>
                 </div>
@@ -281,48 +282,44 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                     </p>
                   </div>
                 ) : (
-                  phoneNumbers
-                    .filter(p => p.comments?.length > 0)
-                    .map((phoneData) => (
-                      <div
-                        key={phoneData.id}
-                        className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-                      >
-                        <div className="bg-gray-50 dark:bg-gray-800/50 px-5 py-3 border-b border-gray-200 dark:border-gray-700">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center space-x-3">
-                              <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-700 dark:text-gray-300 font-semibold text-xs">
-                                {phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?'}
-                              </div>
-                              <div>
-                                <p className="text-sm font-bold text-gray-900 dark:text-white">
-                                  {phoneData.username || 'Anonymous'}
-                                </p>
-                                <p className="text-xs text-gray-600 dark:text-gray-400 font-mono">
-                                  {phoneData.phone_number}
-                                </p>
-                              </div>
+                  <div className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 max-h-[600px] overflow-y-auto">
+                    <div className="space-y-3">
+                      {phoneNumbers
+                        .filter(p => p.comments?.length > 0)
+                        .flatMap((phoneData) =>
+                          phoneData.comments.map((comment) => ({
+                            ...comment,
+                            username: phoneData.username,
+                            phone_number: phoneData.phone_number,
+                            sequence_number: phoneData.sequence_number
+                          }))
+                        )
+                        .map((message, idx) => (
+                          <div
+                            key={`${message.id}-${idx}`}
+                            className="flex items-start space-x-2 animate-fade-in"
+                            style={{ animationDelay: `${idx * 50}ms` }}
+                          >
+                            <div className="flex-shrink-0 w-7 h-7 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                              {message.username ? message.username.charAt(0).toUpperCase() : '?'}
                             </div>
-                            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                              #{phoneData.sequence_number}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="p-5 space-y-3">
-                          {phoneData.comments.map((comment) => (
-                            <div
-                              key={comment.id}
-                              className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-3 border border-gray-200 dark:border-gray-700"
-                            >
-                              <p className="text-gray-900 dark:text-gray-100 text-sm leading-relaxed">
-                                {comment.comment_text}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-baseline space-x-2">
+                                <span className="font-bold text-sm text-gray-900 dark:text-white">
+                                  {message.username || 'Anonymous'}
+                                </span>
+                                <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">
+                                  {message.phone_number}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-800 dark:text-gray-200 mt-0.5 break-words leading-relaxed">
+                                {message.comment_text}
                               </p>
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 )}
               </div>
             )}
