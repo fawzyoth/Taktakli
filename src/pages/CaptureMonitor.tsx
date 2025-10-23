@@ -217,81 +217,89 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
               return (
                 <div
                   key={phoneData.id}
-                  className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-500 hover:shadow-md transition-all duration-300 overflow-hidden relative"
+                  className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-lg transition-all duration-200 overflow-hidden relative"
                 >
                   <div className="absolute top-4 left-4 z-10">
-                    <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-3 border-white dark:border-gray-800 font-black text-xl">
+                    <div className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 w-10 h-10 rounded-lg flex items-center justify-center shadow-md border-2 border-gray-700 dark:border-gray-300 font-bold text-lg">
                       {phoneData.sequence_number}
                     </div>
                   </div>
 
                   <div className="p-6 pt-8 pl-20">
-                    <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                      <div className="flex items-start space-x-4 flex-1">
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3 flex-1">
+                          <div className="flex-shrink-0">
+                            <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-gray-700 dark:text-gray-300 font-semibold text-base">
+                              {phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?'}
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <p className="text-base font-semibold text-gray-900 dark:text-white">
+                              {phoneData.username || 'Anonymous User'}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                              {new Date(phoneData.detected_at).toLocaleString()}
+                            </p>
+                          </div>
+                        </div>
+
                         <div className="flex-shrink-0">
-                          <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md">
-                            {phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?'}
-                          </div>
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xl font-semibold text-gray-900 dark:text-white">
-                            {phoneData.username || 'Anonymous User'}
-                          </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                            {new Date(phoneData.detected_at).toLocaleString()}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex-shrink-0">
-                        <div className="bg-gradient-to-br from-blue-500 to-blue-600 px-6 py-4 rounded-xl shadow-lg border-2 border-blue-400">
-                          <div className="flex items-center space-x-3">
-                            <Phone className="w-6 h-6 text-white" />
-                            <span className="text-2xl font-bold text-white tracking-wide whitespace-nowrap">
-                              {phoneData.phone_number}
-                            </span>
+                          <div className="bg-gray-900 dark:bg-gray-100 px-4 py-2.5 rounded-lg">
+                            <div className="flex items-center space-x-2">
+                              <Phone className="w-4 h-4 text-white dark:text-gray-900" />
+                              <span className="text-lg font-bold text-white dark:text-gray-900 tracking-wide whitespace-nowrap">
+                                {phoneData.phone_number}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                      <div className="flex-1">
-                        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 uppercase tracking-wide">
-                          Contact Status
-                        </label>
-                        <ContactStatusDropdown
-                          phoneNumberId={phoneData.id}
-                          currentStatus={phoneData.contact_status}
-                          onStatusChange={() => loadData()}
-                        />
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
-                        Last updated: {new Date(phoneData.status_updated_at).toLocaleString()}
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <div className="flex-1">
+                          <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                            Contact Status
+                          </label>
+                          <ContactStatusDropdown
+                            phoneNumberId={phoneData.id}
+                            currentStatus={phoneData.contact_status}
+                            onStatusChange={(newStatus) => {
+                              setPhoneNumbers(prev => prev.map(pn =>
+                                pn.id === phoneData.id
+                                  ? { ...pn, contact_status: newStatus, status_updated_at: new Date().toISOString() }
+                                  : pn
+                              ));
+                            }}
+                          />
+                        </div>
+                        <div className="text-xs text-gray-400 dark:text-gray-500 sm:text-right sm:pt-6">
+                          Updated: {new Date(phoneData.status_updated_at).toLocaleString()}
+                        </div>
                       </div>
                     </div>
 
                     {hasComments && (
-                      <div className="mt-6 space-y-3">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
+                      <div className="mt-4 space-y-2 border-t border-gray-200 dark:border-gray-700 pt-4">
+                        <div className="flex items-center mb-2">
+                          <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                             Comments ({phoneData.comments.length})
                           </h4>
                         </div>
                         {displayComments?.map((comment) => (
                           <div
                             key={comment.id}
-                            className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700"
+                            className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-700"
                           >
-                            <p className="text-gray-800 dark:text-gray-200 text-sm leading-relaxed">{comment.comment_text}</p>
+                            <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">{comment.comment_text}</p>
                           </div>
                         ))}
 
                         {phoneData.comments.length > 2 && (
                           <button
                             onClick={() => setSelectedPhoneData(phoneData)}
-                            className="w-full flex items-center justify-center space-x-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-950 hover:bg-blue-100 dark:hover:bg-blue-900 px-4 py-3 rounded-lg text-sm font-medium transition border border-blue-200 dark:border-blue-800"
+                            className="w-full flex items-center justify-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 px-4 py-2.5 rounded-lg text-sm font-medium transition border border-gray-300 dark:border-gray-600"
                           >
                             <MessageCircle className="w-4 h-4" />
                             <span>See all {phoneData.comments.length} comments</span>
@@ -301,7 +309,7 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                     )}
 
                     {!hasComments && (
-                      <p className="text-gray-500 dark:text-gray-400 text-sm mt-4 text-center py-2">No comments associated</p>
+                      <p className="text-gray-400 dark:text-gray-500 text-xs mt-4 text-center py-2 border-t border-gray-200 dark:border-gray-700">No comments associated</p>
                     )}
                   </div>
                 </div>

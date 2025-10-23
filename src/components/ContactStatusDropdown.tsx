@@ -173,7 +173,7 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
                     </div>
                   </div>
                   {option.value === currentStatus && (
-                    <Check className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-gray-900 dark:text-gray-100 flex-shrink-0" />
                   )}
                 </button>
               ))}
