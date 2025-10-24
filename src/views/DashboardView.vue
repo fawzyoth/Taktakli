@@ -1,12 +1,12 @@
 <template>
   <AppLayout>
-    <div class="p-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
-        <p class="text-gray-600 dark:text-gray-400">Monitor your TikTok captures and phone numbers</p>
+    <div class="p-4 sm:p-6 lg:p-8">
+      <div class="mb-6 sm:mb-8">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard</h1>
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Monitor your TikTok captures and phone numbers</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
             <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Captures</span>
@@ -41,11 +41,11 @@
       </div>
 
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Recent Captures</h2>
+        <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Recent Captures</h2>
           <button
             @click="showNewCaptureModal = true"
-            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center space-x-2"
+            class="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center justify-center space-x-2"
           >
             <PlusIcon class="w-4 h-4" />
             <span>New Capture</span>
@@ -77,10 +77,10 @@
             v-for="capture in captures"
             :key="capture.id"
             @click="$router.push(`/capture/${capture.id}`)"
-            class="p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition"
+            class="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 cursor-pointer transition"
           >
-            <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-4">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="flex items-center space-x-3 sm:space-x-4">
                 <div :class="[
                   'w-12 h-12 rounded-full flex items-center justify-center',
                   capture.status === 'active'
@@ -95,25 +95,25 @@
                   ]" />
                 </div>
                 <div>
-                  <p class="font-semibold text-gray-900 dark:text-white">{{ capture.page_name }}</p>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                  <p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">{{ capture.page_name }}</p>
+                  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Started {{ new Date(capture.started_at).toLocaleString() }}
                   </p>
                 </div>
               </div>
-              <div class="flex items-center space-x-6">
-                <div class="text-center">
-                  <p class="text-sm text-gray-600 dark:text-gray-400">Numbers</p>
-                  <p class="text-lg font-bold text-gray-900 dark:text-white">{{ capture.phone_count || 0 }}</p>
+              <div class="flex items-center gap-3 sm:gap-6 w-full sm:w-auto">
+                <div class="text-center flex-1 sm:flex-none">
+                  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Numbers</p>
+                  <p class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ capture.phone_count || 0 }}</p>
                 </div>
-                <div class="text-center">
-                  <p class="text-sm text-gray-600 dark:text-gray-400">Views</p>
-                  <p class="text-lg font-bold text-gray-900 dark:text-white">{{ capture.total_views.toLocaleString() }}</p>
+                <div class="text-center flex-1 sm:flex-none">
+                  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Views</p>
+                  <p class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ capture.total_views.toLocaleString() }}</p>
                 </div>
-                <div class="text-center">
-                  <p class="text-sm text-gray-600 dark:text-gray-400">Status</p>
+                <div class="text-center flex-1 sm:flex-none">
+                  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Status</p>
                   <span :class="[
-                    'inline-block px-3 py-1 text-xs font-semibold rounded-full',
+                    'inline-block px-2 sm:px-3 py-1 text-xs font-semibold rounded-full',
                     capture.status === 'active'
                       ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
                       : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400'

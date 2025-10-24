@@ -1,9 +1,20 @@
 <template>
-  <aside class="w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col h-screen">
-    <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+  <aside
+    :class="[
+      'fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col h-screen transform transition-transform duration-300 ease-in-out',
+      isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+    ]"
+  >
+    <div class="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
         TikTok Monitor
       </h1>
+      <button
+        @click="$emit('close')"
+        class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <XIcon class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+      </button>
     </div>
 
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
@@ -11,6 +22,7 @@
         v-for="item in navigation"
         :key="item.name"
         :to="item.path"
+        @click="$emit('close')"
         class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors"
         :class="isActive(item.path)
           ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
@@ -31,13 +43,27 @@
       </button>
     </div>
   </aside>
+
+  <div
+    v-if="isOpen"
+    @click="$emit('close')"
+    class="fixed inset-0 bg-black/50 z-40 lg:hidden"
+  ></div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, FileText, Sun, Moon } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Sun, Moon, X as XIcon } from 'lucide-vue-next'
+
+defineProps<{
+  isOpen: boolean
+}>()
+
+defineEmits<{
+  close: []
+}>()
 
 const route = useRoute()
 const themeStore = useThemeStore()

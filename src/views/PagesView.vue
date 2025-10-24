@@ -1,17 +1,17 @@
 <template>
   <AppLayout>
-    <div class="p-8">
-      <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Pages</h1>
-        <p class="text-gray-600 dark:text-gray-400">Manage your TikTok pages for monitoring</p>
+    <div class="p-4 sm:p-6 lg:p-8">
+      <div class="mb-6 sm:mb-8">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Pages</h1>
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Manage your TikTok pages for monitoring</p>
       </div>
 
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-800 flex items-center justify-between">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Your Pages</h2>
+        <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Your Pages</h2>
           <button
             @click="showAddModal = true"
-            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center space-x-2"
+            class="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center justify-center space-x-2"
           >
             <PlusIcon class="w-4 h-4" />
             <span>Add Page</span>
@@ -42,12 +42,12 @@
           <div
             v-for="page in pages"
             :key="page.id"
-            class="p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
+            class="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
           >
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div class="flex-1">
                 <div class="flex items-center space-x-3 mb-2">
-                  <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ page.page_name }}</h3>
+                  <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{{ page.page_name }}</h3>
                   <span
                     :class="[
                       'inline-block px-3 py-1 text-xs font-semibold rounded-full',
@@ -63,7 +63,7 @@
                   :href="page.page_url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                  class="text-xs sm:text-sm text-blue-600 dark:text-blue-400 hover:underline break-all"
                 >
                   {{ page.page_url }}
                 </a>
@@ -71,7 +71,7 @@
                   Added {{ new Date(page.created_at).toLocaleString() }}
                 </p>
               </div>
-              <div class="flex items-center space-x-2">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
                 <button
                   @click="togglePageStatus(page)"
                   class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition"

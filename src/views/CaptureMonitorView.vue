@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <div class="p-8">
+    <div class="p-4 sm:p-6 lg:p-8">
       <div v-if="loading" class="flex items-center justify-center h-64">
         <p class="text-gray-600 dark:text-gray-400">Loading capture...</p>
       </div>
@@ -19,12 +19,12 @@
             <span>Back to Dashboard</span>
           </button>
 
-          <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+              <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 Capture Monitor
               </h1>
-              <p class="text-gray-600 dark:text-gray-400">
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Started {{ new Date(capture.started_at).toLocaleString() }}
               </p>
             </div>
@@ -32,20 +32,20 @@
             <button
               v-if="capture.status === 'active'"
               @click="stopCapture"
-              class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
+              class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition"
             >
               Stop Capture
             </button>
             <span
               v-else
-              class="px-6 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400 font-semibold rounded-lg"
+              class="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400 font-semibold rounded-lg text-center"
             >
               Stopped
             </span>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
             <div class="flex items-center space-x-3 mb-2">
               <EyeIcon class="w-5 h-5 text-purple-500" />
@@ -73,11 +73,11 @@
 
         <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 mb-6">
           <div class="border-b border-gray-200 dark:border-gray-800">
-            <nav class="flex space-x-8 px-6">
+            <nav class="flex space-x-4 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
               <button
                 @click="activeTab = 'numbers'"
                 :class="[
-                  'py-4 px-2 font-semibold border-b-2 transition',
+                  'py-3 sm:py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition whitespace-nowrap',
                   activeTab === 'numbers'
                     ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                     : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -88,7 +88,7 @@
               <button
                 @click="activeTab = 'chat'"
                 :class="[
-                  'py-4 px-2 font-semibold border-b-2 transition',
+                  'py-3 sm:py-4 px-2 text-sm sm:text-base font-semibold border-b-2 transition whitespace-nowrap',
                   activeTab === 'chat'
                     ? 'border-blue-600 text-blue-600 dark:text-blue-400'
                     : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
@@ -99,7 +99,7 @@
             </nav>
           </div>
 
-          <div class="p-6">
+          <div class="p-4 sm:p-6">
             <div v-if="activeTab === 'numbers'">
               <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Phone Numbers</h2>
 
