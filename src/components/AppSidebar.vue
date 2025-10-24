@@ -21,7 +21,7 @@
       </RouterLink>
     </nav>
 
-    <div class="p-4 border-t border-gray-200 dark:border-gray-800 space-y-2">
+    <div class="p-4 border-t border-gray-200 dark:border-gray-800">
       <button
         @click="toggleTheme"
         class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium transition-colors"
@@ -29,28 +29,17 @@
         <component :is="themeIcon" class="w-5 h-5" />
         <span>{{ themeStore.isDark ? 'Light Mode' : 'Dark Mode' }}</span>
       </button>
-
-      <button
-        @click="handleSignOut"
-        class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium transition-colors"
-      >
-        <LogOutIcon class="w-5 h-5" />
-        <span>Sign Out</span>
-      </button>
     </div>
   </aside>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute, useRouter, RouterLink } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, Video, FileText, Sun, Moon, LogOut as LogOutIcon } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Sun, Moon } from 'lucide-vue-next'
 
 const route = useRoute()
-const router = useRouter()
-const authStore = useAuthStore()
 const themeStore = useThemeStore()
 
 const navigation = [
@@ -66,10 +55,5 @@ function isActive(path: string) {
 
 function toggleTheme() {
   themeStore.toggleTheme()
-}
-
-async function handleSignOut() {
-  await authStore.signOut()
-  router.push('/login')
 }
 </script>

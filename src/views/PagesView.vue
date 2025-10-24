@@ -164,13 +164,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from '@/lib/supabase'
-import { useAuthStore } from '@/stores/auth'
-import type { Page } from '@/lib/supabase'
+import { mockDataService } from '@/lib/mockData'
+import type { Page } from '@/lib/mockData'
 import AppLayout from '@/components/AppLayout.vue'
 import { Plus as PlusIcon, FileText as FileTextIcon, X as XIcon } from 'lucide-vue-next'
 
-const authStore = useAuthStore()
 const pages = ref<Page[]>([])
 const loading = ref(true)
 const showAddModal = ref(false)
@@ -185,14 +183,7 @@ const newPage = ref({
 async function fetchPages() {
   loading.value = true
   try {
-    const { data, error: fetchError } = await supabase
-      .from('pages')
-      .select('*')
-      .eq('user_id', authStore.user?.id)
-      .order('created_at', { ascending: false })
-
-    if (fetchError) throw fetchError
-    pages.value = data || []
+    pages.value = await mockDataService.getPages()
   } catch (err) {
     console.error('Error fetching pages:', err)
   } finally {
@@ -205,22 +196,10 @@ async function handleAddPage() {
   error.value = ''
 
   try {
-    const { data, error: createError } = await supabase
-      .from('pages')
-      .insert({
-        user_id: authStore.user?.id,
-        page_name: newPage.value.name,
-        page_url: newPage.value.url,
-        is_active: true
-      })
-      .select()
-      .single()
-
-    if (createError) throw createError
-
-    pages.value.unshift(data)
+    await mockDataService.createPage(newPage.value.name, newPage.value.url)
     showAddModal.value = false
     newPage.value = { name: '', url: '' }
+    await fetchPages()
   } catch (err: any) {
     console.error('Error creating page:', err)
     error.value = err.message || 'Failed to create page'
@@ -231,13 +210,7 @@ async function handleAddPage() {
 
 async function togglePageStatus(page: Page) {
   try {
-    const { error: updateError } = await supabase
-      .from('pages')
-      .update({ is_active: !page.is_active })
-      .eq('id', page.id)
-
-    if (updateError) throw updateError
-
+    await mockDataService.updatePageStatus(page.id, !page.is_active)
     const index = pages.value.findIndex(p => p.id === page.id)
     if (index !== -1) {
       pages.value[index].is_active = !pages.value[index].is_active
@@ -251,13 +224,7 @@ async function deletePage(pageId: string) {
   if (!confirm('Are you sure you want to delete this page?')) return
 
   try {
-    const { error: deleteError } = await supabase
-      .from('pages')
-      .delete()
-      .eq('id', pageId)
-
-    if (deleteError) throw deleteError
-
+    await mockDataService.deletePage(pageId)
     pages.value = pages.value.filter(p => p.id !== pageId)
   } catch (err) {
     console.error('Error deleting page:', err)

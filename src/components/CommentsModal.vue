@@ -60,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import type { PhoneNumberComment } from '@/lib/supabase'
+import type { PhoneNumberComment } from '@/lib/mockData'
 import { X as XIcon, MessageCircle as MessageCircleIcon } from 'lucide-vue-next'
 
 defineProps<{

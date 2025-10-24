@@ -242,8 +242,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { supabase } from '@/lib/supabase'
-import type { Capture, DetectedPhoneNumber, PhoneNumberComment, ContactStatus } from '@/lib/supabase'
+import { mockDataService } from '@/lib/mockData'
+import type { Capture, DetectedPhoneNumber, PhoneNumberComment, ContactStatus } from '@/lib/mockData'
 import AppLayout from '@/components/AppLayout.vue'
 import ContactStatusDropdown from '@/components/ContactStatusDropdown.vue'
 import CommentsModal from '@/components/CommentsModal.vue'
@@ -306,39 +306,10 @@ function handleStatusChange(phoneNumberId: string, newStatus: ContactStatus) {
 async function fetchCapture() {
   loading.value = true
   try {
-    const { data: captureData, error: captureError } = await supabase
-      .from('captures')
-      .select('*')
-      .eq('id', route.params.id)
-      .single()
-
-    if (captureError) throw captureError
-    capture.value = captureData
-
-    const { data: phonesData, error: phonesError } = await supabase
-      .from('detected_phone_numbers')
-      .select('*')
-      .eq('capture_id', route.params.id)
-      .order('detected_at', { ascending: false })
-
-    if (phonesError) throw phonesError
-
-    const phonesWithComments = await Promise.all(
-      (phonesData || []).map(async (phone) => {
-        const { data: commentsData } = await supabase
-          .from('phone_number_comments')
-          .select('*')
-          .eq('phone_number_id', phone.id)
-          .order('created_at', { ascending: true })
-
-        return {
-          ...phone,
-          comments: commentsData || []
-        }
-      })
-    )
-
-    phoneNumbers.value = phonesWithComments
+    capture.value = await mockDataService.getCapture(route.params.id as string)
+    if (capture.value) {
+      phoneNumbers.value = await mockDataService.getPhoneNumbers(capture.value.id)
+    }
   } catch (error) {
     console.error('Error fetching capture:', error)
   } finally {
@@ -348,13 +319,7 @@ async function fetchCapture() {
 
 async function stopCapture() {
   try {
-    const { error } = await supabase
-      .from('captures')
-      .update({ status: 'stopped', stopped_at: new Date().toISOString() })
-      .eq('id', route.params.id)
-
-    if (error) throw error
-
+    await mockDataService.stopCapture(route.params.id as string)
     if (capture.value) {
       capture.value.status = 'stopped'
       capture.value.stopped_at = new Date().toISOString()

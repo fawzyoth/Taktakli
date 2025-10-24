@@ -87,8 +87,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { supabase } from '@/lib/supabase'
-import type { ContactStatus } from '@/lib/supabase'
+import { mockDataService } from '@/lib/mockData'
+import type { ContactStatus } from '@/lib/mockData'
 import {
   Check as CheckIcon,
   Phone,
@@ -211,14 +211,8 @@ async function handleStatusChange(newStatus: ContactStatus) {
 
   updating.value = true
   try {
-    const { error } = await supabase
-      .from('detected_phone_numbers')
-      .update({ contact_status: newStatus })
-      .eq('id', props.phoneNumberId)
-
-    if (!error) {
-      emit('statusChanged', newStatus)
-    }
+    await mockDataService.updatePhoneNumberStatus(props.phoneNumberId, newStatus)
+    emit('statusChanged', newStatus)
   } catch (err) {
     console.error('Error updating status:', err)
   } finally {

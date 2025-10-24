@@ -95,7 +95,7 @@
                   ]" />
                 </div>
                 <div>
-                  <p class="font-semibold text-gray-900 dark:text-white">Capture #{{ capture.id.slice(0, 8) }}</p>
+                  <p class="font-semibold text-gray-900 dark:text-white">{{ capture.page_name }}</p>
                   <p class="text-sm text-gray-600 dark:text-gray-400">
                     Started {{ new Date(capture.started_at).toLocaleString() }}
                   </p>
@@ -139,14 +139,14 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { supabase } from '@/lib/supabase'
-import type { Capture } from '@/lib/supabase'
+import { mockDataService } from '@/lib/mockData'
+import type { Capture } from '@/lib/mockData'
 import AppLayout from '@/components/AppLayout.vue'
 import NewCaptureModal from '@/components/NewCaptureModal.vue'
 import { Video as VideoIcon, Phone as PhoneIcon, Eye as EyeIcon, MessageCircle as MessageCircleIcon, Plus as PlusIcon } from 'lucide-vue-next'
 
 const router = useRouter()
-const captures = ref<(Capture & { phone_count?: number })[]>([])
+const captures = ref<Capture[]>([])
 const loading = ref(true)
 const showNewCaptureModal = ref(false)
 
@@ -162,25 +162,7 @@ const stats = computed(() => {
 async function fetchCaptures() {
   loading.value = true
   try {
-    const { data: capturesData, error: capturesError } = await supabase
-      .from('captures')
-      .select('*')
-      .order('started_at', { ascending: false })
-
-    if (capturesError) throw capturesError
-
-    const capturesWithCounts = await Promise.all(
-      (capturesData || []).map(async (capture) => {
-        const { count } = await supabase
-          .from('detected_phone_numbers')
-          .select('*', { count: 'exact', head: true })
-          .eq('capture_id', capture.id)
-
-        return { ...capture, phone_count: count || 0 }
-      })
-    )
-
-    captures.value = capturesWithCounts
+    captures.value = await mockDataService.getCaptures()
   } catch (error) {
     console.error('Error fetching captures:', error)
   } finally {

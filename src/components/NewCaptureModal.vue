@@ -56,9 +56,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { supabase } from '@/lib/supabase'
-import { useAuthStore } from '@/stores/auth'
-import type { Page } from '@/lib/supabase'
+import { mockDataService } from '@/lib/mockData'
+import type { Page } from '@/lib/mockData'
 import { X as XIcon } from 'lucide-vue-next'
 
 const emit = defineEmits<{
@@ -66,7 +65,6 @@ const emit = defineEmits<{
   created: []
 }>()
 
-const authStore = useAuthStore()
 const pages = ref<Page[]>([])
 const selectedPageId = ref('')
 const loading = ref(false)
@@ -74,15 +72,8 @@ const error = ref('')
 
 async function fetchPages() {
   try {
-    const { data, error: fetchError } = await supabase
-      .from('pages')
-      .select('*')
-      .eq('user_id', authStore.user?.id)
-      .eq('is_active', true)
-      .order('page_name')
-
-    if (fetchError) throw fetchError
-    pages.value = data || []
+    const allPages = await mockDataService.getPages()
+    pages.value = allPages.filter(p => p.is_active)
   } catch (err: any) {
     console.error('Error fetching pages:', err)
     error.value = 'Failed to load pages'
@@ -94,20 +85,7 @@ async function handleSubmit() {
   error.value = ''
 
   try {
-    const { data, error: createError } = await supabase
-      .from('captures')
-      .insert({
-        page_id: selectedPageId.value,
-        status: 'active',
-        total_views: 0,
-        total_likes: 0,
-        total_comments: 0
-      })
-      .select()
-      .single()
-
-    if (createError) throw createError
-
+    await mockDataService.createCapture(selectedPageId.value)
     emit('created')
   } catch (err: any) {
     console.error('Error creating capture:', err)
