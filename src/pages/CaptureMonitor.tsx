@@ -159,44 +159,46 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
         </div>
 
         <div className="space-y-6">
-          <div className="flex items-center gap-4 mb-6">
-            <button
-              onClick={() => setActiveTab('numbers')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base transition-all ${
-                activeTab === 'numbers'
-                  ? 'bg-blue-500 text-white shadow-lg'
-                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-700'
-              }`}
-            >
-              <Phone className="w-5 h-5" />
-              <span>Numbers</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                activeTab === 'numbers'
-                  ? 'bg-white/20 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-              }`}>
-                {phoneNumbers.length}
-              </span>
-            </button>
+          <div className="flex justify-center mb-6">
+            <div className="inline-flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1">
+              <button
+                onClick={() => setActiveTab('numbers')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-base transition-all ${
+                  activeTab === 'numbers'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                <Phone className="w-5 h-5" />
+                <span>Numbers</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                  activeTab === 'numbers'
+                    ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                }`}>
+                  {phoneNumbers.length}
+                </span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab('chat')}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-base transition-all ${
-                activeTab === 'chat'
-                  ? 'bg-green-500 text-white shadow-lg'
-                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white border border-gray-200 dark:border-gray-700'
-              }`}
-            >
-              <MessageCircle className="w-5 h-5" />
-              <span>Live Chat</span>
-              <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                activeTab === 'chat'
-                  ? 'bg-white/20 text-white'
-                  : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
-              }`}>
-                {allComments.length}
-              </span>
-            </button>
+              <button
+                onClick={() => setActiveTab('chat')}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-base transition-all ${
+                  activeTab === 'chat'
+                    ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-md'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                <MessageCircle className="w-5 h-5" />
+                <span>Live Chat</span>
+                <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                  activeTab === 'chat'
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                    : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
+                }`}>
+                  {allComments.length}
+                </span>
+              </button>
+            </div>
           </div>
 
           {activeTab === 'numbers' && (
