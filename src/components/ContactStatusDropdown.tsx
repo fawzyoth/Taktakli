@@ -179,7 +179,7 @@ export const ContactStatusDropdown: React.FC<ContactStatusDropdownProps> = ({
           aria-labelledby="status-modal-title"
         >
           <div
-            className="bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-900 dark:to-blue-950/30 rounded-2xl shadow-2xl border-2 border-blue-200 dark:border-blue-800/50 w-full max-w-md max-h-[85vh] overflow-hidden animate-scale-in"
+            className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border-2 border-gray-200 dark:border-gray-700 w-full max-w-md max-h-[85vh] overflow-hidden animate-scale-in"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 py-5 border-b-2 border-blue-100 dark:border-blue-900/40 bg-gradient-to-r from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30">
