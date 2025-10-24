@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase, Capture, DetectedPhoneNumber, PhoneNumberComment } from '../lib/supabase';
 import { ArrowLeft, Phone, Heart, MessageCircle, Users } from 'lucide-react';
 import { ContactStatusDropdown } from '../components/ContactStatusDropdown';
+import { CommentsModal } from '../components/CommentsModal';
 
 interface CaptureMonitorProps {
   captureId: string;
@@ -17,6 +18,8 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
   const [phoneNumbers, setPhoneNumbers] = useState<(DetectedPhoneNumber & { comments: PhoneNumberComment[] })[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TabView>('numbers');
+  const [selectedPhoneData, setSelectedPhoneData] = useState<(DetectedPhoneNumber & { comments: PhoneNumberComment[] }) | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const loadCapture = async () => {
     const { data, error } = await supabase
@@ -254,6 +257,35 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
                       </div>
                     </div>
 
+                    {phoneData.comments && phoneData.comments.length > 0 && (
+                      <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <MessageCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                            <span className="text-sm font-semibold text-blue-900 dark:text-blue-200">
+                              {phoneData.comments.length} {phoneData.comments.length === 1 ? 'Comment' : 'Comments'}
+                            </span>
+                          </div>
+                          {phoneData.comments.length >= 2 && (
+                            <button
+                              onClick={() => {
+                                setSelectedPhoneData(phoneData);
+                                setIsModalOpen(true);
+                              }}
+                              className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline"
+                            >
+                              Show More
+                            </button>
+                          )}
+                        </div>
+                        {phoneData.comments.length === 1 && (
+                          <p className="text-sm text-gray-700 dark:text-gray-300 mt-2 line-clamp-2">
+                            {phoneData.comments[0].comment_text}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                       <ContactStatusDropdown
                         phoneNumberId={phoneData.id}
@@ -328,6 +360,19 @@ export const CaptureMonitor: React.FC<CaptureMonitorProps> = ({ captureId, onBac
           )}
         </div>
       </div>
+
+      {selectedPhoneData && (
+        <CommentsModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+            setSelectedPhoneData(null);
+          }}
+          comments={selectedPhoneData.comments}
+          phoneNumber={selectedPhoneData.phone_number}
+          username={selectedPhoneData.username || 'Anonymous User'}
+        />
+      )}
     </div>
   );
 };
