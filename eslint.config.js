@@ -1,28 +1,37 @@
-import js from '@eslint/js';
-import globals from 'globals';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import tseslint from 'typescript-eslint';
+import js from '@eslint/js'
+import pluginVue from 'eslint-plugin-vue'
+import * as parserVue from 'vue-eslint-parser'
+import configPrettier from 'eslint-config-prettier'
+import pluginPrettier from 'eslint-plugin-prettier'
+import globals from 'globals'
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+export default [
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    name: 'app/files-to-lint',
+    files: ['**/*.{js,mjs,jsx,vue,ts,mts,tsx}'],
+  },
+
+  {
+    name: 'app/files-to-ignore',
+    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+  },
+
+  js.configs.recommended,
+  ...pluginVue.configs['flat/essential'],
+
+  {
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      parser: parserVue,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+      },
     },
-    plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-    },
-    rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-    },
-  }
-);
+  },
+]
