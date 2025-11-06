@@ -9,7 +9,7 @@
       aria-labelledby="delivery-modal-title"
     >
       <div
-        class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-green-200 dark:border-green-800 w-full max-w-md max-h-[90vh] overflow-y-auto transform transition-all duration-300 animate-scale-in"
+        class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-green-200 dark:border-green-800 w-full max-w-md transform transition-all duration-300 animate-scale-in"
         @click.stop
       >
         <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 px-6 py-8 border-b-2 border-green-100 dark:border-green-900/40 text-center">
@@ -35,7 +35,17 @@
           </p>
         </div>
 
-        <div class="p-6 space-y-6">
+        <div class="p-6 space-y-5">
+          <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-4 border-2 border-dashed border-gray-300 dark:border-gray-700">
+            <div class="flex items-center justify-center h-32 sm:h-40 text-gray-400 dark:text-gray-600">
+              <div class="text-center">
+                <ImageIcon class="w-12 h-12 mx-auto mb-2 opacity-50" />
+                <p class="text-sm font-medium">Promotional Image</p>
+                <p class="text-xs">Coming Soon</p>
+              </div>
+            </div>
+          </div>
+
           <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-5 border-2 border-blue-200 dark:border-blue-800">
             <h3 class="text-lg font-bold text-blue-900 dark:text-blue-100 mb-4 flex items-center">
               <TruckIcon class="w-5 h-5 mr-2" />
@@ -72,41 +82,6 @@
             </div>
           </div>
 
-          <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-4 border-2 border-dashed border-gray-300 dark:border-gray-700">
-            <div class="flex items-center justify-center h-32 sm:h-40 text-gray-400 dark:text-gray-600">
-              <div class="text-center">
-                <ImageIcon class="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p class="text-sm font-medium">Promotional Image</p>
-                <p class="text-xs">Coming Soon</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="bg-amber-50 dark:bg-amber-950/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
-            <div class="flex items-start space-x-3">
-              <InfoIcon class="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p class="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                  Why choose us?
-                </p>
-                <ul class="text-xs text-amber-700 dark:text-amber-300 mt-2 space-y-1">
-                  <li class="flex items-center">
-                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                    Affordable nationwide delivery
-                  </li>
-                  <li class="flex items-center">
-                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                    100% free returns - no questions asked
-                  </li>
-                  <li class="flex items-center">
-                    <span class="w-1.5 h-1.5 bg-amber-500 rounded-full mr-2"></span>
-                    Fast processing & tracking
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
           <button
             @click="handleContinue"
             class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2"
@@ -136,7 +111,6 @@ import {
   Package as PackageIcon,
   RotateCcw as RotateCcwIcon,
   Image as ImageIcon,
-  Info as InfoIcon,
   ArrowRight as ArrowRightIcon
 } from 'lucide-vue-next'
 
