@@ -9,7 +9,7 @@
       aria-labelledby="delivery-modal-title"
     >
       <div
-        class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 animate-scale-in relative"
+        class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform transition-all duration-300 animate-scale-in relative"
         @click.stop
       >
         <button
@@ -20,90 +20,276 @@
           <XIcon class="w-5 h-5 text-gray-700 dark:text-gray-300" />
         </button>
 
-        <div class="p-8 space-y-6">
-          <div class="text-center space-y-3">
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
+        <form @submit.prevent="handleSubmit" class="p-8 space-y-6">
+          <div class="space-y-4">
+            <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden">
               <img
                 src="/Design sans titre.png"
                 alt="Delivery Partners"
-                class="w-full h-16 object-contain"
+                class="w-full h-24 object-cover"
               />
             </div>
-            <h2 id="delivery-modal-title" class="text-2xl font-bold text-gray-900 dark:text-white">
-              Special Delivery Offer
-            </h2>
           </div>
 
-          <div class="space-y-4">
-            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
-              <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center">
-                  <PackageIcon class="w-6 h-6 text-blue-600 dark:text-blue-400" />
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Information sur le client</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Nom complet <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    v-model="formData.fullName"
+                    type="text"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    placeholder="Nom complet"
+                  />
                 </div>
-                <span class="font-semibold text-gray-900 dark:text-white">Delivery</span>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Téléphone <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    v-model="formData.phone"
+                    type="tel"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    placeholder="Téléphone"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Téléphone 2
+                  </label>
+                  <input
+                    v-model="formData.phone2"
+                    type="tel"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    placeholder="Téléphone 2"
+                  />
+                </div>
               </div>
-              <span class="text-2xl font-bold text-gray-900 dark:text-white">7 DT</span>
             </div>
 
-            <div class="p-5 bg-green-50 dark:bg-green-900/20 rounded-xl border-2 border-green-500 dark:border-green-600">
-              <div class="flex items-center justify-between mb-4">
-                <div class="flex items-center space-x-3">
-                  <div class="w-12 h-12 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center">
-                    <RotateCcwIcon class="w-6 h-6 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div>
-                    <p class="font-bold text-gray-900 dark:text-white">Return</p>
-                    <p class="text-sm text-green-700 dark:text-green-400">Verified fast & easy</p>
-                  </div>
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Adresse du client</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Gouvernorat
+                  </label>
+                  <select
+                    v-model="formData.gouvernorat"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Gouvernorat</option>
+                    <option value="Tunis">Tunis</option>
+                    <option value="Ariana">Ariana</option>
+                    <option value="Ben Arous">Ben Arous</option>
+                    <option value="Manouba">Manouba</option>
+                    <option value="Nabeul">Nabeul</option>
+                    <option value="Zaghouan">Zaghouan</option>
+                    <option value="Bizerte">Bizerte</option>
+                    <option value="Béja">Béja</option>
+                    <option value="Jendouba">Jendouba</option>
+                    <option value="Kef">Kef</option>
+                    <option value="Siliana">Siliana</option>
+                    <option value="Sousse">Sousse</option>
+                    <option value="Monastir">Monastir</option>
+                    <option value="Mahdia">Mahdia</option>
+                    <option value="Sfax">Sfax</option>
+                    <option value="Kairouan">Kairouan</option>
+                    <option value="Kasserine">Kasserine</option>
+                    <option value="Sidi Bouzid">Sidi Bouzid</option>
+                    <option value="Gabès">Gabès</option>
+                    <option value="Médenine">Médenine</option>
+                    <option value="Tataouine">Tataouine</option>
+                    <option value="Gafsa">Gafsa</option>
+                    <option value="Tozeur">Tozeur</option>
+                    <option value="Kebili">Kebili</option>
+                  </select>
                 </div>
-                <div class="text-right">
-                  <p class="text-sm text-gray-500 dark:text-gray-400 line-through">7 DT</p>
-                  <p class="text-2xl font-bold text-green-600 dark:text-green-400">FREE</p>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Délégation
+                  </label>
+                  <select
+                    v-model="formData.delegation"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Délégation</option>
+                  </select>
                 </div>
               </div>
-              <div class="flex items-center space-x-2 pt-3 border-t border-green-200 dark:border-green-700">
-                <ClockIcon class="w-4 h-4 text-green-600 dark:text-green-400" />
-                <p class="text-sm text-gray-700 dark:text-gray-300">Only 2 minutes to prepare</p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Localité
+                  </label>
+                  <select
+                    v-model="formData.locality"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  >
+                    <option value="">Localité</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Adresse complémentaire <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    v-model="formData.address"
+                    type="text"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    placeholder="Adresse complémentaire"
+                  />
+                </div>
               </div>
             </div>
 
-            <div class="p-5 bg-orange-50 dark:bg-orange-900/20 rounded-xl border-2 border-orange-300 dark:border-orange-600">
-              <div class="flex items-start space-x-3 mb-3">
-                <div class="w-10 h-10 bg-orange-100 dark:bg-orange-900/40 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <PercentIcon class="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Information sur le produit</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Désignation <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    v-model="formData.designation"
+                    type="text"
+                    required
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                    placeholder="Désignation"
+                  />
                 </div>
-                <div class="flex-1">
-                  <p class="font-bold text-gray-900 dark:text-white mb-2">Volume Discounts</p>
-                  <div class="space-y-2">
-                    <div class="flex items-center justify-between text-sm">
-                      <span class="text-gray-700 dark:text-gray-300">300-500 colis/month</span>
-                      <span class="font-bold text-orange-600 dark:text-orange-400">50% OFF</span>
-                    </div>
-                    <div class="flex items-center justify-between text-sm">
-                      <span class="text-gray-700 dark:text-gray-300">500+ colis/month</span>
-                      <span class="font-bold text-orange-600 dark:text-orange-400">100% FREE</span>
-                    </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Nombre d'article
+                  </label>
+                  <input
+                    v-model.number="formData.quantity"
+                    type="number"
+                    min="1"
+                    max="5"
+                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  />
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Le nombre d'articles doit être entre 1 et 5</p>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Prix <span class="text-red-500">*</span>
+                </label>
+                <input
+                  v-model.number="formData.price"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  required
+                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  placeholder="0"
+                />
+                <p class="text-xs text-red-500 mt-1">*Merci d'inclure les frais de livraison - الرجاء إضافة تكاليف التوصيل</p>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Ouvrir colis
+                  </label>
+                  <div class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.openPackage"
+                        type="radio"
+                        :value="false"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Non</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.openPackage"
+                        type="radio"
+                        :value="true"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Oui</span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Colis Fragile
+                  </label>
+                  <div class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.fragile"
+                        type="radio"
+                        :value="false"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Non</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.fragile"
+                        type="radio"
+                        :value="true"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Oui</span>
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Échange
+                  </label>
+                  <div class="flex items-center space-x-4">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.exchange"
+                        type="radio"
+                        :value="false"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Non</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        v-model="formData.exchange"
+                        type="radio"
+                        :value="true"
+                        class="w-4 h-4 text-green-600 focus:ring-green-500"
+                      />
+                      <span class="text-sm text-gray-700 dark:text-gray-300">Oui</span>
+                    </label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <button
-            @click="handleContinue"
-            class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2"
-          >
-            <span>Continue</span>
-            <ArrowRightIcon class="w-5 h-5" />
-          </button>
-
-          <button
-            @click="handleClose"
-            class="w-full text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium py-2 transition-colors text-sm"
-          >
-            Maybe later
-          </button>
-        </div>
+          <div class="flex items-center space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <button
+              type="submit"
+              class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200"
+            >
+              Créer Bordereau
+            </button>
+            <button
+              type="button"
+              @click="handleClose"
+              class="px-6 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
+            >
+              Annuler
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </teleport>
@@ -111,13 +297,9 @@
 
 <script setup lang="ts">
 import { watch } from 'vue'
+import { ref } from 'vue'
 import {
-  X as XIcon,
-  Package as PackageIcon,
-  RotateCcw as RotateCcwIcon,
-  Clock as ClockIcon,
-  Percent as PercentIcon,
-  ArrowRight as ArrowRightIcon
+  X as XIcon
 } from 'lucide-vue-next'
 
 const props = defineProps<{
@@ -126,15 +308,32 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: []
-  continue: []
+  submit: [data: any]
 }>()
+
+const formData = ref({
+  fullName: '',
+  phone: '',
+  phone2: '',
+  gouvernorat: '',
+  delegation: '',
+  locality: '',
+  address: '',
+  designation: '',
+  quantity: 1,
+  price: 0,
+  openPackage: false,
+  fragile: false,
+  exchange: false
+})
 
 function handleClose() {
   emit('close')
 }
 
-function handleContinue() {
-  emit('continue')
+function handleSubmit() {
+  emit('submit', formData.value)
+  emit('close')
 }
 
 watch(() => props.isOpen, (newVal) => {

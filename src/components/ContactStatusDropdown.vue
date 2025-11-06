@@ -86,7 +86,7 @@
     <DeliveryConfirmationModal
       :is-open="showDeliveryModal"
       @close="handleDeliveryModalClose"
-      @continue="handleDeliveryModalContinue"
+      @submit="handleBordereauSubmit"
     />
   </div>
 </template>
@@ -243,10 +243,10 @@ function handleDeliveryModalClose() {
   showDeliveryModal.value = false
 }
 
-async function handleDeliveryModalContinue() {
+async function handleBordereauSubmit(data: any) {
   showDeliveryModal.value = false
   await updateStatus('confirmed')
-  console.log('User confirmed - redirect to bordereau form')
+  console.log('Bordereau submitted:', data)
 }
 
 watch(isOpen, (newVal) => {
