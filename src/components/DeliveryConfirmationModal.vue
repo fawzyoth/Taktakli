@@ -21,14 +21,12 @@
         </button>
 
         <div class="p-6 space-y-5">
-          <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-4 border-2 border-dashed border-gray-300 dark:border-gray-700">
-            <div class="flex items-center justify-center h-32 sm:h-40 text-gray-400 dark:text-gray-600">
-              <div class="text-center">
-                <ImageIcon class="w-12 h-12 mx-auto mb-2 opacity-50" />
-                <p class="text-sm font-medium">Promotional Image</p>
-                <p class="text-xs">Coming Soon</p>
-              </div>
-            </div>
+          <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden">
+            <img
+              src="/Design sans titre.png"
+              alt="Delivery Partners"
+              class="w-full h-20 object-contain"
+            />
           </div>
 
           <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-2xl p-5 border-2 border-blue-200 dark:border-blue-800">
@@ -94,7 +92,6 @@ import {
   Truck as TruckIcon,
   Package as PackageIcon,
   RotateCcw as RotateCcwIcon,
-  Image as ImageIcon,
   ArrowRight as ArrowRightIcon
 } from 'lucide-vue-next'
 
