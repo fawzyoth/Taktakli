@@ -1,9 +1,18 @@
 <template>
   <AppLayout>
     <div class="p-4 sm:p-6 lg:p-8">
-      <div class="mb-6 sm:mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Livraison</h1>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Gérez vos colis et retours</p>
+      <div class="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Livraison</h1>
+          <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Gérez vos colis et retours</p>
+        </div>
+        <button
+          @click="$router.push('/verification')"
+          class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg transition shadow-lg"
+        >
+          <ScanBarcodeIcon class="w-5 h-5" />
+          <span>Vérifier un Retour</span>
+        </button>
       </div>
 
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
@@ -233,7 +242,7 @@ import { ref, onMounted } from 'vue'
 import AppLayout from '@/components/AppLayout.vue'
 import CreateColisModal from '@/components/CreateColisModal.vue'
 import ReturnRequestModal from '@/components/ReturnRequestModal.vue'
-import { Package as PackageIcon, RotateCcw as RotateCcwIcon, Plus as PlusIcon } from 'lucide-vue-next'
+import { Package as PackageIcon, RotateCcw as RotateCcwIcon, Plus as PlusIcon, ScanBarcode as ScanBarcodeIcon } from 'lucide-vue-next'
 
 interface Colis {
   id: string
