@@ -69,7 +69,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, FileText, Package, Sun, Moon, X as XIcon } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Package, ShoppingBag, Sun, Moon, X as XIcon } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
@@ -86,7 +86,8 @@ const themeStore = useThemeStore()
 const navigation = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'Pages', path: '/pages', icon: FileText },
-  { name: 'Livraison', path: '/livraison', icon: Package }
+  { name: 'Livraison', path: '/livraison', icon: Package },
+  { name: 'Shop', path: '/shop', icon: ShoppingBag }
 ]
 
 const themeIcon = computed(() => themeStore.isDark ? Sun : Moon)
