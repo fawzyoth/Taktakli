@@ -8,39 +8,50 @@
 
       <button
         @click="showDeliveryModal = true"
-        class="w-full mb-6 sm:mb-8 group relative overflow-hidden bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white rounded-2xl shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-emerald-500/50 border border-white/10"
+        class="w-full mb-6 sm:mb-8 group relative overflow-hidden bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white rounded-2xl shadow-2xl hover:shadow-yellow-500/30 transition-all duration-500 transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-yellow-500/50 border-2 border-yellow-400/30"
       >
-        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-400/10 to-yellow-500/0 transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-32 -translate-y-32 group-hover:translate-x-24 group-hover:-translate-y-24 transition-transform duration-700"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-emerald-300/10 rounded-full blur-2xl transform -translate-x-24 translate-y-24 group-hover:-translate-x-16 group-hover:translate-y-16 transition-transform duration-700"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-3xl transform translate-x-48 -translate-y-48 group-hover:translate-x-32 group-hover:-translate-y-32 transition-transform duration-700"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/5 rounded-full blur-3xl transform -translate-x-32 translate-y-32 group-hover:-translate-x-16 group-hover:translate-y-16 transition-transform duration-700"></div>
 
-        <div class="relative px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-4 sm:gap-5">
-            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg shadow-black/10 border border-white/20">
-              <svg class="w-9 h-9 sm:w-11 sm:h-11 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-              </svg>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnptMCAxMmMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNnpNMTIgMThjMy4zMTQgMCA2IDIuNjg2IDYgNnMtMi42ODYgNi02IDYtNi0yLjY4Ni02LTYgMi42ODYtNiA2LTZ6bTAgMTJjMy4zMTQgMCA2IDIuNjg2IDYgNnMtMi42ODYgNi02IDYtNi0yLjY4Ni02LTYgMi42ODYtNiA2LTZ6IiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iMC4yIiBvcGFjaXR5PSIwLjAzIi8+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+
+        <div class="relative px-6 sm:px-8 py-7 sm:py-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div class="flex items-center gap-5 sm:gap-6">
+            <div class="relative flex-shrink-0">
+              <div class="absolute inset-0 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div class="relative w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-yellow-400 via-orange-400 to-red-500 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-xl">
+                <svg class="w-11 h-11 sm:w-14 sm:h-14 text-gray-900 drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+              </div>
             </div>
             <div class="text-left">
-              <div class="flex items-center gap-2 mb-1.5">
-                <span class="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-black rounded-full uppercase tracking-wide shadow-lg">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 text-xs font-black rounded-full uppercase tracking-wider shadow-lg shadow-yellow-500/50">
                   Offre Exclusive
                 </span>
+                <span class="flex items-center gap-1 text-yellow-400 text-xs font-bold">
+                  <svg class="w-3.5 h-3.5 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                  </svg>
+                  <span>Nouveau</span>
+                </span>
               </div>
-              <p class="text-xl sm:text-2xl font-black mb-1.5 leading-tight drop-shadow-md">
-                Le retour est à 0 DT, vous ne prenez aucun risque dès aujourd'hui
+              <p class="text-xl sm:text-2xl font-black mb-2 leading-tight">
+                Le retour est à <span class="text-yellow-400">0 DT</span>, vous ne prenez aucun risque dès aujourd'hui
               </p>
-              <p class="text-sm sm:text-base text-white/95 font-semibold flex items-center gap-2">
-                <span class="inline-block w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                Découvrez notre offre exclusive de livraison avec Shopa.ovh & Axess Logistique
+              <p class="text-sm sm:text-base text-gray-300 font-medium flex items-center gap-2">
+                <span class="inline-block w-2 h-2 bg-yellow-400 rounded-full animate-pulse shadow-lg shadow-yellow-400/50"></span>
+                Découvrez notre offre exclusive de livraison avec <span class="text-yellow-400 font-bold">Shopa.ovh & Axess Logistique</span>
               </p>
             </div>
           </div>
 
-          <div class="flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-3.5 rounded-xl group-hover:bg-white/30 group-hover:scale-105 transition-all duration-300 flex-shrink-0 shadow-lg border border-white/30">
-            <span class="font-black text-sm sm:text-base whitespace-nowrap drop-shadow">En savoir plus</span>
-            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300 drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <div class="flex items-center gap-3 bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 px-7 py-4 rounded-xl group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-yellow-400/50 transition-all duration-300 flex-shrink-0 font-black text-sm sm:text-base shadow-xl">
+            <span class="whitespace-nowrap">En savoir plus</span>
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
             </svg>
           </div>
