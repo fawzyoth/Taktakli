@@ -8,31 +8,40 @@
 
       <button
         @click="showDeliveryModal = true"
-        class="w-full mb-6 sm:mb-8 group relative overflow-hidden bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 hover:from-green-600 hover:via-green-700 hover:to-emerald-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-green-500/50"
+        class="w-full mb-6 sm:mb-8 group relative overflow-hidden bg-gradient-to-br from-emerald-500 via-green-500 to-teal-500 hover:from-emerald-600 hover:via-green-600 hover:to-teal-600 text-white rounded-2xl shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 transform hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-emerald-500/50 border border-white/10"
       >
-        <div class="absolute inset-0 bg-white/10 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
 
-        <div class="relative px-6 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:rotate-12 transition-transform duration-300">
-              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl transform translate-x-32 -translate-y-32 group-hover:translate-x-24 group-hover:-translate-y-24 transition-transform duration-700"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-emerald-300/10 rounded-full blur-2xl transform -translate-x-24 translate-y-24 group-hover:-translate-x-16 group-hover:translate-y-16 transition-transform duration-700"></div>
+
+        <div class="relative px-6 sm:px-8 py-6 sm:py-7 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4 sm:gap-5">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg shadow-black/10 border border-white/20">
+              <svg class="w-9 h-9 sm:w-11 sm:h-11 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
               </svg>
             </div>
             <div class="text-left">
-              <p class="text-lg sm:text-xl font-bold mb-1">
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-black rounded-full uppercase tracking-wide shadow-lg">
+                  Offre Exclusive
+                </span>
+              </div>
+              <p class="text-xl sm:text-2xl font-black mb-1.5 leading-tight drop-shadow-md">
                 Le retour est à 0 DT, vous ne prenez aucun risque dès aujourd'hui
               </p>
-              <p class="text-sm text-white/90 font-medium">
+              <p class="text-sm sm:text-base text-white/95 font-semibold flex items-center gap-2">
+                <span class="inline-block w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                 Découvrez notre offre exclusive de livraison avec Shopa.ovh & Axess Logistique
               </p>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-xl group-hover:bg-white/30 transition-colors flex-shrink-0">
-            <span class="font-bold text-sm sm:text-base whitespace-nowrap">En savoir plus</span>
-            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          <div class="flex items-center gap-3 bg-white/20 backdrop-blur-md px-6 py-3.5 rounded-xl group-hover:bg-white/30 group-hover:scale-105 transition-all duration-300 flex-shrink-0 shadow-lg border border-white/30">
+            <span class="font-black text-sm sm:text-base whitespace-nowrap drop-shadow">En savoir plus</span>
+            <svg class="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300 drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
             </svg>
           </div>
         </div>
