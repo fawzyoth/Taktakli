@@ -1,6 +1,10 @@
 <template>
   <div class="flex h-screen bg-gray-50 dark:bg-gray-950">
-    <AppSidebar :is-open="sidebarOpen" @close="sidebarOpen = false" />
+    <AppSidebar
+      :is-open="sidebarOpen"
+      @close="sidebarOpen = false"
+      @open-partnership="showDeliveryModal = true"
+    />
 
     <main class="flex-1 overflow-y-auto w-full lg:w-auto">
       <div class="lg:hidden sticky top-0 z-30 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
@@ -15,13 +19,25 @@
 
       <slot />
     </main>
+
+    <DeliveryConfirmationModal
+      :is-open="showDeliveryModal"
+      @close="showDeliveryModal = false"
+      @continue="handleDeliverySubmit"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import AppSidebar from './AppSidebar.vue'
+import DeliveryConfirmationModal from './DeliveryConfirmationModal.vue'
 import { Menu as MenuIcon } from 'lucide-vue-next'
 
 const sidebarOpen = ref(false)
+const showDeliveryModal = ref(false)
+
+function handleDeliverySubmit() {
+  console.log('Delivery form submitted')
+}
 </script>

@@ -33,7 +33,21 @@
       </RouterLink>
     </nav>
 
-    <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+    <div class="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+      <button
+        @click="$emit('openPartnership')"
+        class="w-full p-4 rounded-xl bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-900/20 dark:to-orange-900/20 border-2 border-blue-200 dark:border-blue-700 hover:scale-[1.02] hover:shadow-lg transition-all duration-200 cursor-pointer group"
+      >
+        <img
+          src="/Design sans titre (1).png"
+          alt="Partnership Delivery"
+          class="w-full h-auto object-contain"
+        />
+        <p class="text-xs font-medium text-gray-600 dark:text-gray-400 mt-2 group-hover:text-gray-900 dark:group-hover:text-gray-200 transition-colors">
+          Special Delivery Offer
+        </p>
+      </button>
+
       <button
         @click="toggleTheme"
         class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 font-medium transition-colors"
@@ -63,6 +77,7 @@ defineProps<{
 
 defineEmits<{
   close: []
+  openPartnership: []
 }>()
 
 const route = useRoute()
