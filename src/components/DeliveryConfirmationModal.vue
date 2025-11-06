@@ -9,31 +9,16 @@
       aria-labelledby="delivery-modal-title"
     >
       <div
-        class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-green-200 dark:border-green-800 w-full max-w-md transform transition-all duration-300 animate-scale-in"
+        class="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border-2 border-green-200 dark:border-green-800 w-full max-w-md transform transition-all duration-300 animate-scale-in relative"
         @click.stop
       >
-        <div class="relative bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 px-6 py-8 border-b-2 border-green-100 dark:border-green-900/40 text-center">
-          <button
-            @click="handleClose"
-            class="absolute top-4 right-4 p-2 hover:bg-green-100 dark:hover:bg-green-900/50 rounded-lg transition-all"
-            aria-label="Close modal"
-          >
-            <XIcon class="w-5 h-5 text-green-700 dark:text-green-300" />
-          </button>
-
-          <div class="flex justify-center mb-4">
-            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg animate-bounce-once">
-              <CheckCircleIcon class="w-10 h-10 text-white" />
-            </div>
-          </div>
-
-          <h2 id="delivery-modal-title" class="text-2xl sm:text-3xl font-bold text-green-900 dark:text-green-100 mb-2">
-            Great Choice!
-          </h2>
-          <p class="text-green-700 dark:text-green-300 text-sm sm:text-base">
-            Continue filling out the delivery bordereau to complete your order
-          </p>
-        </div>
+        <button
+          @click="handleClose"
+          class="absolute top-4 right-4 z-10 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all"
+          aria-label="Close modal"
+        >
+          <XIcon class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+        </button>
 
         <div class="p-6 space-y-5">
           <div class="bg-gray-100 dark:bg-gray-800 rounded-2xl p-4 border-2 border-dashed border-gray-300 dark:border-gray-700">
@@ -106,7 +91,6 @@
 import { watch } from 'vue'
 import {
   X as XIcon,
-  CheckCircle as CheckCircleIcon,
   Truck as TruckIcon,
   Package as PackageIcon,
   RotateCcw as RotateCcwIcon,
