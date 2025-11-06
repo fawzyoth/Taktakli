@@ -20,7 +20,7 @@
           <XIcon class="w-5 h-5 text-gray-700 dark:text-gray-300" />
         </button>
 
-        <div class="p-8 space-y-6">
+        <div v-if="!showForm" class="p-8 space-y-6">
           <div class="text-center space-y-3">
             <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-4">
               <img
@@ -104,20 +104,169 @@
             Maybe later
           </button>
         </div>
+
+        <div v-else class="p-8 space-y-6">
+          <div class="text-center space-y-3">
+            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/40 rounded-full flex items-center justify-center mx-auto">
+              <PackageIcon class="w-8 h-8 text-green-600 dark:text-green-400" />
+            </div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+              Delivery Information
+            </h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Please provide your delivery details
+            </p>
+          </div>
+
+          <form @submit.prevent="handleSubmit" class="space-y-4">
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Full Name
+              </label>
+              <div class="relative">
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <UserIcon class="w-5 h-5" />
+                </div>
+                <input
+                  v-model="formData.fullName"
+                  type="text"
+                  required
+                  placeholder="Enter your full name"
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 transition-all"
+                />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Phone Number
+              </label>
+              <div class="relative">
+                <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <PhoneIcon class="w-5 h-5" />
+                </div>
+                <input
+                  v-model="formData.phone"
+                  type="tel"
+                  required
+                  placeholder="+216 XX XXX XXX"
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 transition-all"
+                />
+              </div>
+            </div>
+
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Address
+              </label>
+              <div class="relative">
+                <div class="absolute left-3 top-3 text-gray-400">
+                  <MapPinIcon class="w-5 h-5" />
+                </div>
+                <textarea
+                  v-model="formData.address"
+                  required
+                  rows="2"
+                  placeholder="Street address"
+                  class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 transition-all resize-none"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  City
+                </label>
+                <div class="relative">
+                  <div class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <BuildingIcon class="w-5 h-5" />
+                  </div>
+                  <input
+                    v-model="formData.city"
+                    type="text"
+                    required
+                    placeholder="City"
+                    class="w-full pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-400 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Governorate
+                </label>
+                <select
+                  v-model="formData.governorate"
+                  required
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 dark:text-white transition-all appearance-none cursor-pointer"
+                >
+                  <option value="" disabled>Select</option>
+                  <option value="Tunis">Tunis</option>
+                  <option value="Ariana">Ariana</option>
+                  <option value="Ben Arous">Ben Arous</option>
+                  <option value="Manouba">Manouba</option>
+                  <option value="Nabeul">Nabeul</option>
+                  <option value="Zaghouan">Zaghouan</option>
+                  <option value="Bizerte">Bizerte</option>
+                  <option value="Béja">Béja</option>
+                  <option value="Jendouba">Jendouba</option>
+                  <option value="Kef">Kef</option>
+                  <option value="Siliana">Siliana</option>
+                  <option value="Sousse">Sousse</option>
+                  <option value="Monastir">Monastir</option>
+                  <option value="Mahdia">Mahdia</option>
+                  <option value="Sfax">Sfax</option>
+                  <option value="Kairouan">Kairouan</option>
+                  <option value="Kasserine">Kasserine</option>
+                  <option value="Sidi Bouzid">Sidi Bouzid</option>
+                  <option value="Gabès">Gabès</option>
+                  <option value="Medenine">Medenine</option>
+                  <option value="Tataouine">Tataouine</option>
+                  <option value="Gafsa">Gafsa</option>
+                  <option value="Tozeur">Tozeur</option>
+                  <option value="Kebili">Kebili</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex space-x-3 pt-4">
+              <button
+                type="button"
+                @click="showForm = false"
+                class="flex-1 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-semibold py-3 px-6 rounded-xl transition-all duration-200"
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center space-x-2"
+              >
+                <span>Submit</span>
+                <SendIcon class="w-5 h-5" />
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 import {
   X as XIcon,
   Package as PackageIcon,
   RotateCcw as RotateCcwIcon,
   Clock as ClockIcon,
   Percent as PercentIcon,
-  ArrowRight as ArrowRightIcon
+  ArrowRight as ArrowRightIcon,
+  User as UserIcon,
+  Phone as PhoneIcon,
+  MapPin as MapPinIcon,
+  Building2 as BuildingIcon,
+  Send as SendIcon
 } from 'lucide-vue-next'
 
 const props = defineProps<{
@@ -129,12 +278,34 @@ const emit = defineEmits<{
   continue: []
 }>()
 
+const showForm = ref(false)
+const formData = ref({
+  fullName: '',
+  phone: '',
+  address: '',
+  city: '',
+  governorate: ''
+})
+
 function handleClose() {
+  showForm.value = false
+  formData.value = {
+    fullName: '',
+    phone: '',
+    address: '',
+    city: '',
+    governorate: ''
+  }
   emit('close')
 }
 
 function handleContinue() {
+  showForm.value = true
+}
+
+function handleSubmit() {
   emit('continue')
+  handleClose()
 }
 
 watch(() => props.isOpen, (newVal) => {
@@ -142,6 +313,7 @@ watch(() => props.isOpen, (newVal) => {
     document.body.style.overflow = 'hidden'
   } else {
     document.body.style.overflow = 'unset'
+    showForm.value = false
   }
 })
 </script>
