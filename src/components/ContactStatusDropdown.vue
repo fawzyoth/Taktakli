@@ -82,6 +82,12 @@
         </div>
       </div>
     </teleport>
+
+    <DeliveryConfirmationModal
+      :is-open="showDeliveryModal"
+      @close="handleDeliveryModalClose"
+      @continue="handleDeliveryModalContinue"
+    />
   </div>
 </template>
 
@@ -89,6 +95,7 @@
 import { ref, computed, watch } from 'vue'
 import { mockDataService } from '@/lib/mockData'
 import type { ContactStatus } from '@/lib/mockData'
+import DeliveryConfirmationModal from './DeliveryConfirmationModal.vue'
 import {
   Check as CheckIcon,
   Phone,
@@ -123,6 +130,7 @@ const emit = defineEmits<{
 
 const isOpen = ref(false)
 const updating = ref(false)
+const showDeliveryModal = ref(false)
 
 const statusOptions: StatusOption[] = [
   {
@@ -209,6 +217,17 @@ async function handleStatusChange(newStatus: ContactStatus) {
     return
   }
 
+  isOpen.value = false
+
+  if (newStatus === 'confirmed') {
+    showDeliveryModal.value = true
+    return
+  }
+
+  await updateStatus(newStatus)
+}
+
+async function updateStatus(newStatus: ContactStatus) {
   updating.value = true
   try {
     await mockDataService.updatePhoneNumberStatus(props.phoneNumberId, newStatus)
@@ -217,8 +236,17 @@ async function handleStatusChange(newStatus: ContactStatus) {
     console.error('Error updating status:', err)
   } finally {
     updating.value = false
-    isOpen.value = false
   }
+}
+
+function handleDeliveryModalClose() {
+  showDeliveryModal.value = false
+}
+
+async function handleDeliveryModalContinue() {
+  showDeliveryModal.value = false
+  await updateStatus('confirmed')
+  console.log('User confirmed - redirect to bordereau form')
 }
 
 watch(isOpen, (newVal) => {
