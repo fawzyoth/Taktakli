@@ -1,43 +1,76 @@
 <template>
   <AppLayout>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-7xl mx-auto text-center">
-          <h1 class="text-3xl sm:text-4xl font-bold mb-3">
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+      <div class="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 text-white py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
+
+        <div class="relative max-w-7xl mx-auto text-center">
+          <div class="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+            <SparklesIcon class="w-5 h-5 animate-pulse" />
+            <span class="text-sm font-semibold">Nouveautés disponibles</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
             Boutique Live Streaming
           </h1>
-          <p class="text-lg text-blue-100">
-            Équipement professionnel et matériel d'emballage
+          <p class="text-xl sm:text-2xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Équipez-vous comme un pro
           </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-6 text-sm">
+            <div class="flex items-center space-x-2">
+              <div class="bg-white/20 p-2 rounded-lg">
+                <TruckIcon class="w-5 h-5" />
+              </div>
+              <span class="font-semibold">Livraison Rapide</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div class="bg-white/20 p-2 rounded-lg">
+                <ShieldCheckIcon class="w-5 h-5" />
+              </div>
+              <span class="font-semibold">Garantie Incluse</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <div class="bg-white/20 p-2 rounded-lg">
+                <ZapIcon class="w-5 h-5" />
+              </div>
+              <span class="font-semibold">Stock Limité</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-          <div class="flex items-center space-x-3 overflow-x-auto pb-4">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="mb-10">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
+            Catégories Populaires
+          </h2>
+          <div class="flex items-center justify-center space-x-3 overflow-x-auto pb-4 scrollbar-hide">
             <button
               @click="selectedCategory = null"
               :class="[
-                'px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all',
+                'px-6 py-3 rounded-full font-bold whitespace-nowrap transition-all transform hover:scale-105',
                 selectedCategory === null
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:border-blue-500'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/50'
+                  : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 hover:shadow-lg'
               ]"
             >
-              Tous
+              🔥 Tous
             </button>
             <button
               v-for="category in categories"
               :key="category.id"
               @click="selectedCategory = category.id"
               :class="[
-                'px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-all',
+                'px-6 py-3 rounded-full font-bold whitespace-nowrap transition-all transform hover:scale-105',
                 selectedCategory === category.id
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 hover:border-blue-500'
+                  ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-xl shadow-blue-500/50'
+                  : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 hover:shadow-lg'
               ]"
             >
-              {{ category.name }}
+              {{ category.icon }} {{ category.name }}
             </button>
           </div>
         </div>
@@ -58,33 +91,46 @@
           <div
             v-for="product in filteredProducts"
             :key="product.id"
-            class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-xl hover:border-blue-500 dark:hover:border-blue-600 transition-all group"
+            class="group relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-800 hover:border-transparent"
           >
-            <div class="relative aspect-square overflow-hidden bg-gray-100 dark:bg-gray-800">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+            <div class="relative aspect-square overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
               <img
                 :src="product.images[0] || 'https://images.pexels.com/photos/1649771/pexels-photo-1649771.jpeg'"
                 :alt="product.name"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div v-if="product.original_price" class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+
+              <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <div v-if="product.original_price" class="absolute top-4 right-4 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-black shadow-lg animate-pulse">
                 -{{ Math.round((1 - product.price / product.original_price) * 100) }}%
               </div>
-              <div v-if="product.is_featured" class="absolute top-3 left-3 bg-yellow-500 text-white px-2 py-1 rounded-lg text-xs font-bold">
-                ⭐ TOP
+              <div v-if="product.is_featured" class="absolute top-4 left-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1.5 rounded-full text-xs font-black shadow-lg flex items-center space-x-1">
+                <SparklesIcon class="w-3 h-3" />
+                <span>TOP</span>
+              </div>
+
+              <div class="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                <div class="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-lg px-3 py-2">
+                  <p class="text-xs text-gray-700 dark:text-gray-300 line-clamp-2">{{ product.short_description }}</p>
+                </div>
               </div>
             </div>
 
-            <div class="p-4">
-              <h3 class="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 min-h-[3rem]">
+            <div class="relative p-5">
+              <h3 class="font-black text-gray-900 dark:text-white mb-3 line-clamp-2 min-h-[3.5rem] text-lg">
                 {{ product.name }}
               </h3>
 
               <div class="mb-4">
                 <div class="flex items-baseline space-x-2">
-                  <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    {{ product.price }} DT
+                  <span class="text-3xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    {{ product.price }}
                   </span>
-                  <span v-if="product.original_price" class="text-sm text-gray-500 line-through">
+                  <span class="text-sm font-bold text-gray-900 dark:text-white">DT</span>
+                  <span v-if="product.original_price" class="text-sm text-gray-400 line-through">
                     {{ product.original_price }} DT
                   </span>
                 </div>
@@ -92,10 +138,10 @@
 
               <button
                 @click="addToCart(product)"
-                class="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center justify-center space-x-2"
+                class="w-full px-4 py-3.5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-xl transition-all transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 group/btn"
               >
-                <ShoppingCartIcon class="w-5 h-5" />
-                <span>Ajouter</span>
+                <ShoppingCartIcon class="w-5 h-5 group-hover/btn:animate-bounce" />
+                <span>Ajouter au Panier</span>
               </button>
             </div>
           </div>
@@ -108,14 +154,21 @@
       >
         <button
           @click="showCart = true"
-          class="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-xl transition-all flex items-center space-x-3 animate-bounce-slow"
+          class="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white pl-6 pr-8 py-5 rounded-full shadow-2xl hover:shadow-blue-500/50 transition-all flex items-center space-x-3 animate-bounce-slow group/cart hover:scale-110"
         >
-          <ShoppingCartIcon class="w-6 h-6" />
-          <div class="flex flex-col items-start">
-            <span class="text-xs">Panier</span>
-            <span class="font-bold">{{ cartTotal }} DT</span>
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full blur-lg opacity-50 group-hover/cart:opacity-75 transition-opacity"></div>
+
+          <div class="relative flex items-center space-x-3">
+            <div class="bg-white/20 p-2 rounded-full">
+              <ShoppingCartIcon class="w-6 h-6 group-hover/cart:animate-bounce" />
+            </div>
+            <div class="flex flex-col items-start">
+              <span class="text-xs font-semibold opacity-90">Mon Panier</span>
+              <span class="font-black text-lg">{{ cartTotal }} DT</span>
+            </div>
           </div>
-          <span class="absolute -top-2 -right-2 bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold">
+
+          <span class="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-pink-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-sm font-black shadow-lg animate-pulse border-4 border-white">
             {{ cartItemCount }}
           </span>
         </button>
@@ -212,13 +265,18 @@ import {
   X as XIcon,
   Plus as PlusIcon,
   Minus as MinusIcon,
-  Trash2 as Trash2Icon
+  Trash2 as Trash2Icon,
+  Sparkles as SparklesIcon,
+  Truck as TruckIcon,
+  ShieldCheck as ShieldCheckIcon,
+  Zap as ZapIcon
 } from 'lucide-vue-next'
 
 interface Category {
   id: string
   name: string
   slug: string
+  icon: string
 }
 
 interface Product {
@@ -299,12 +357,12 @@ async function loadData() {
   loading.value = true
   try {
     categories.value = [
-      { id: '1', name: 'Smartphones', slug: 'smartphones' },
-      { id: '2', name: 'Ring Lights', slug: 'ring-lights' },
-      { id: '3', name: 'Trépieds', slug: 'trepieds' },
-      { id: '4', name: 'Microphones', slug: 'microphones' },
-      { id: '5', name: 'Accessoires', slug: 'accessoires' },
-      { id: '6', name: 'Emballage', slug: 'emballage' }
+      { id: '1', name: 'Smartphones', slug: 'smartphones', icon: '📱' },
+      { id: '2', name: 'Ring Lights', slug: 'ring-lights', icon: '💡' },
+      { id: '3', name: 'Trépieds', slug: 'trepieds', icon: '📸' },
+      { id: '4', name: 'Microphones', slug: 'microphones', icon: '🎤' },
+      { id: '5', name: 'Accessoires', slug: 'accessoires', icon: '🎯' },
+      { id: '6', name: 'Emballage', slug: 'emballage', icon: '📦' }
     ]
 
     products.value = [
@@ -457,5 +515,14 @@ onMounted(() => {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 </style>
