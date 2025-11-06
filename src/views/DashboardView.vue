@@ -6,6 +6,38 @@
         <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Monitor your TikTok captures and phone numbers</p>
       </div>
 
+      <button
+        @click="showDeliveryModal = true"
+        class="w-full mb-6 sm:mb-8 group relative overflow-hidden bg-gradient-to-r from-green-500 via-green-600 to-emerald-600 hover:from-green-600 hover:via-green-700 hover:to-emerald-700 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-green-500/50"
+      >
+        <div class="absolute inset-0 bg-white/10 transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700"></div>
+
+        <div class="relative px-6 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0 group-hover:rotate-12 transition-transform duration-300">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+              </svg>
+            </div>
+            <div class="text-left">
+              <p class="text-lg sm:text-xl font-bold mb-1">
+                Le retour est à 0 DT, vous ne prenez aucun risque dès aujourd'hui
+              </p>
+              <p class="text-sm text-white/90 font-medium">
+                Découvrez notre offre exclusive de livraison avec Shopa.ovh & Axess Logistique
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-xl group-hover:bg-white/30 transition-colors flex-shrink-0">
+            <span class="font-bold text-sm sm:text-base whitespace-nowrap">En savoir plus</span>
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </div>
+      </button>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
@@ -133,6 +165,12 @@
       @close="showNewCaptureModal = false"
       @created="handleCaptureCreated"
     />
+
+    <DeliveryConfirmationModal
+      :is-open="showDeliveryModal"
+      @close="showDeliveryModal = false"
+      @continue="handleDeliverySubmit"
+    />
   </AppLayout>
 </template>
 
@@ -143,12 +181,14 @@ import { mockDataService } from '@/lib/mockData'
 import type { Capture } from '@/lib/mockData'
 import AppLayout from '@/components/AppLayout.vue'
 import NewCaptureModal from '@/components/NewCaptureModal.vue'
+import DeliveryConfirmationModal from '@/components/DeliveryConfirmationModal.vue'
 import { Video as VideoIcon, Phone as PhoneIcon, Eye as EyeIcon, MessageCircle as MessageCircleIcon, Plus as PlusIcon } from 'lucide-vue-next'
 
 const router = useRouter()
 const captures = ref<Capture[]>([])
 const loading = ref(true)
 const showNewCaptureModal = ref(false)
+const showDeliveryModal = ref(false)
 
 const stats = computed(() => {
   return {
@@ -173,6 +213,11 @@ async function fetchCaptures() {
 function handleCaptureCreated() {
   showNewCaptureModal.value = false
   fetchCaptures()
+}
+
+function handleDeliverySubmit() {
+  console.log('Delivery form submitted')
+  showDeliveryModal.value = false
 }
 
 onMounted(() => {
