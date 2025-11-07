@@ -42,6 +42,11 @@ const router = createRouter({
       path: '/live-code-capture',
       name: 'live-code-capture',
       component: () => import('@/views/LiveCodeCaptureView.vue')
+    },
+    {
+      path: '/demo-confirmation',
+      name: 'demo-confirmation',
+      component: () => import('@/views/DemoConfirmationView.vue')
     }
   ]
 })
