@@ -245,8 +245,9 @@ export const mockDataService = {
   createCapture: async (pageId: string): Promise<Capture> => {
     await new Promise(resolve => setTimeout(resolve, 400))
     const page = mockPages.find(p => p.id === pageId)
+    const captureId = `CAP-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`
     const newCapture: Capture = {
-      id: String(mockCaptures.length + 1),
+      id: captureId,
       page_id: pageId,
       page_name: page?.page_name || 'Unknown Page',
       status: 'active',
