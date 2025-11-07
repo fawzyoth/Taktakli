@@ -7,9 +7,9 @@
         <div class="px-6 py-6 border-b border-gray-200 dark:border-gray-800">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Confirm Your Captured Codes</h3>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Number-to-Code Confirmation</h3>
               <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {{ totalNumbers }} numbers captured across {{ session.codes.length }} codes
+                Review {{ totalNumbers }} phone numbers and their assigned codes
               </p>
             </div>
             <button @click="close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
@@ -25,7 +25,7 @@
               <input
                 v-model="searchQuery"
                 type="text"
-                placeholder="Search by number or username..."
+                placeholder="Search by number, username, or code..."
                 class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -40,7 +40,7 @@
                 ]"
               >
                 <ListIcon class="w-4 h-4" />
-                Table
+                <span class="hidden sm:inline">All Numbers</span>
               </button>
               <button
                 @click="viewMode = 'cards'"
@@ -52,7 +52,7 @@
                 ]"
               >
                 <GridIcon class="w-4 h-4" />
-                Cards
+                <span class="hidden sm:inline">By Code</span>
               </button>
             </div>
           </div>
@@ -73,10 +73,10 @@
                 <table class="w-full">
                   <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
                     <tr>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider w-12">#</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider w-16">#</th>
                       <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Phone Number</th>
                       <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Username</th>
-                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Assigned Code</th>
+                      <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">→ Assigned To Code</th>
                       <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Time</th>
                       <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">Status</th>
                     </tr>
@@ -88,12 +88,12 @@
                       class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
                     >
                       <td class="px-4 py-4 whitespace-nowrap">
-                        <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                        <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm">
                           {{ index + 1 }}
                         </div>
                       </td>
                       <td class="px-4 py-4 whitespace-nowrap">
-                        <p class="font-mono font-bold text-base text-gray-900 dark:text-white">{{ item.phoneNumber }}</p>
+                        <p class="font-mono font-bold text-lg text-gray-900 dark:text-white">{{ item.phoneNumber }}</p>
                       </td>
                       <td class="px-4 py-4 whitespace-nowrap">
                         <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
@@ -102,14 +102,15 @@
                         </div>
                       </td>
                       <td class="px-4 py-4">
-                        <div class="flex items-center gap-2">
-                          <div v-if="item.codePhoto" class="w-8 h-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
+                        <div class="flex items-center gap-3">
+                          <ArrowRightIcon class="w-4 h-4 text-blue-500 flex-shrink-0" />
+                          <div v-if="item.codePhoto" class="w-10 h-10 rounded-lg overflow-hidden border-2 border-blue-200 dark:border-blue-700 flex-shrink-0 shadow-sm">
                             <img :src="item.codePhoto" class="w-full h-full object-cover" />
                           </div>
-                          <div v-else class="w-8 h-8 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                            <PackageIcon class="w-4 h-4 text-gray-400" />
+                          <div v-else class="w-10 h-10 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <PackageIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
                           </div>
-                          <span class="font-semibold text-gray-900 dark:text-white">{{ item.codeName }}</span>
+                          <span class="font-bold text-base text-gray-900 dark:text-white">{{ item.codeName }}</span>
                         </div>
                       </td>
                       <td class="px-4 py-4 whitespace-nowrap text-xs text-gray-500 dark:text-gray-400">
@@ -278,7 +279,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { X as XIcon, Package as PackageIcon, ShoppingCart as ShoppingCartIcon, Phone as PhoneIcon, Clock as ClockIcon, BarChart as BarChartIcon, Download as DownloadIcon, Search as SearchIcon, List as ListIcon, Grid3X3 as GridIcon, CheckCircle as CheckCircleIcon, User as UserIcon, Code as CodeIcon } from 'lucide-vue-next'
+import { X as XIcon, Package as PackageIcon, ShoppingCart as ShoppingCartIcon, Phone as PhoneIcon, Clock as ClockIcon, BarChart as BarChartIcon, Download as DownloadIcon, Search as SearchIcon, List as ListIcon, Grid3X3 as GridIcon, CheckCircle as CheckCircleIcon, User as UserIcon, Code as CodeIcon, ArrowRight as ArrowRightIcon } from 'lucide-vue-next'
 import type { CaptureSession } from '@/lib/codeCapture'
 
 interface Props {

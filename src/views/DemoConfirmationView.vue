@@ -2,12 +2,13 @@
   <AppLayout>
     <div class="p-4 sm:p-6 lg:p-8">
       <div class="mb-6 sm:mb-8">
-        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Confirmation Modal Demo</h1>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Preview the confirmation interface with multiple codes and numbers</p>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Number-to-Code Confirmation Demo</h1>
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">See how phone numbers are grouped with their assigned product codes in the session</p>
       </div>
 
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Mock Session Data</h2>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Session Summary</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">This session contains 4 product codes with 10 phone numbers assigned across them</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-2">
