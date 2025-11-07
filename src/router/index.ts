@@ -37,6 +37,11 @@ const router = createRouter({
       path: '/code-capture',
       name: 'code-capture',
       component: () => import('@/views/CodeCaptureView.vue')
+    },
+    {
+      path: '/live-code-capture',
+      name: 'live-code-capture',
+      component: () => import('@/views/LiveCodeCaptureView.vue')
     }
   ]
 })

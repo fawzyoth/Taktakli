@@ -190,7 +190,7 @@ async function handleSubmit() {
   try {
     if (captureType.value === 'code-based') {
       emit('close')
-      await router.push('/code-capture')
+      await router.push('/live-code-capture')
     } else {
       const capture = await mockDataService.createCapture(selectedPageId.value)
       emit('close')

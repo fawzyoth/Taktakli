@@ -85,7 +85,7 @@ const themeStore = useThemeStore()
 
 const navigation = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-  { name: 'Code Capture', path: '/code-capture', icon: Code },
+  { name: 'Code Capture', path: '/live-code-capture', icon: Code },
   { name: 'Pages', path: '/pages', icon: FileText },
   { name: 'Livraison', path: '/livraison', icon: Package },
   { name: 'Shop', path: '/shop', icon: ShoppingBag }
