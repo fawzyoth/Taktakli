@@ -1,6 +1,6 @@
 <template>
   <AppLayout>
-    <div class="p-4 sm:p-6 lg:p-8">
+    <div class="p-4 md:p-6">
       <div v-if="!hasSession" class="flex items-center justify-center min-h-[70vh]">
         <div class="text-center max-w-md">
           <div class="flex justify-center mb-6">
@@ -41,152 +41,147 @@
           <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Started {{ formatTime(sessionStartTime) }} • {{ formatDuration(captureTimer) }}</p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Codes</span>
-              <CodeIcon class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+          <div class="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Codes</span>
+              <CodeIcon class="w-4 h-4 text-blue-500" />
             </div>
-            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{{ codes.length }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ codes.length }}</p>
           </div>
 
-          <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Total Numbers</span>
-              <PhoneIcon class="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+          <div class="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Numbers</span>
+              <PhoneIcon class="w-4 h-4 text-green-500" />
             </div>
-            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{{ totalNumbers }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ totalNumbers }}</p>
           </div>
 
-          <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Current Code</span>
-              <TargetIcon class="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+          <div class="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Current</span>
+              <TargetIcon class="w-4 h-4 text-orange-500" />
             </div>
-            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{{ activeCode?.numbers.length || 0 }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ activeCode?.numbers.length || 0 }}</p>
           </div>
 
-          <div class="bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">Duration</span>
-              <ClockIcon class="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+          <div class="bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-medium text-gray-600 dark:text-gray-400">Time</span>
+              <ClockIcon class="w-4 h-4 text-purple-500" />
             </div>
-            <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{{ formatDuration(captureTimer) }}</p>
+            <p class="text-2xl font-bold text-gray-900 dark:text-white">{{ formatDuration(captureTimer) }}</p>
           </div>
         </div>
 
         <button
           @click="showSessionSummary"
-          class="sm:hidden w-full mb-6 px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition flex items-center justify-center gap-2"
+          class="md:hidden w-full mb-6 px-4 py-3 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition flex items-center justify-center gap-2"
         >
           <StopCircleIcon class="w-5 h-5" />
           End Session
         </button>
 
-        <div v-if="!activeCode" class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-12 sm:p-16 text-center">
+        <div v-if="!activeCode" class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 text-center">
           <div class="flex justify-center mb-4">
-            <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
-              <PlusIcon class="w-12 h-12 text-gray-400" />
+            <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+              <PlusIcon class="w-10 h-10 text-gray-400" />
             </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Create Your First Code</h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6">Start capturing numbers by creating a product code</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Create Your First Code</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">Start capturing numbers by creating a product code</p>
           <button
             @click="openCreateCodeModal"
-            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition inline-flex items-center gap-2"
+            class="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition inline-flex items-center justify-center gap-2"
           >
             <PlusIcon class="w-5 h-5" />
             Create Code
           </button>
         </div>
 
-        <div v-else class="space-y-6">
-          <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800">
-              <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div class="flex items-start gap-4 flex-1">
-                  <div v-if="activeCode.photo" class="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
-                    <img :src="activeCode.photo" class="w-full h-full object-cover" />
-                  </div>
-                  <div v-else class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <PackageIcon class="w-8 h-8 sm:w-10 sm:h-10 text-gray-400" />
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2 mb-1">
-                      <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">{{ activeCode.name }}</h3>
-                      <span class="inline-flex items-center px-2.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full flex-shrink-0">
-                        Active
-                      </span>
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ activeCode.numbers.length }} numbers captured • Created {{ formatTime(activeCode.createdAt) }}</p>
-                  </div>
+        <div v-else class="space-y-4">
+          <div class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+              <div class="flex items-start gap-3 mb-3">
+                <div v-if="activeCode.photo" class="w-16 h-16 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
+                  <img :src="activeCode.photo" class="w-full h-full object-cover" />
                 </div>
-                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <button
-                    @click="simulateCaptureNumber"
-                    class="px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition flex items-center justify-center gap-2"
-                  >
-                    <ZapIcon class="w-4 h-4" />
-                    <span>Test Capture</span>
-                  </button>
-                  <button
-                    @click="stopCurrentCode"
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center justify-center gap-2"
-                  >
-                    <CheckCircleIcon class="w-4 h-4" />
-                    <span>Finish & New Code</span>
-                  </button>
+                <div v-else class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <PackageIcon class="w-8 h-8 text-gray-400" />
                 </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate">{{ activeCode.name }}</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded flex-shrink-0">
+                      Active
+                    </span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400">{{ activeCode.numbers.length }} numbers • {{ formatTime(activeCode.createdAt) }}</p>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <button
+                  @click="simulateCaptureNumber"
+                  class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-semibold rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition flex items-center justify-center gap-2"
+                >
+                  <ZapIcon class="w-4 h-4" />
+                  <span class="hidden md:inline">Test</span>
+                </button>
+                <button
+                  @click="stopCurrentCode"
+                  class="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition flex items-center justify-center gap-2"
+                >
+                  <CheckCircleIcon class="w-4 h-4" />
+                  <span>Finish</span>
+                </button>
               </div>
             </div>
 
-            <div class="p-4 sm:p-6">
-              <div class="flex items-center justify-between mb-4">
-                <h4 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Captured Numbers</h4>
-                <span class="text-sm text-gray-600 dark:text-gray-400">{{ activeCode.numbers.length }} total</span>
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-3">
+                <h4 class="text-base font-bold text-gray-900 dark:text-white">Captured Numbers</h4>
+                <span class="text-sm text-gray-600 dark:text-gray-400">{{ activeCode.numbers.length }}</span>
               </div>
 
-              <div v-if="activeCode.numbers.length === 0" class="text-center py-12">
-                <div class="flex justify-center mb-4">
-                  <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
-                    <PhoneIcon class="w-10 h-10 text-gray-400" />
+              <div v-if="activeCode.numbers.length === 0" class="text-center py-8">
+                <div class="flex justify-center mb-3">
+                  <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+                    <PhoneIcon class="w-8 h-8 text-gray-400" />
                   </div>
                 </div>
-                <h4 class="text-base font-semibold text-gray-900 dark:text-white mb-2">Waiting for Numbers...</h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Numbers will appear here as they are captured</p>
+                <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Waiting for Numbers...</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Numbers will appear here as captured</p>
                 <button
                   @click="simulateCaptureNumber"
-                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition text-sm"
                 >
-                  Simulate Capture
+                  Test Capture
                 </button>
               </div>
 
-              <div v-else class="space-y-3 max-h-[500px] overflow-y-auto">
+              <div v-else class="space-y-2 max-h-[400px] overflow-y-auto">
                 <TransitionGroup name="number-slide">
                   <div
                     v-for="(number, index) in activeCode.numbers.slice().reverse()"
                     :key="number.id"
-                    class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                    class="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg"
                   >
-                    <div class="flex items-center justify-between gap-4">
-                      <div class="flex items-center gap-3 flex-1 min-w-0">
-                        <div class="flex-shrink-0 w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    <div class="flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-2 flex-1 min-w-0">
+                        <div class="flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
                           {{ activeCode.numbers.length - index }}
                         </div>
                         <div class="flex-1 min-w-0">
-                          <p class="font-mono font-bold text-base sm:text-lg text-gray-900 dark:text-white truncate">{{ number.phoneNumber }}</p>
-                          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1 truncate">
-                            <UserIcon class="w-3 h-3 flex-shrink-0" />
-                            @{{ number.username }}
-                          </p>
+                          <p class="font-mono font-bold text-sm text-gray-900 dark:text-white truncate">{{ number.phoneNumber }}</p>
+                          <p class="text-xs text-gray-600 dark:text-gray-400 truncate">@{{ number.username }}</p>
                         </div>
                       </div>
                       <div class="flex items-center gap-2 flex-shrink-0">
-                        <span v-if="index === 0" class="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded-full">
+                        <span v-if="index === 0" class="inline-block px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-semibold rounded">
                           New
                         </span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400 hidden sm:inline">{{ formatTime(number.capturedAt) }}</span>
+                        <span class="text-xs text-gray-500 dark:text-gray-400 hidden md:inline">{{ formatTime(number.capturedAt) }}</span>
                       </div>
                     </div>
                   </div>
@@ -195,36 +190,33 @@
             </div>
           </div>
 
-          <div v-if="codes.length > 1" class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800">
-              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Completed Codes</h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">{{ codes.filter(c => !c.isActive).length }} code{{ codes.filter(c => !c.isActive).length !== 1 ? 's' : '' }} completed in this session</p>
+          <div v-if="codes.length > 1" class="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800">
+            <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+              <h3 class="text-base font-bold text-gray-900 dark:text-white">Completed Codes</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">{{ codes.filter(c => !c.isActive).length }} completed</p>
             </div>
 
             <div class="divide-y divide-gray-200 dark:divide-gray-800">
               <div
                 v-for="code in codes.filter(c => !c.isActive)"
                 :key="code.id"
-                class="p-4 sm:p-6 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
+                class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition"
               >
-                <div class="flex items-center justify-between gap-4">
-                  <div class="flex items-center gap-3 flex-1 min-w-0">
-                    <div v-if="code.photo" class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
-                      <img :src="code.photo" class="w-full h-full object-cover" />
+                <div class="flex items-center gap-3">
+                  <div v-if="code.photo" class="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 flex-shrink-0">
+                    <img :src="code.photo" class="w-full h-full object-cover" />
+                  </div>
+                  <div v-else class="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <PackageIcon class="w-6 h-6 text-gray-400" />
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-2 mb-1">
+                      <h4 class="font-bold text-sm text-gray-900 dark:text-white truncate">{{ code.name }}</h4>
+                      <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-xs font-semibold rounded flex-shrink-0">
+                        <CheckCircleIcon class="w-3 h-3" />
+                      </span>
                     </div>
-                    <div v-else class="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <PackageIcon class="w-6 h-6 sm:w-7 sm:h-7 text-gray-400" />
-                    </div>
-                    <div class="flex-1 min-w-0">
-                      <div class="flex items-center gap-2 mb-1">
-                        <h4 class="font-bold text-sm sm:text-base text-gray-900 dark:text-white truncate">{{ code.name }}</h4>
-                        <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-400 text-xs font-semibold rounded-full flex-shrink-0">
-                          <CheckCircleIcon class="w-3 h-3" />
-                          Complete
-                        </span>
-                      </div>
-                      <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">{{ code.numbers.length }} numbers • {{ formatTime(code.createdAt) }}</p>
-                    </div>
+                    <p class="text-xs text-gray-600 dark:text-gray-400">{{ code.numbers.length }} numbers</p>
                   </div>
                 </div>
               </div>
