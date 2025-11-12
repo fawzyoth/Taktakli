@@ -109,28 +109,44 @@
                       {{ getStatusLabel(colis.status) }}
                     </span>
                   </div>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Client:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_name }}</span>
+                  <div class="space-y-2 text-sm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div>
+                        <span class="text-gray-600 dark:text-gray-400">Client:</span>
+                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_name }}</span>
+                      </div>
+                      <div>
+                        <span class="text-gray-600 dark:text-gray-400">Téléphone:</span>
+                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_phone }}</span>
+                      </div>
                     </div>
                     <div>
-                      <span class="text-gray-600 dark:text-gray-400">Téléphone:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_phone }}</span>
+                      <span class="text-gray-600 dark:text-gray-400">Produit:</span>
+                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.product_description }}</span>
                     </div>
-                    <div class="sm:col-span-2">
+                    <div>
                       <span class="text-gray-600 dark:text-gray-400">Adresse:</span>
                       <span class="ml-2 font-medium text-gray-900 dark:text-white">
                         {{ colis.client_address }}, {{ colis.client_city }} {{ colis.client_postal_code }}
                       </span>
                     </div>
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Valeur:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.product_value }} DT</span>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <span class="text-gray-600 dark:text-gray-400">Valeur:</span>
+                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.product_value }} DT</span>
+                      </div>
+                      <div>
+                        <span class="text-gray-600 dark:text-gray-400">COD:</span>
+                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.cod_amount }} DT</span>
+                      </div>
+                      <div>
+                        <span class="text-gray-600 dark:text-gray-400">Poids:</span>
+                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.weight }} kg</span>
+                      </div>
                     </div>
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">COD:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.cod_amount }} DT</span>
+                    <div v-if="colis.notes" class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                      <span class="text-gray-600 dark:text-gray-400">Notes:</span>
+                      <span class="ml-2 text-gray-900 dark:text-white italic">{{ colis.notes }}</span>
                     </div>
                   </div>
                   <p class="text-xs text-gray-500 dark:text-gray-500 mt-3">
@@ -243,6 +259,7 @@ import AppLayout from '@/components/AppLayout.vue'
 import CreateColisModal from '@/components/CreateColisModal.vue'
 import ReturnRequestModal from '@/components/ReturnRequestModal.vue'
 import { Package as PackageIcon, RotateCcw as RotateCcwIcon, Plus as PlusIcon, ScanBarcode as ScanBarcodeIcon } from 'lucide-vue-next'
+import { supabase } from '@/lib/supabase'
 
 interface Colis {
   id: string
@@ -283,9 +300,12 @@ const selectedColisId = ref<string>('')
 function getStatusColor(status: string) {
   const colors: Record<string, string> = {
     pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    picked_up: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+    collected: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
     in_transit: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
+    out_for_delivery: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400',
     delivered: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    failed_delivery: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+    cancelled: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
     returned: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400'
   }
   return colors[status] || 'bg-gray-100 text-gray-800'
@@ -294,9 +314,12 @@ function getStatusColor(status: string) {
 function getStatusLabel(status: string) {
   const labels: Record<string, string> = {
     pending: 'En attente',
-    picked_up: 'Ramassé',
+    collected: 'Collecté',
     in_transit: 'En transit',
+    out_for_delivery: 'En cours de livraison',
     delivered: 'Livré',
+    failed_delivery: 'Échec de livraison',
+    cancelled: 'Annulé',
     returned: 'Retourné'
   }
   return labels[status] || status
@@ -330,7 +353,13 @@ function getColisTrackingNumber(colisId: string) {
 async function fetchColis() {
   loading.value = true
   try {
-    colisList.value = []
+    const { data, error } = await supabase
+      .from('colis')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    colisList.value = data || []
   } catch (error) {
     console.error('Error fetching colis:', error)
   } finally {
@@ -339,13 +368,16 @@ async function fetchColis() {
 }
 
 async function fetchRetours() {
-  loading.value = true
   try {
-    retoursList.value = []
+    const { data, error } = await supabase
+      .from('retours')
+      .select('*')
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    retoursList.value = data || []
   } catch (error) {
     console.error('Error fetching retours:', error)
-  } finally {
-    loading.value = false
   }
 }
 
@@ -356,8 +388,18 @@ function requestReturn(colisId: string) {
 
 async function deleteColis(colisId: string) {
   if (confirm('Êtes-vous sûr de vouloir supprimer ce colis?')) {
-    console.log('Deleting colis:', colisId)
-    await fetchColis()
+    try {
+      const { error } = await supabase
+        .from('colis')
+        .delete()
+        .eq('id', colisId)
+
+      if (error) throw error
+      await fetchColis()
+    } catch (error) {
+      console.error('Error deleting colis:', error)
+      alert('Erreur lors de la suppression du colis')
+    }
   }
 }
 
