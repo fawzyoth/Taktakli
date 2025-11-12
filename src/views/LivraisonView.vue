@@ -258,6 +258,7 @@
       :colis="selectedColis"
       @close="showDetailsModal = false"
       @request-return="handleRequestReturn"
+      @request-exchange="handleRequestExchange"
     />
 
     <ReturnRequestModal
@@ -265,6 +266,14 @@
       :colis-id="selectedColis.id"
       @close="showReturnModal = false"
       @created="handleReturnCreated"
+    />
+
+    <ExchangeRequestModal
+      v-if="showExchangeModal && selectedColis"
+      :colis-id="selectedColis.id"
+      product-type="book"
+      @close="showExchangeModal = false"
+      @created="handleExchangeCreated"
     />
   </AppLayout>
 </template>
@@ -275,6 +284,7 @@ import AppLayout from '@/components/AppLayout.vue'
 import CreateColisModal from '@/components/CreateColisModal.vue'
 import PackageDetailsModal from '@/components/PackageDetailsModal.vue'
 import ReturnRequestModal from '@/components/ReturnRequestModal.vue'
+import ExchangeRequestModal from '@/components/ExchangeRequestModal.vue'
 import PrintPackages from '@/components/PrintPackages.vue'
 import { Package as PackageIcon, Plus as PlusIcon, Search as SearchIcon, Eye as EyeIcon, User as UserIcon, Phone as PhoneIcon, Printer as PrinterIcon } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
@@ -307,6 +317,7 @@ const selectedPackages = ref<Set<string>>(new Set())
 const showCreateColisModal = ref(false)
 const showDetailsModal = ref(false)
 const showReturnModal = ref(false)
+const showExchangeModal = ref(false)
 const selectedColis = ref<Colis | null>(null)
 
 const filteredColis = computed(() => {
@@ -418,6 +429,11 @@ function handleRequestReturn() {
   showReturnModal.value = true
 }
 
+function handleRequestExchange() {
+  showDetailsModal.value = false
+  showExchangeModal.value = true
+}
+
 async function updateRecommendation(colisId: string, recommendation: string) {
   try {
     const { error } = await supabase
@@ -461,6 +477,11 @@ function handleColisCreated() {
 
 function handleReturnCreated() {
   showReturnModal.value = false
+  fetchColis()
+}
+
+function handleExchangeCreated() {
+  showExchangeModal.value = false
   fetchColis()
 }
 

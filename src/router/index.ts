@@ -47,6 +47,11 @@ const router = createRouter({
       path: '/demo-confirmation',
       name: 'demo-confirmation',
       component: () => import('@/views/DemoConfirmationView.vue')
+    },
+    {
+      path: '/return-verification',
+      name: 'return-verification',
+      component: () => import('@/views/ReturnVerificationView.vue')
     }
   ]
 })

@@ -101,7 +101,15 @@
           Fermer
         </button>
         <button
-          v-if="colis.status === 'delivered'"
+          v-if="colis.status === 'delivered' && isBookOrder"
+          @click="$emit('request-exchange')"
+          class="flex-1 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
+        >
+          <RefreshCwIcon class="w-4 h-4" />
+          Demander un Échange
+        </button>
+        <button
+          v-else-if="colis.status === 'delivered' && !isBookOrder"
           @click="$emit('request-return')"
           class="flex-1 px-4 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition flex items-center justify-center gap-2"
         >
@@ -114,7 +122,8 @@
 </template>
 
 <script setup lang="ts">
-import { X as XIcon, User as UserIcon, Package as PackageIcon, FileText as FileTextIcon, RotateCcw as RotateCcwIcon } from 'lucide-vue-next'
+import { computed } from 'vue'
+import { X as XIcon, User as UserIcon, Package as PackageIcon, FileText as FileTextIcon, RotateCcw as RotateCcwIcon, RefreshCw as RefreshCwIcon } from 'lucide-vue-next'
 
 interface Colis {
   id: string
@@ -134,14 +143,20 @@ interface Colis {
   updated_at: string
 }
 
-defineProps<{
+const props = defineProps<{
   colis: Colis
 }>()
 
 defineEmits<{
   (e: 'close'): void
   (e: 'request-return'): void
+  (e: 'request-exchange'): void
 }>()
+
+const isBookOrder = computed(() => {
+  const description = props.colis.product_description.toLowerCase()
+  return description.includes('livre') || description.includes('book') || description.includes('livr2')
+})
 
 function getStatusColor(status: string) {
   const colors: Record<string, string> = {
