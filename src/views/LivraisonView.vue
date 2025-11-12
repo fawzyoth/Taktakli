@@ -1,239 +1,176 @@
 <template>
   <AppLayout>
     <div class="p-4 sm:p-6 lg:p-8">
-      <div class="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Livraison</h1>
-          <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Gérez vos colis et retours</p>
-        </div>
-        <button
-          @click="$router.push('/verification')"
-          class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold rounded-lg transition shadow-lg"
-        >
-          <ScanBarcodeIcon class="w-5 h-5" />
-          <span>Vérifier un Retour</span>
-        </button>
+      <div class="mb-6 sm:mb-8">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">Gestion des Colis</h1>
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Suivez et gérez vos livraisons en temps réel</p>
       </div>
 
       <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-        <div class="border-b border-gray-200 dark:border-gray-800">
-          <nav class="flex space-x-8 px-6" aria-label="Tabs">
-            <button
-              @click="activeTab = 'colis'"
-              :class="[
-                'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
-                activeTab === 'colis'
-                  ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-              ]"
-            >
-              <div class="flex items-center space-x-2">
-                <PackageIcon class="w-5 h-5" />
-                <span>Mes Colis</span>
-                <span class="ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                  {{ colisList.length }}
-                </span>
-              </div>
-            </button>
-            <button
-              @click="activeTab = 'retours'"
-              :class="[
-                'py-4 px-1 border-b-2 font-medium text-sm transition-colors',
-                activeTab === 'retours'
-                  ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-              ]"
-            >
-              <div class="flex items-center space-x-2">
-                <RotateCcwIcon class="w-5 h-5" />
-                <span>Retours</span>
-                <span class="ml-2 py-0.5 px-2.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
-                  {{ retoursList.length }}
-                </span>
-              </div>
-            </button>
-          </nav>
-        </div>
-
-        <div v-if="activeTab === 'colis'" class="p-6">
-          <div class="flex justify-between items-center mb-6">
+        <div class="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-800">
+          <div class="flex flex-col lg:flex-row gap-4">
+            <div class="flex-1 relative">
+              <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                v-model="searchQuery"
+                type="text"
+                placeholder="Rechercher par nom de client ou téléphone..."
+                class="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+            <div class="flex gap-3">
+              <select
+                v-model="statusFilter"
+                class="px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Tous les statuts</option>
+                <option value="pending">En attente</option>
+                <option value="collected">Collecté</option>
+                <option value="in_transit">En transit</option>
+                <option value="out_for_delivery">En cours de livraison</option>
+                <option value="delivered">Livré</option>
+                <option value="failed_delivery">Échec de livraison</option>
+                <option value="cancelled">Annulé</option>
+                <option value="returned">Retourné</option>
+              </select>
+              <button
+                @click="showCreateColisModal = true"
+                class="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition"
+              >
+                <PlusIcon class="w-4 h-4" />
+                <span class="hidden sm:inline">Nouveau</span>
+              </button>
+            </div>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
             <div>
-              <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Mes Colis</h2>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Créez et suivez vos colis</p>
+              Affichage de <span class="font-semibold text-gray-900 dark:text-white">{{ filteredColis.length }}</span> colis
+              <span v-if="searchQuery || statusFilter"> (filtré sur {{ colisList.length }} total)</span>
             </div>
             <button
-              @click="showCreateColisModal = true"
-              class="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+              v-if="searchQuery || statusFilter"
+              @click="clearFilters"
+              class="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium"
             >
-              <PlusIcon class="w-4 h-4" />
-              <span>Nouveau Colis</span>
+              Réinitialiser les filtres
             </button>
-          </div>
-
-          <div v-if="loading" class="text-center py-12">
-            <p class="text-gray-600 dark:text-gray-400">Chargement...</p>
-          </div>
-
-          <div v-else-if="colisList.length === 0" class="text-center py-16">
-            <div class="flex justify-center mb-4">
-              <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
-                <PackageIcon class="w-12 h-12 text-gray-400" />
-              </div>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun colis</h3>
-            <p class="text-gray-600 dark:text-gray-400 mb-4">Créez votre premier colis pour commencer</p>
-            <button
-              @click="showCreateColisModal = true"
-              class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
-            >
-              Créer un Colis
-            </button>
-          </div>
-
-          <div v-else class="space-y-4">
-            <div
-              v-for="colis in colisList"
-              :key="colis.id"
-              class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
-            >
-              <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-3">
-                    <span class="text-lg font-bold text-gray-900 dark:text-white">
-                      {{ colis.tracking_number }}
-                    </span>
-                    <span :class="[
-                      'px-3 py-1 text-xs font-semibold rounded-full',
-                      getStatusColor(colis.status)
-                    ]">
-                      {{ getStatusLabel(colis.status) }}
-                    </span>
-                  </div>
-                  <div class="space-y-2 text-sm">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <div>
-                        <span class="text-gray-600 dark:text-gray-400">Client:</span>
-                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_name }}</span>
-                      </div>
-                      <div>
-                        <span class="text-gray-600 dark:text-gray-400">Téléphone:</span>
-                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.client_phone }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Produit:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.product_description }}</span>
-                    </div>
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Adresse:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">
-                        {{ colis.client_address }}, {{ colis.client_city }} {{ colis.client_postal_code }}
-                      </span>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <div>
-                        <span class="text-gray-600 dark:text-gray-400">Valeur:</span>
-                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.product_value }} DT</span>
-                      </div>
-                      <div>
-                        <span class="text-gray-600 dark:text-gray-400">COD:</span>
-                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.cod_amount }} DT</span>
-                      </div>
-                      <div>
-                        <span class="text-gray-600 dark:text-gray-400">Poids:</span>
-                        <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ colis.weight }} kg</span>
-                      </div>
-                    </div>
-                    <div v-if="colis.notes" class="pt-2 border-t border-gray-100 dark:border-gray-800">
-                      <span class="text-gray-600 dark:text-gray-400">Notes:</span>
-                      <span class="ml-2 text-gray-900 dark:text-white italic">{{ colis.notes }}</span>
-                    </div>
-                  </div>
-                  <p class="text-xs text-gray-500 dark:text-gray-500 mt-3">
-                    Créé le {{ new Date(colis.created_at).toLocaleString('fr-FR') }}
-                  </p>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                  <button
-                    v-if="colis.status === 'delivered'"
-                    @click="requestReturn(colis.id)"
-                    class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition flex items-center justify-center space-x-2"
-                  >
-                    <RotateCcwIcon class="w-4 h-4" />
-                    <span>Demander un Retour</span>
-                  </button>
-                  <button
-                    v-if="colis.status === 'pending'"
-                    @click="deleteColis(colis.id)"
-                    class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-sm font-medium rounded-lg transition"
-                  >
-                    Supprimer
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        <div v-else class="p-6">
-          <div class="mb-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Retours</h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">Vérifiez et gérez les retours</p>
-          </div>
+        <div v-if="loading" class="text-center py-12">
+          <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <p class="text-gray-600 dark:text-gray-400 mt-4">Chargement...</p>
+        </div>
 
-          <div v-if="loading" class="text-center py-12">
-            <p class="text-gray-600 dark:text-gray-400">Chargement...</p>
-          </div>
-
-          <div v-else-if="retoursList.length === 0" class="text-center py-16">
-            <div class="flex justify-center mb-4">
-              <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
-                <RotateCcwIcon class="w-12 h-12 text-gray-400" />
-              </div>
-            </div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun retour</h3>
-            <p class="text-gray-600 dark:text-gray-400">Les demandes de retour apparaîtront ici</p>
-          </div>
-
-          <div v-else class="space-y-4">
-            <div
-              v-for="retour in retoursList"
-              :key="retour.id"
-              class="border border-gray-200 dark:border-gray-700 rounded-lg p-6"
-            >
-              <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
-                <div class="flex-1">
-                  <div class="flex items-center gap-3 mb-3">
-                    <span class="text-lg font-bold text-gray-900 dark:text-white">
-                      Retour #{{ retour.id.substring(0, 8) }}
-                    </span>
-                    <span :class="[
-                      'px-3 py-1 text-xs font-semibold rounded-full',
-                      getRetourStatusColor(retour.return_status)
-                    ]">
-                      {{ getRetourStatusLabel(retour.return_status) }}
-                    </span>
-                  </div>
-                  <div class="space-y-2 text-sm">
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Colis:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">
-                        {{ getColisTrackingNumber(retour.colis_id) }}
-                      </span>
-                    </div>
-                    <div>
-                      <span class="text-gray-600 dark:text-gray-400">Raison:</span>
-                      <span class="ml-2 font-medium text-gray-900 dark:text-white">{{ retour.return_reason }}</span>
-                    </div>
-                    <p class="text-xs text-gray-500 dark:text-gray-500 mt-3">
-                      Demandé le {{ new Date(retour.created_at).toLocaleString('fr-FR') }}
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div v-else-if="colisList.length === 0" class="text-center py-16">
+          <div class="flex justify-center mb-4">
+            <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
+              <PackageIcon class="w-12 h-12 text-gray-400" />
             </div>
           </div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun colis</h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">Créez votre premier colis pour commencer</p>
+          <button
+            @click="showCreateColisModal = true"
+            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition"
+          >
+            Créer un Colis
+          </button>
+        </div>
+
+        <div v-else-if="filteredColis.length === 0" class="text-center py-16">
+          <div class="flex justify-center mb-4">
+            <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
+              <SearchIcon class="w-12 h-12 text-gray-400" />
+            </div>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun résultat</h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-4">Aucun colis ne correspond à vos critères de recherche</p>
+          <button
+            @click="clearFilters"
+            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-medium"
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+
+        <div v-else class="overflow-x-auto">
+          <table class="w-full">
+            <thead class="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Client
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Téléphone
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider hidden sm:table-cell">
+                  Valeur
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Statut
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
+              <tr
+                v-for="colis in filteredColis"
+                :key="colis.id"
+                class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                @click="openDetails(colis)"
+              >
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                      <UserIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div class="ml-4">
+                      <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                        {{ colis.client_name }}
+                      </div>
+                      <div class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ colis.tracking_number }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center text-sm text-gray-900 dark:text-white">
+                    <PhoneIcon class="w-4 h-4 text-gray-400 mr-2" />
+                    {{ colis.client_phone }}
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap hidden sm:table-cell">
+                  <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                    {{ colis.product_value }} DT
+                  </div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">
+                    COD: {{ colis.cod_amount }} DT
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span :class="[
+                    'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold',
+                    getStatusColor(colis.status)
+                  ]">
+                    {{ getStatusLabel(colis.status) }}
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    @click.stop="openDetails(colis)"
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition font-medium"
+                  >
+                    <EyeIcon class="w-4 h-4" />
+                    <span class="hidden sm:inline">Voir</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -244,9 +181,16 @@
       @created="handleColisCreated"
     />
 
+    <PackageDetailsModal
+      v-if="showDetailsModal && selectedColis"
+      :colis="selectedColis"
+      @close="showDetailsModal = false"
+      @request-return="handleRequestReturn"
+    />
+
     <ReturnRequestModal
-      v-if="showReturnModal"
-      :colis-id="selectedColisId"
+      v-if="showReturnModal && selectedColis"
+      :colis-id="selectedColis.id"
       @close="showReturnModal = false"
       @created="handleReturnCreated"
     />
@@ -254,11 +198,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import AppLayout from '@/components/AppLayout.vue'
 import CreateColisModal from '@/components/CreateColisModal.vue'
+import PackageDetailsModal from '@/components/PackageDetailsModal.vue'
 import ReturnRequestModal from '@/components/ReturnRequestModal.vue'
-import { Package as PackageIcon, RotateCcw as RotateCcwIcon, Plus as PlusIcon, ScanBarcode as ScanBarcodeIcon } from 'lucide-vue-next'
+import { Package as PackageIcon, Plus as PlusIcon, Search as SearchIcon, Eye as EyeIcon, User as UserIcon, Phone as PhoneIcon } from 'lucide-vue-next'
 import { supabase } from '@/lib/supabase'
 
 interface Colis {
@@ -279,23 +224,32 @@ interface Colis {
   updated_at: string
 }
 
-interface Retour {
-  id: string
-  colis_id: string
-  return_reason: string
-  return_status: string
-  verification_notes: string
-  created_at: string
-  verified_at: string | null
-}
-
-const activeTab = ref<'colis' | 'retours'>('colis')
 const loading = ref(true)
 const colisList = ref<Colis[]>([])
-const retoursList = ref<Retour[]>([])
+const searchQuery = ref('')
+const statusFilter = ref('')
 const showCreateColisModal = ref(false)
+const showDetailsModal = ref(false)
 const showReturnModal = ref(false)
-const selectedColisId = ref<string>('')
+const selectedColis = ref<Colis | null>(null)
+
+const filteredColis = computed(() => {
+  let filtered = colisList.value
+
+  if (searchQuery.value) {
+    const query = searchQuery.value.toLowerCase()
+    filtered = filtered.filter(colis =>
+      colis.client_name.toLowerCase().includes(query) ||
+      colis.client_phone.includes(query)
+    )
+  }
+
+  if (statusFilter.value) {
+    filtered = filtered.filter(colis => colis.status === statusFilter.value)
+  }
+
+  return filtered
+})
 
 function getStatusColor(status: string) {
   const colors: Record<string, string> = {
@@ -316,38 +270,28 @@ function getStatusLabel(status: string) {
     pending: 'En attente',
     collected: 'Collecté',
     in_transit: 'En transit',
-    out_for_delivery: 'En cours de livraison',
+    out_for_delivery: 'En livraison',
     delivered: 'Livré',
-    failed_delivery: 'Échec de livraison',
+    failed_delivery: 'Échec',
     cancelled: 'Annulé',
     returned: 'Retourné'
   }
   return labels[status] || status
 }
 
-function getRetourStatusColor(status: string) {
-  const colors: Record<string, string> = {
-    requested: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    approved: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-    rejected: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-    completed: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
-  }
-  return colors[status] || 'bg-gray-100 text-gray-800'
+function clearFilters() {
+  searchQuery.value = ''
+  statusFilter.value = ''
 }
 
-function getRetourStatusLabel(status: string) {
-  const labels: Record<string, string> = {
-    requested: 'Demandé',
-    approved: 'Approuvé',
-    rejected: 'Rejeté',
-    completed: 'Complété'
-  }
-  return labels[status] || status
+function openDetails(colis: Colis) {
+  selectedColis.value = colis
+  showDetailsModal.value = true
 }
 
-function getColisTrackingNumber(colisId: string) {
-  const colis = colisList.value.find(c => c.id === colisId)
-  return colis?.tracking_number || 'N/A'
+function handleRequestReturn() {
+  showDetailsModal.value = false
+  showReturnModal.value = true
 }
 
 async function fetchColis() {
@@ -367,42 +311,6 @@ async function fetchColis() {
   }
 }
 
-async function fetchRetours() {
-  try {
-    const { data, error } = await supabase
-      .from('retours')
-      .select('*')
-      .order('created_at', { ascending: false })
-
-    if (error) throw error
-    retoursList.value = data || []
-  } catch (error) {
-    console.error('Error fetching retours:', error)
-  }
-}
-
-function requestReturn(colisId: string) {
-  selectedColisId.value = colisId
-  showReturnModal.value = true
-}
-
-async function deleteColis(colisId: string) {
-  if (confirm('Êtes-vous sûr de vouloir supprimer ce colis?')) {
-    try {
-      const { error } = await supabase
-        .from('colis')
-        .delete()
-        .eq('id', colisId)
-
-      if (error) throw error
-      await fetchColis()
-    } catch (error) {
-      console.error('Error deleting colis:', error)
-      alert('Erreur lors de la suppression du colis')
-    }
-  }
-}
-
 function handleColisCreated() {
   showCreateColisModal.value = false
   fetchColis()
@@ -410,11 +318,10 @@ function handleColisCreated() {
 
 function handleReturnCreated() {
   showReturnModal.value = false
-  fetchRetours()
+  fetchColis()
 }
 
 onMounted(async () => {
   await fetchColis()
-  await fetchRetours()
 })
 </script>
