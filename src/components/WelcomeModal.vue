@@ -21,20 +21,20 @@
         >
           <button
             @click="closeModal"
-            class="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 group"
-            aria-label="Fermer la modal"
+            class="absolute top-4 left-4 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors z-10 group"
+            aria-label="إغلاق النافذة"
             ref="closeButtonRef"
           >
             <XIcon class="w-6 h-6 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" />
           </button>
 
-          <div class="p-6 sm:p-8 lg:p-10">
+          <div class="p-6 sm:p-8 lg:p-10" dir="rtl">
             <div class="text-center mb-6">
               <h2
                 id="welcome-modal-title"
                 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2"
               >
-                Nous tenons à nous excuser 🙏
+                نعتذر منكم 🙏
               </h2>
             </div>
 
@@ -43,33 +43,33 @@
               class="space-y-4 text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed"
             >
               <p>
-                Ce week-end a été particulièrement difficile et a impacté votre travail de manière significative.
+                لقد مررنا بعطلة أسبوع صعبة أثّرت بشكل كبير على سير عملكم.
               </p>
 
               <p>
-                Nous avons subi une <strong class="text-gray-900 dark:text-white">attaque cyber imprévue</strong>, mais nous sommes heureux de vous informer que <strong class="text-green-600 dark:text-green-400">toutes vos données ont été protégées et sauvegardées</strong> grâce à nos mécanismes de sécurité.
+                تعرّضنا لـ<strong class="text-gray-900 dark:text-white">هجوم إلكتروني غير متوقّع</strong>، لكننا نطمئنكم أنّ <strong class="text-green-600 dark:text-green-400">جميع بياناتكم كانت ولا تزال محفوظة ومحمية بالكامل</strong> بفضل أنظمة الأمان لدينا.
               </p>
 
               <div class="bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-900/20 dark:to-orange-900/20 border-2 border-orange-200 dark:border-orange-700 rounded-xl p-6 my-6">
                 <p class="text-gray-800 dark:text-gray-200 mb-3">
-                  Nous comprenons parfaitement la gêne occasionnée et, en signe d'excuse, nous vous offrons une remise exceptionnelle de
+                  ونظرًا للإزعاج الذي سبّبه هذا الأمر، قررنا أن نقدّم لكم تخفيضًا بنسبة
                 </p>
                 <div class="text-center">
                   <span class="inline-block text-5xl sm:text-6xl font-black bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
                     30%
                   </span>
                   <p class="text-lg sm:text-xl font-semibold text-orange-700 dark:text-orange-400 mt-2">
-                    sur votre prochain mois d'abonnement
+                    على اشتراككم للشهر القادم
                   </p>
                 </div>
               </div>
 
               <p class="text-center text-gray-700 dark:text-gray-300">
-                Merci pour votre <strong class="text-gray-900 dark:text-white">compréhension</strong> et votre <strong class="text-gray-900 dark:text-white">confiance</strong>.
+                شكرًا لـ<strong class="text-gray-900 dark:text-white">تفهّمكم</strong> و<strong class="text-gray-900 dark:text-white">ثقتكم</strong> بنا
               </p>
 
               <p class="text-center text-sm text-gray-600 dark:text-gray-400 italic">
-                Encore désolés pour ce désagrément.
+                ونعتذر مرة أخرى على هذا الخلل.
               </p>
             </div>
 
@@ -79,7 +79,7 @@
                 class="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-orange-600 hover:from-blue-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-orange-500/50"
                 ref="okButtonRef"
               >
-                J'ai compris
+                فهمت
               </button>
             </div>
           </div>
