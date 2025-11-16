@@ -30,16 +30,6 @@
 
           <div class="p-6 sm:p-8 lg:p-10">
             <div class="text-center mb-6">
-              <div class="mb-6 flex justify-center">
-                <div class="relative w-full max-w-[30%] aspect-square">
-                  <img
-                    src="/Design sans titre.png"
-                    alt="Logo"
-                    class="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-
               <h2
                 id="welcome-modal-title"
                 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2"
