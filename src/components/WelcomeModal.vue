@@ -64,6 +64,15 @@
                 </div>
               </div>
 
+              <div class="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 border-2 border-green-200 dark:border-green-700 rounded-xl p-6 my-6">
+                <p class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  ولدينا أيضًا خبر سار 🎉
+                </p>
+                <p class="text-gray-800 dark:text-gray-200">
+                  لقد عقدنا <strong class="text-green-700 dark:text-green-400">شراكة جديدة مع شركة توصيل</strong> بهدف تسريع وتسهيل عملية توصيل طلباتكم وتحسين تجربة عملائكم بشكل كبير.
+                </p>
+              </div>
+
               <p class="text-center text-gray-700 dark:text-gray-300">
                 شكرًا لـ<strong class="text-gray-900 dark:text-white">تفهّمكم</strong> و<strong class="text-gray-900 dark:text-white">ثقتكم</strong> بنا
               </p>
