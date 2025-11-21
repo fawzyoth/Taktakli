@@ -83,7 +83,13 @@
                     : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 ]"
               >
-                Phone Numbers ({{ phoneNumbers.length }})
+                Phone Numbers
+                <span v-if="!selectedFilters.includes('all')" class="ml-1">
+                  ({{ filteredPhoneNumbers.length }}/{{ phoneNumbers.length }})
+                </span>
+                <span v-else class="ml-1">
+                  ({{ phoneNumbers.length }})
+                </span>
               </button>
               <button
                 @click="activeTab = 'chat'"
@@ -101,7 +107,20 @@
 
           <div class="p-4 sm:p-6">
             <div v-if="activeTab === 'numbers'">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Phone Numbers</h2>
+              <div class="mb-6">
+                <StatusFilterBar
+                  :status-counts="statusCounts"
+                  :selected-filters="selectedFilters"
+                  @update:selected-filters="selectedFilters = $event"
+                />
+              </div>
+
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Phone Numbers
+                <span v-if="!selectedFilters.includes('all')" class="text-lg font-normal text-gray-600 dark:text-gray-400">
+                  ({{ filteredPhoneNumbers.length }} of {{ phoneNumbers.length }})
+                </span>
+              </h2>
 
               <div v-if="phoneNumbers.length === 0" class="py-16 text-center">
                 <div class="flex justify-center mb-4">
@@ -117,9 +136,23 @@
                 </p>
               </div>
 
+              <div v-else-if="filteredPhoneNumbers.length === 0" class="py-16 text-center">
+                <div class="flex justify-center mb-4">
+                  <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
+                    <PhoneIcon class="w-12 h-12 text-gray-400" />
+                  </div>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  No phone numbers match the selected filters
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Try adjusting your filters to see more results
+                </p>
+              </div>
+
               <div v-else class="space-y-4">
                 <div
-                  v-for="phoneData in phoneNumbers"
+                  v-for="phoneData in filteredPhoneNumbers"
                   :key="phoneData.id"
                   :class="[
                     'rounded-xl border-2 p-5 transition-all duration-300 hover:shadow-lg',
@@ -247,6 +280,7 @@ import type { Capture, DetectedPhoneNumber, PhoneNumberComment, ContactStatus } 
 import AppLayout from '@/components/AppLayout.vue'
 import ContactStatusDropdown from '@/components/ContactStatusDropdown.vue'
 import CommentsModal from '@/components/CommentsModal.vue'
+import StatusFilterBar from '@/components/StatusFilterBar.vue'
 import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon } from 'lucide-vue-next'
 
 const route = useRoute()
@@ -257,6 +291,36 @@ const loading = ref(true)
 const activeTab = ref<'numbers' | 'chat'>('numbers')
 const selectedPhoneData = ref<(DetectedPhoneNumber & { comments: PhoneNumberComment[] }) | null>(null)
 const isModalOpen = ref(false)
+const selectedFilters = ref<(ContactStatus | 'all')[]>(['all'])
+
+const statusCounts = computed(() => {
+  const counts: Record<ContactStatus | 'all', number> = {
+    all: phoneNumbers.value.length,
+    not_called: 0,
+    called_no_answer: 0,
+    called_answered: 0,
+    confirmed: 0,
+    declined: 0,
+    callback_requested: 0,
+    invalid_contact: 0,
+    completed: 0
+  }
+
+  phoneNumbers.value.forEach(phone => {
+    counts[phone.contact_status]++
+  })
+
+  return counts
+})
+
+const filteredPhoneNumbers = computed(() => {
+  if (selectedFilters.value.includes('all')) {
+    return phoneNumbers.value
+  }
+  return phoneNumbers.value.filter(phone =>
+    selectedFilters.value.includes(phone.contact_status)
+  )
+})
 
 const allComments = computed(() => {
   const comments: (PhoneNumberComment & { phone_number: string })[] = []
