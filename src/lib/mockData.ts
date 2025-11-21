@@ -286,6 +286,11 @@ export const mockDataService = {
     }
   },
 
+  getAllPhoneNumbers: async (): Promise<(DetectedPhoneNumber & { comments: PhoneNumberComment[] })[]> => {
+    await new Promise(resolve => setTimeout(resolve, 300))
+    return [...mockPhoneNumbers]
+  },
+
   getPages: async (): Promise<Page[]> => {
     await new Promise(resolve => setTimeout(resolve, 300))
     return [...mockPages]

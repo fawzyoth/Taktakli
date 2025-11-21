@@ -17,6 +17,34 @@
       </button>
     </div>
 
+    <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+      <div class="relative">
+        <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <input
+          v-model="searchQuery"
+          @keyup.enter="handleSearch"
+          type="text"
+          placeholder="Search phone number..."
+          class="w-full pl-9 pr-10 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+        />
+        <button
+          v-if="searchQuery"
+          @click="searchQuery = ''"
+          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+        >
+          <XIcon class="w-4 h-4" />
+        </button>
+      </div>
+      <button
+        @click="handleSearch"
+        :disabled="!searchQuery.trim()"
+        class="w-full mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2"
+      >
+        <SearchIcon class="w-4 h-4" />
+        Search Number
+      </button>
+    </div>
+
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
       <RouterLink
         v-for="item in navigation"
@@ -66,19 +94,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon, Search as SearchIcon } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
   close: []
   openPartnership: []
+  openNumberSearch: [phoneNumber: string]
 }>()
+
+const searchQuery = ref('')
 
 const route = useRoute()
 const themeStore = useThemeStore()
@@ -100,5 +131,12 @@ function isActive(path: string) {
 
 function toggleTheme() {
   themeStore.toggleTheme()
+}
+
+function handleSearch() {
+  if (searchQuery.value.trim()) {
+    emit('openNumberSearch', searchQuery.value.trim())
+    searchQuery.value = ''
+  }
 }
 </script>
