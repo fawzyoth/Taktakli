@@ -7,21 +7,24 @@
         @click.self="close"
       >
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
-          <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                <PhoneIcon class="w-5 h-5 text-white" />
+          <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 px-6 py-6 flex items-center justify-between relative overflow-hidden">
+            <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
+            <div class="flex items-center gap-3 relative z-10">
+              <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
+                <PhoneIcon class="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 class="text-xl font-bold text-white">Number Details</h3>
-                <p class="text-xs text-blue-100">Complete information and history</p>
+                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                  👋 Contact Details
+                </h3>
+                <p class="text-sm text-blue-100 mt-0.5">Everything you need to know</p>
               </div>
             </div>
             <button
               @click="close"
-              class="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              class="relative z-10 p-2 hover:bg-white/20 rounded-xl transition-all hover:scale-110"
             >
-              <XIcon class="w-5 h-5 text-white" />
+              <XIcon class="w-6 h-6 text-white" />
             </button>
           </div>
 
@@ -31,22 +34,35 @@
             </div>
 
             <div v-else-if="!phoneData" class="text-center py-12">
-              <div class="flex justify-center mb-4">
-                <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-2xl">
-                  <SearchIcon class="w-12 h-12 text-gray-400" />
+              <div class="flex justify-center mb-6">
+                <div class="relative">
+                  <div class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-3xl">
+                    <SearchIcon class="w-16 h-16 text-gray-400" />
+                  </div>
+                  <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-2xl shadow-lg">
+                    🤔
+                  </div>
                 </div>
               </div>
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                Number not found
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                Hmm, we couldn't find that number
               </h3>
-              <p class="text-gray-600 dark:text-gray-400">
-                No record found for this phone number
+              <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                No worries! This number might not be in our system yet.
               </p>
+              <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 max-w-md mx-auto border-2 border-blue-200 dark:border-blue-800">
+                <p class="text-sm text-gray-700 dark:text-gray-300 flex items-start gap-2">
+                  <span class="text-xl">💡</span>
+                  <span><strong>Tip:</strong> Make sure you've entered the complete phone number, including country code if available.</span>
+                </p>
+              </div>
             </div>
 
             <div v-else>
-              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 mb-6 border-2 border-blue-200 dark:border-blue-800">
-                <div class="flex items-start gap-4 mb-4">
+              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 mb-6 border-2 border-blue-200 dark:border-blue-800 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-200/30 dark:bg-blue-700/20 rounded-full -mr-16 -mt-16"></div>
+                <div class="absolute bottom-0 left-0 w-24 h-24 bg-indigo-200/30 dark:bg-indigo-700/20 rounded-full -ml-12 -mb-12"></div>
+                <div class="flex items-start gap-4 mb-4 relative z-10">
                   <div class="relative flex-shrink-0">
                     <div class="w-16 h-16 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                       {{ phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?' }}
@@ -55,6 +71,10 @@
                   </div>
 
                   <div class="flex-1">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 bg-green-100 dark:bg-green-900/30 rounded-full mb-2">
+                      <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span class="text-xs font-semibold text-green-700 dark:text-green-400">Active Contact</span>
+                    </div>
                     <h4 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                       {{ phoneData.username || 'Anonymous User' }}
                     </h4>
@@ -71,7 +91,7 @@
                   </div>
                 </div>
 
-                <div class="flex items-center justify-between pt-4 border-t-2 border-blue-200 dark:border-blue-800">
+                <div class="flex items-center justify-between pt-4 border-t-2 border-blue-200 dark:border-blue-800 relative z-10">
                   <div>
                     <p class="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Current Status</p>
                     <div class="flex items-center gap-2">
@@ -93,10 +113,15 @@
                 </div>
               </div>
 
-              <div v-if="phoneData.capture" class="bg-white dark:bg-gray-800 rounded-xl p-5 mb-6 border border-gray-200 dark:border-gray-700">
+              <div v-if="phoneData.capture" class="bg-white dark:bg-gray-800 rounded-2xl p-5 mb-6 border-2 border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-2 mb-3">
-                  <TvIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  <h5 class="font-semibold text-gray-900 dark:text-white">Associated Capture</h5>
+                  <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <TvIcon class="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h5 class="font-semibold text-gray-900 dark:text-white">Where we found them</h5>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Source information</p>
+                  </div>
                 </div>
                 <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
                   <div class="flex items-center justify-between mb-2">
@@ -127,10 +152,15 @@
                 </div>
               </div>
 
-              <div v-if="phoneData.comments && phoneData.comments.length > 0" class="bg-white dark:bg-gray-800 rounded-xl p-5 mb-6 border border-gray-200 dark:border-gray-700">
+              <div v-if="phoneData.comments && phoneData.comments.length > 0" class="bg-white dark:bg-gray-800 rounded-2xl p-5 mb-6 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
                 <div class="flex items-center gap-2 mb-4">
-                  <MessageCircleIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  <h5 class="font-semibold text-gray-900 dark:text-white">Comments ({{ phoneData.comments.length }})</h5>
+                  <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <MessageCircleIcon class="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h5 class="font-semibold text-gray-900 dark:text-white">What they said 💬</h5>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ phoneData.comments.length }} message{{ phoneData.comments.length > 1 ? 's' : '' }}</p>
+                  </div>
                 </div>
                 <div class="space-y-3">
                   <div
@@ -146,10 +176,15 @@
                 </div>
               </div>
 
-              <div class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700">
+              <div class="bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-5 border-2 border-gray-200 dark:border-gray-700 shadow-sm">
                 <div class="flex items-center gap-2 mb-4">
-                  <HistoryIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  <h5 class="font-semibold text-gray-900 dark:text-white">Status History</h5>
+                  <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                    <HistoryIcon class="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <h5 class="font-semibold text-gray-900 dark:text-white">Journey Timeline 📅</h5>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Track every step of this contact</p>
+                  </div>
                 </div>
 
                 <div class="relative">
