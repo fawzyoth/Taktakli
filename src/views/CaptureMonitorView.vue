@@ -107,20 +107,53 @@
 
           <div class="p-4 sm:p-6">
             <div v-if="activeTab === 'numbers'">
-              <div class="mb-6">
-                <StatusFilterBar
-                  :status-counts="statusCounts"
-                  :selected-filters="selectedFilters"
-                  @update:selected-filters="selectedFilters = $event"
-                />
+              <StatusFilterBar
+                :status-counts="statusCounts"
+                :selected-filters="selectedFilters"
+                @update:selected-filters="selectedFilters = $event"
+              />
+
+              <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
+                <div class="flex flex-col lg:flex-row gap-4">
+                  <div class="flex-1 relative">
+                    <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      v-model="searchQuery"
+                      type="text"
+                      placeholder="Search by phone number, username, or status..."
+                      class="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                    <button
+                      v-if="searchQuery"
+                      @click="searchQuery = ''"
+                      class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    >
+                      <XIcon class="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <SortIcon class="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
+                    <select
+                      v-model="sortBy"
+                      class="px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+                    >
+                      <option value="newest">Newest First</option>
+                      <option value="oldest">Oldest First</option>
+                      <option value="alphabetical">A-Z</option>
+                    </select>
+                  </div>
+                </div>
               </div>
 
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-                Phone Numbers
-                <span v-if="!selectedFilters.includes('all')" class="text-lg font-normal text-gray-600 dark:text-gray-400">
-                  ({{ filteredPhoneNumbers.length }} of {{ phoneNumbers.length }})
-                </span>
-              </h2>
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
+                  Phone Numbers
+                  <span v-if="searchQuery || !selectedFilters.includes('all')" class="text-lg font-normal text-gray-600 dark:text-gray-400">
+                    ({{ filteredPhoneNumbers.length }} of {{ phoneNumbers.length }})
+                  </span>
+                </h2>
+              </div>
 
               <div v-if="phoneNumbers.length === 0" class="py-16 text-center">
                 <div class="flex justify-center mb-4">
@@ -138,49 +171,70 @@
 
               <div v-else-if="filteredPhoneNumbers.length === 0" class="py-16 text-center">
                 <div class="flex justify-center mb-4">
-                  <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-full">
-                    <PhoneIcon class="w-12 h-12 text-gray-400" />
+                  <div class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl">
+                    <SearchIcon class="w-16 h-16 text-gray-400 dark:text-gray-500" />
                   </div>
                 </div>
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  No phone numbers match the selected filters
+                  No results found
                 </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                  Try adjusting your filters to see more results
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                  {{ searchQuery ? 'No phone numbers match your search query' : 'No phone numbers match the selected filters' }}
                 </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <button
+                    v-if="searchQuery"
+                    @click="searchQuery = ''"
+                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                  >
+                    Clear Search
+                  </button>
+                  <button
+                    v-if="hasActiveFilters"
+                    @click="selectedFilters = ['all']"
+                    class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                  >
+                    Clear Filters
+                  </button>
+                </div>
               </div>
 
-              <div v-else class="space-y-4">
+              <div v-else class="space-y-3">
                 <div
                   v-for="phoneData in filteredPhoneNumbers"
                   :key="phoneData.id"
                   :class="[
-                    'rounded-xl border-2 p-5 transition-all duration-300 hover:shadow-lg',
+                    'rounded-xl border-2 p-5 transition-all duration-200 hover:shadow-xl hover:scale-[1.01] cursor-pointer',
                     getStatusColor(phoneData.contact_status)
                   ]"
                 >
                   <div class="flex items-start justify-between gap-4 mb-4">
                     <div class="flex items-start space-x-3 flex-1">
-                      <div class="flex-shrink-0 w-11 h-11 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md">
-                        {{ phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?' }}
+                      <div class="relative flex-shrink-0">
+                        <div class="w-12 h-12 bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white text-base font-bold shadow-lg">
+                          {{ phoneData.username ? phoneData.username.charAt(0).toUpperCase() : '?' }}
+                        </div>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white dark:border-gray-900"></div>
                       </div>
 
-                      <div class="flex-1">
-                        <div class="flex items-center space-x-2 mb-1">
-                          <span class="font-bold text-gray-900 dark:text-white">
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center space-x-2 mb-1.5 flex-wrap">
+                          <span class="font-bold text-base text-gray-900 dark:text-white">
                             {{ phoneData.username || 'Anonymous User' }}
                           </span>
-                          <span class="text-xs px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold">
+                          <span class="text-xs px-2 py-0.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold shadow-sm">
                             NEW
                           </span>
                         </div>
-                        <div class="flex items-center space-x-2 text-sm">
+                        <div class="flex items-center space-x-2 mb-2">
+                          <PhoneIcon class="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                           <span class="font-mono font-bold text-lg text-gray-900 dark:text-white">
                             {{ phoneData.phone_number }}
                           </span>
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {{ new Date(phoneData.detected_at).toLocaleString() }}
+                        <div class="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
+                          <ClockIcon class="w-3.5 h-3.5 flex-shrink-0" />
+                          <span>{{ new Date(phoneData.detected_at).toLocaleString() }}</span>
                         </div>
                       </div>
                     </div>
@@ -281,7 +335,7 @@ import AppLayout from '@/components/AppLayout.vue'
 import ContactStatusDropdown from '@/components/ContactStatusDropdown.vue'
 import CommentsModal from '@/components/CommentsModal.vue'
 import StatusFilterBar from '@/components/StatusFilterBar.vue'
-import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon } from 'lucide-vue-next'
+import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon, Search as SearchIcon, SlidersHorizontal as SortIcon, X as XIcon, Clock as ClockIcon } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
@@ -292,6 +346,8 @@ const activeTab = ref<'numbers' | 'chat'>('numbers')
 const selectedPhoneData = ref<(DetectedPhoneNumber & { comments: PhoneNumberComment[] }) | null>(null)
 const isModalOpen = ref(false)
 const selectedFilters = ref<(ContactStatus | 'all')[]>(['all'])
+const searchQuery = ref('')
+const sortBy = ref<'newest' | 'oldest' | 'alphabetical'>('newest')
 
 const statusCounts = computed(() => {
   const counts: Record<ContactStatus | 'all', number> = {
@@ -314,12 +370,41 @@ const statusCounts = computed(() => {
 })
 
 const filteredPhoneNumbers = computed(() => {
-  if (selectedFilters.value.includes('all')) {
-    return phoneNumbers.value
+  let filtered = phoneNumbers.value
+
+  if (!selectedFilters.value.includes('all')) {
+    filtered = filtered.filter(phone =>
+      selectedFilters.value.includes(phone.contact_status)
+    )
   }
-  return phoneNumbers.value.filter(phone =>
-    selectedFilters.value.includes(phone.contact_status)
-  )
+
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim()
+    filtered = filtered.filter(phone =>
+      phone.phone_number.toLowerCase().includes(query) ||
+      phone.username?.toLowerCase().includes(query) ||
+      phone.contact_status.toLowerCase().includes(query)
+    )
+  }
+
+  const sorted = [...filtered]
+  if (sortBy.value === 'newest') {
+    sorted.sort((a, b) => new Date(b.detected_at).getTime() - new Date(a.detected_at).getTime())
+  } else if (sortBy.value === 'oldest') {
+    sorted.sort((a, b) => new Date(a.detected_at).getTime() - new Date(b.detected_at).getTime())
+  } else if (sortBy.value === 'alphabetical') {
+    sorted.sort((a, b) => {
+      const nameA = a.username || a.phone_number
+      const nameB = b.username || b.phone_number
+      return nameA.localeCompare(nameB)
+    })
+  }
+
+  return sorted
+})
+
+const hasActiveFilters = computed(() => {
+  return !selectedFilters.value.includes('all')
 })
 
 const allComments = computed(() => {
