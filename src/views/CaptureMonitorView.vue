@@ -113,7 +113,7 @@
                 @update:selected-filters="selectedFilters = $event"
               />
 
-              <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
+              <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6 shadow-sm">
                 <div class="flex flex-col lg:flex-row gap-4">
                   <div class="flex-1 relative">
                     <SearchIcon class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
