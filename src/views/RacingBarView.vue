@@ -1,5 +1,14 @@
 <template>
-  <div class="racing-bar-container">
+  <div class="racing-bar-container" ref="containerRef">
+    <button
+      @click="toggleFullscreen"
+      class="fullscreen-button"
+      :title="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'"
+    >
+      <MaximizeIcon v-if="!isFullscreen" class="w-6 h-6" />
+      <MinimizeIcon v-else class="w-6 h-6" />
+    </button>
+
     <div class="animated-background">
       <div class="floating-circle" v-for="i in 20" :key="i" :style="getCircleStyle(i)"></div>
     </div>
@@ -79,6 +88,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { Maximize as MaximizeIcon, Minimize as MinimizeIcon } from 'lucide-vue-next'
 
 interface Participant {
   id: number
@@ -88,6 +98,9 @@ interface Participant {
   avatarColor: string
   glowColor: string
 }
+
+const containerRef = ref<HTMLElement | null>(null)
+const isFullscreen = ref(false)
 
 const participants = ref<Participant[]>([
   {
@@ -167,16 +180,36 @@ const simulateRealTimeUpdates = () => {
   randomParticipant.points += pointsToAdd
 }
 
+const toggleFullscreen = async () => {
+  if (!containerRef.value) return
+
+  try {
+    if (!isFullscreen.value) {
+      await containerRef.value.requestFullscreen()
+    } else {
+      await document.exitFullscreen()
+    }
+  } catch (error) {
+    console.error('Fullscreen error:', error)
+  }
+}
+
+const handleFullscreenChange = () => {
+  isFullscreen.value = !!document.fullscreenElement
+}
+
 let updateInterval: number | null = null
 
 onMounted(() => {
   updateInterval = window.setInterval(simulateRealTimeUpdates, 3000)
+  document.addEventListener('fullscreenchange', handleFullscreenChange)
 })
 
 onUnmounted(() => {
   if (updateInterval) {
     clearInterval(updateInterval)
   }
+  document.removeEventListener('fullscreenchange', handleFullscreenChange)
 })
 </script>
 
@@ -192,6 +225,32 @@ onUnmounted(() => {
   align-items: center;
   position: relative;
   overflow: hidden;
+}
+
+.racing-bar-container:fullscreen {
+  padding: 1.5rem 3rem;
+}
+
+.fullscreen-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  color: #1a1a1a;
+}
+
+.fullscreen-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 1);
 }
 
 @keyframes gradientShift {
@@ -654,6 +713,64 @@ onUnmounted(() => {
 
   .points-value {
     font-size: 1.75rem;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 768px) {
+  .racing-bar-container {
+    padding: 1rem 2rem;
+  }
+
+  .logo-container {
+    padding: 0.75rem 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .engagement-info {
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .info-text {
+    font-size: 0.85rem;
+  }
+
+  .leaderboard {
+    gap: 1rem;
+  }
+
+  .participant-row {
+    padding: 0.75rem;
+  }
+
+  .bar-container {
+    height: 55px;
+  }
+
+  .avatar {
+    width: 65px;
+    height: 65px;
+  }
+
+  .avatar-glow {
+    width: 100px;
+    height: 100px;
+  }
+
+  .fullscreen-button {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+  }
+
+  .footer-text {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
   }
 }
 
