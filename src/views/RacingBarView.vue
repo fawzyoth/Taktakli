@@ -595,11 +595,11 @@ onUnmounted(() => {
 .participant-name {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #ffffff;
+  color: #000000;
   text-align: left;
   white-space: nowrap;
   min-width: 150px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 .participant-row.rank-1 .participant-name {
