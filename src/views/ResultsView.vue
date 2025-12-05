@@ -27,7 +27,9 @@
 
     <transition name="fade">
       <div v-if="currentStage < 4" class="announcement-text">
-        {{ currentStage === 3 ? 'The winner is' : 'And the winner is...' }}
+        <span v-if="currentStage === 0">3rd Place</span>
+        <span v-else-if="currentStage === 1">2nd Place</span>
+        <span v-else-if="currentStage === 2 || currentStage === 3">The Winner Is</span>
       </div>
     </transition>
 
