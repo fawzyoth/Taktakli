@@ -142,6 +142,62 @@ const participants = ref<Participant[]>([
     initials: 'IR',
     avatarColor: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     glowColor: 'radial-gradient(circle, rgba(250, 112, 154, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 6,
+    name: 'David Kim',
+    points: 58,
+    initials: 'DK',
+    avatarColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+    glowColor: 'radial-gradient(circle, rgba(252, 182, 159, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 7,
+    name: 'Lucia Garcia',
+    points: 52,
+    initials: 'LG',
+    avatarColor: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
+    glowColor: 'radial-gradient(circle, rgba(161, 196, 253, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 8,
+    name: 'James Wilson',
+    points: 48,
+    initials: 'JW',
+    avatarColor: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
+    glowColor: 'radial-gradient(circle, rgba(251, 194, 235, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 9,
+    name: 'Aisha Patel',
+    points: 45,
+    initials: 'AP',
+    avatarColor: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)',
+    glowColor: 'radial-gradient(circle, rgba(253, 203, 241, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 10,
+    name: 'Oliver Brown',
+    points: 42,
+    initials: 'OB',
+    avatarColor: 'linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%)',
+    glowColor: 'radial-gradient(circle, rgba(255, 234, 167, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 11,
+    name: 'Sofia Lopez',
+    points: 38,
+    initials: 'SL',
+    avatarColor: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)',
+    glowColor: 'radial-gradient(circle, rgba(116, 185, 255, 0.4) 0%, transparent 70%)'
+  },
+  {
+    id: 12,
+    name: 'Ryan Taylor',
+    points: 35,
+    initials: 'RT',
+    avatarColor: 'linear-gradient(135deg, #fab1a0 0%, #ff7675 100%)',
+    glowColor: 'radial-gradient(circle, rgba(250, 177, 160, 0.4) 0%, transparent 70%)'
   }
 ])
 
@@ -270,16 +326,17 @@ onUnmounted(() => {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #4facfe 60%, #00f2fe 80%, #43e97b 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite, fadeIn 0.6s ease-in;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .racing-bar-container:fullscreen {
-  padding: 1.5rem 3rem;
+  padding: 1rem 1.5rem;
 }
 
 .fullscreen-button {
@@ -368,14 +425,14 @@ onUnmounted(() => {
 }
 
 .logo-container {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   animation: slideDown 0.8s ease-out;
   position: relative;
   z-index: 10;
   background: rgba(255, 255, 255, 0.95);
-  padding: 1.5rem 3rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  padding: 0.75rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes slideDown {
@@ -384,7 +441,7 @@ onUnmounted(() => {
 }
 
 .logo {
-  height: 80px;
+  height: 50px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
@@ -393,12 +450,12 @@ onUnmounted(() => {
 .engagement-info {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  padding: 1.25rem 2.5rem;
-  border-radius: 50px;
-  margin-bottom: 3rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 1.5rem;
+  border-radius: 40px;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.5);
-  max-width: 900px;
+  max-width: 100%;
   width: 100%;
   position: relative;
   z-index: 10;
@@ -407,18 +464,18 @@ onUnmounted(() => {
 
 .info-text {
   color: #1a1a1a;
-  font-size: 1rem;
+  font-size: 0.75rem;
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.4;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
   flex-wrap: wrap;
 }
 
 .info-icon {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   animation: bounce 2s infinite;
 }
 
@@ -443,24 +500,25 @@ onUnmounted(() => {
 
 .leaderboard {
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 0.75rem;
   position: relative;
   z-index: 10;
+  padding-bottom: 1rem;
 }
 
 .participant-row {
   display: grid;
-  grid-template-columns: 80px 250px 1fr 140px;
+  grid-template-columns: 45px 1fr 80px;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1rem;
+  gap: 0.75rem;
+  padding: 0.5rem;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   border: 2px solid rgba(255, 255, 255, 0.5);
   animation: slideInFromLeft 0.6s ease-out forwards;
   opacity: 0;
@@ -468,13 +526,13 @@ onUnmounted(() => {
 }
 
 .participant-row:hover {
-  transform: translateX(5px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+  transform: translateX(3px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
 }
 
 .participant-row.top-rank {
-  border: 3px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+  border: 2px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
 }
 
 @keyframes slideInFromLeft {
@@ -483,34 +541,34 @@ onUnmounted(() => {
 }
 
 .rank-badge {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.1rem;
   font-weight: 800;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
   animation: rotate3d 3s infinite ease-in-out;
 }
 
 .rank-badge.rank-1 {
   background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
+  box-shadow: 0 3px 15px rgba(255, 215, 0, 0.6);
   animation: rotate3d 3s infinite ease-in-out, glow 2s infinite;
 }
 
 .rank-badge.rank-2 {
   background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%);
-  box-shadow: 0 4px 20px rgba(192, 192, 192, 0.6);
+  box-shadow: 0 3px 15px rgba(192, 192, 192, 0.6);
 }
 
 .rank-badge.rank-3 {
   background: linear-gradient(135deg, #CD7F32 0%, #B8860B 100%);
-  box-shadow: 0 4px 20px rgba(205, 127, 50, 0.6);
+  box-shadow: 0 3px 15px rgba(205, 127, 50, 0.6);
 }
 
 @keyframes rotate3d {
@@ -524,19 +582,21 @@ onUnmounted(() => {
 }
 
 .trophy {
-  font-size: 2rem;
+  font-size: 1.3rem;
   animation: bounce 2s infinite;
 }
 
 .rank-number {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .participant-name {
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #1a1a1a;
   text-align: left;
+  grid-column: 2 / 3;
+  grid-row: 1;
 }
 
 .name-text {
@@ -549,8 +609,10 @@ onUnmounted(() => {
 
 .bar-container {
   position: relative;
-  height: 70px;
+  height: 40px;
   width: 100%;
+  grid-column: 1 / 4;
+  grid-row: 2;
 }
 
 .bar-background {
@@ -642,8 +704,8 @@ onUnmounted(() => {
 
 .avatar-glow {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -658,45 +720,47 @@ onUnmounted(() => {
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 5px solid white;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+  border: 3px solid white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   position: relative;
   animation: avatarBounce 2s ease-in-out infinite;
 }
 
 @keyframes avatarBounce {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-5px); }
 }
 
 .avatar-icon {
   color: white;
-  font-size: 1.75rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .points-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.1rem;
+  grid-column: 3 / 4;
+  grid-row: 1;
 }
 
 .points-value {
-  font-size: 2.25rem;
+  font-size: 1.25rem;
   font-weight: 900;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
   animation: countUp 0.8s ease-out;
 }
 
@@ -709,12 +773,12 @@ onUnmounted(() => {
 }
 
 @keyframes sparkle {
-  0%, 100% { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); }
-  50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
+  0%, 100% { filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.8)); }
 }
 
 .points-label {
-  font-size: 0.9rem;
+  font-size: 0.65rem;
   font-weight: 600;
   color: #666;
   text-transform: uppercase;
@@ -726,30 +790,32 @@ onUnmounted(() => {
 }
 
 .footer-text {
-  margin-top: 3rem;
-  padding: 1rem 2rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
-  border-radius: 50px;
-  font-size: 1.1rem;
+  border-radius: 40px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #1a1a1a;
   text-align: center;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  gap: 0.35rem;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 10;
+  flex-wrap: wrap;
 }
 
 .footer-icon {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .footer-separator {
   color: #999;
-  margin: 0 0.5rem;
+  margin: 0 0.25rem;
 }
 
 .footer-brand {
@@ -855,89 +921,99 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .racing-bar-container {
-    padding: 1rem;
-  }
-
   .fullscreen-button {
-    top: 1rem;
-    right: 1rem;
-    padding: 0.625rem;
-    border-radius: 10px;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.5rem;
+    border-radius: 8px;
   }
 
   .logo-container {
-    padding: 1rem 2rem;
+    padding: 0.5rem 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .logo {
-    height: 60px;
-  }
-
-  .participant-row {
-    grid-template-columns: 50px 1fr 100px;
-    gap: 0.75rem;
-    padding: 0.5rem;
-  }
-
-  .participant-name {
-    font-size: 1rem;
-    grid-column: 2 / 3;
-  }
-
-  .rank-badge {
-    width: 45px;
-    height: 45px;
-    font-size: 1.25rem;
-  }
-
-  .bar-container {
-    height: 50px;
-    grid-column: 1 / 4;
-    grid-row: 2;
-  }
-
-  .avatar {
-    width: 60px;
-    height: 60px;
-    border-width: 3px;
-  }
-
-  .avatar-glow {
-    width: 90px;
-    height: 90px;
-  }
-
-  .avatar-icon {
-    font-size: 1.25rem;
-  }
-
-  .points-display {
-    grid-column: 3 / 4;
-    grid-row: 1;
-  }
-
-  .points-value {
-    font-size: 1.5rem;
-  }
-
-  .points-label {
-    font-size: 0.75rem;
+    height: 40px;
   }
 
   .engagement-info {
-    padding: 1rem 1.5rem;
-    margin-bottom: 2rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
   }
 
   .info-text {
+    font-size: 0.65rem;
+    gap: 0.25rem;
+  }
+
+  .info-icon {
+    font-size: 1rem;
+  }
+
+  .leaderboard {
+    gap: 0.6rem;
+  }
+
+  .participant-row {
+    padding: 0.4rem;
+    border-radius: 12px;
+    gap: 0.5rem;
+  }
+
+  .rank-badge {
+    width: 35px;
+    height: 35px;
+    font-size: 0.95rem;
+  }
+
+  .trophy {
+    font-size: 1.1rem;
+  }
+
+  .rank-number {
     font-size: 0.85rem;
   }
 
+  .participant-name {
+    font-size: 0.8rem;
+  }
+
+  .bar-container {
+    height: 36px;
+  }
+
+  .avatar {
+    width: 45px;
+    height: 45px;
+    border-width: 2px;
+  }
+
+  .avatar-glow {
+    width: 65px;
+    height: 65px;
+  }
+
+  .avatar-icon {
+    font-size: 1rem;
+  }
+
+  .points-value {
+    font-size: 1.1rem;
+  }
+
+  .points-label {
+    font-size: 0.6rem;
+  }
+
   .footer-text {
+    font-size: 0.65rem;
+    padding: 0.6rem 1rem;
+    margin-top: 0.75rem;
+  }
+
+  .footer-icon {
     font-size: 0.9rem;
-    padding: 0.75rem 1.5rem;
-    flex-wrap: wrap;
   }
 }
 </style>
