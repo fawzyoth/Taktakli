@@ -73,6 +73,27 @@
       <span class="footer-separator">|</span>
       <span class="footer-brand">Powered by Shopa.ovh</span>
     </div>
+
+    <button
+      v-if="showFullscreenPrompt && !isFullscreen"
+      @click="enterFullscreen"
+      class="fullscreen-button"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+      </svg>
+      <span>Enter Fullscreen</span>
+    </button>
+
+    <button
+      v-if="isFullscreen"
+      @click="exitFullscreen"
+      class="exit-fullscreen-button"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+      </svg>
+    </button>
   </div>
 </template>
 
@@ -125,6 +146,9 @@ const participants = ref<Participant[]>([
   }
 ])
 
+const isFullscreen = ref(false)
+const showFullscreenPrompt = ref(true)
+
 const maxPoints = computed(() => {
   return Math.max(...participants.value.map(p => p.points), 100)
 })
@@ -143,15 +167,63 @@ const simulateRealTimeUpdates = () => {
   randomParticipant.points += pointsToAdd
 }
 
+const enterFullscreen = async () => {
+  try {
+    const elem = document.documentElement
+    if (elem.requestFullscreen) {
+      await elem.requestFullscreen()
+    }
+
+    if (screen.orientation && screen.orientation.lock) {
+      try {
+        await screen.orientation.lock('landscape')
+      } catch (err) {
+        console.log('Screen orientation lock not supported')
+      }
+    }
+
+    showFullscreenPrompt.value = false
+  } catch (err) {
+    console.error('Error entering fullscreen:', err)
+  }
+}
+
+const exitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen()
+  }
+}
+
+const handleFullscreenChange = () => {
+  isFullscreen.value = !!document.fullscreenElement
+  if (!isFullscreen.value) {
+    showFullscreenPrompt.value = true
+  }
+}
+
 let updateInterval: number | null = null
 
 onMounted(() => {
   updateInterval = window.setInterval(simulateRealTimeUpdates, 3000)
+
+  document.addEventListener('fullscreenchange', handleFullscreenChange)
+
+  setTimeout(() => {
+    if (!document.fullscreenElement) {
+      showFullscreenPrompt.value = true
+    }
+  }, 1000)
 })
 
 onUnmounted(() => {
   if (updateInterval) {
     clearInterval(updateInterval)
+  }
+
+  document.removeEventListener('fullscreenchange', handleFullscreenChange)
+
+  if (document.fullscreenElement) {
+    exitFullscreen()
   }
 })
 </script>
@@ -597,5 +669,83 @@ onUnmounted(() => {
   .footer-separator {
     display: none;
   }
+
+  .fullscreen-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .exit-fullscreen-button {
+    padding: 0.75rem;
+  }
+}
+
+.fullscreen-button {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #2E5EAA 0%, #1e3a8a 100%);
+  color: white;
+  border: none;
+  padding: 1.25rem 2.5rem;
+  border-radius: 12px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 8px 24px rgba(46, 94, 170, 0.3);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  animation: pulseScale 2s infinite;
+}
+
+.fullscreen-button:hover {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2E5EAA 100%);
+  box-shadow: 0 12px 32px rgba(46, 94, 170, 0.4);
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.fullscreen-button:active {
+  transform: translate(-50%, -50%) scale(0.98);
+}
+
+@keyframes pulseScale {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(46, 94, 170, 0.3);
+  }
+  50% {
+    box-shadow: 0 12px 32px rgba(46, 94, 170, 0.5);
+  }
+}
+
+.exit-fullscreen-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.exit-fullscreen-button:hover {
+  background: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.exit-fullscreen-button:active {
+  transform: scale(0.95);
 }
 </style>
