@@ -185,31 +185,82 @@ const toggleFullscreen = async () => {
 
   try {
     if (!isFullscreen.value) {
-      await containerRef.value.requestFullscreen()
+      const elem = containerRef.value as any
+
+      if (elem.requestFullscreen) {
+        await elem.requestFullscreen()
+      } else if (elem.webkitRequestFullscreen) {
+        await elem.webkitRequestFullscreen()
+      } else if (elem.mozRequestFullScreen) {
+        await elem.mozRequestFullScreen()
+      } else if (elem.msRequestFullscreen) {
+        await elem.msRequestFullscreen()
+      }
+
+      try {
+        if (screen.orientation && screen.orientation.lock) {
+          await screen.orientation.lock('landscape').catch(() => {})
+        }
+      } catch (err) {}
+
+      document.body.classList.add('fullscreen-mode')
     } else {
-      await document.exitFullscreen()
+      const doc = document as any
+
+      if (doc.exitFullscreen) {
+        await doc.exitFullscreen()
+      } else if (doc.webkitExitFullscreen) {
+        await doc.webkitExitFullscreen()
+      } else if (doc.mozCancelFullScreen) {
+        await doc.mozCancelFullScreen()
+      } else if (doc.msExitFullscreen) {
+        await doc.msExitFullscreen()
+      }
+
+      if (screen.orientation && screen.orientation.unlock) {
+        screen.orientation.unlock()
+      }
+
+      document.body.classList.remove('fullscreen-mode')
     }
   } catch (error) {
     console.error('Fullscreen error:', error)
+    document.body.classList.toggle('fullscreen-mode')
+    isFullscreen.value = !isFullscreen.value
   }
 }
 
 const handleFullscreenChange = () => {
-  isFullscreen.value = !!document.fullscreenElement
+  const doc = document as any
+  isFullscreen.value = !!(doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement)
+
+  if (!isFullscreen.value) {
+    document.body.classList.remove('fullscreen-mode')
+  }
 }
 
 let updateInterval: number | null = null
 
 onMounted(() => {
   updateInterval = window.setInterval(simulateRealTimeUpdates, 3000)
+
   document.addEventListener('fullscreenchange', handleFullscreenChange)
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+  document.addEventListener('mozfullscreenchange', handleFullscreenChange)
+  document.addEventListener('MSFullscreenChange', handleFullscreenChange)
 })
 
 onUnmounted(() => {
   if (updateInterval) {
     clearInterval(updateInterval)
   }
+
   document.removeEventListener('fullscreenchange', handleFullscreenChange)
+  document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
+  document.removeEventListener('mozfullscreenchange', handleFullscreenChange)
+  document.removeEventListener('MSFullscreenChange', handleFullscreenChange)
+
+  document.body.classList.remove('fullscreen-mode')
 })
 </script>
 
@@ -251,6 +302,35 @@ onUnmounted(() => {
   transform: scale(1.1);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 1);
+}
+
+.fullscreen-button:active {
+  transform: scale(0.95);
+}
+
+:global(body.fullscreen-mode) {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+:global(body.fullscreen-mode #app) {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .racing-bar-container:fullscreen,
+  :global(body.fullscreen-mode) .racing-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0.75rem;
+  }
 }
 
 @keyframes gradientShift {
@@ -777,6 +857,13 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .racing-bar-container {
     padding: 1rem;
+  }
+
+  .fullscreen-button {
+    top: 1rem;
+    right: 1rem;
+    padding: 0.625rem;
+    border-radius: 10px;
   }
 
   .logo-container {
