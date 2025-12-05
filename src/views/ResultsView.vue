@@ -17,6 +17,19 @@
       <RotateCcwIcon class="w-6 h-6" />
     </button>
 
+    <button
+      @click="toggleAudio"
+      class="audio-button"
+      :title="isMuted ? 'Unmute' : 'Mute'"
+    >
+      <Volume2Icon v-if="!isMuted" class="w-6 h-6" />
+      <VolumeXIcon v-else class="w-6 h-6" />
+    </button>
+
+    <audio ref="audioRef" loop>
+      <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718ab41b.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="animated-background">
       <div class="floating-particle" v-for="i in 30" :key="i" :style="getParticleStyle(i)"></div>
     </div>
@@ -131,7 +144,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Maximize as MaximizeIcon, Minimize as MinimizeIcon, RotateCcw as RotateCcwIcon, Heart as HeartIcon, Share2 as Share2Icon, MessageCircle as MessageCircleIcon } from 'lucide-vue-next'
+import { Maximize as MaximizeIcon, Minimize as MinimizeIcon, RotateCcw as RotateCcwIcon, Heart as HeartIcon, Share2 as Share2Icon, MessageCircle as MessageCircleIcon, Volume2 as Volume2Icon, VolumeX as VolumeXIcon } from 'lucide-vue-next'
 
 interface Winner {
   id: number
@@ -145,7 +158,9 @@ interface Winner {
 }
 
 const containerRef = ref<HTMLElement | null>(null)
+const audioRef = ref<HTMLAudioElement | null>(null)
 const isFullscreen = ref(false)
+const isMuted = ref(false)
 const currentStage = ref(-1)
 
 const winners = ref<Winner[]>([
@@ -219,8 +234,31 @@ const getConfettiStyle = (index: number) => {
 
 let animationTimeout: number | null = null
 
+const playAudio = () => {
+  if (audioRef.value && !isMuted.value) {
+    audioRef.value.play().catch(err => console.log('Audio play failed:', err))
+  }
+}
+
+const pauseAudio = () => {
+  if (audioRef.value) {
+    audioRef.value.pause()
+    audioRef.value.currentTime = 0
+  }
+}
+
+const toggleAudio = () => {
+  isMuted.value = !isMuted.value
+  if (isMuted.value) {
+    pauseAudio()
+  } else {
+    playAudio()
+  }
+}
+
 const startAnimation = () => {
   currentStage.value = 0
+  playAudio()
 
   setTimeout(() => {
     currentStage.value = 1
@@ -243,6 +281,7 @@ const resetAnimation = () => {
   if (animationTimeout) {
     clearTimeout(animationTimeout)
   }
+  pauseAudio()
   currentStage.value = -1
   setTimeout(() => {
     startAnimation()
@@ -312,6 +351,8 @@ onUnmounted(() => {
     clearTimeout(animationTimeout)
   }
 
+  pauseAudio()
+
   document.removeEventListener('fullscreenchange', handleFullscreenChange)
   document.removeEventListener('webkitfullscreenchange', handleFullscreenChange)
   document.removeEventListener('mozfullscreenchange', handleFullscreenChange)
@@ -356,7 +397,8 @@ onUnmounted(() => {
 }
 
 .fullscreen-button,
-.reset-button {
+.reset-button,
+.audio-button {
   position: fixed;
   top: 1.5rem;
   z-index: 50;
@@ -379,8 +421,13 @@ onUnmounted(() => {
   right: 5rem;
 }
 
+.audio-button {
+  right: 8.5rem;
+}
+
 .fullscreen-button:hover,
-.reset-button:hover {
+.reset-button:hover,
+.audio-button:hover {
   transform: scale(1.1);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 1);
