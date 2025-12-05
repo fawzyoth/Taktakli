@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
+  <AppLayout>
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
       <div class="mb-8">
         <div class="flex items-center gap-4 mb-3">
@@ -131,13 +131,14 @@
       :phone-number="selectedNumber"
       @close="showDetailModal = false"
     />
-  </div>
+  </AppLayout>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { mockDataService } from '@/lib/mockData'
 import type { DetectedPhoneNumber, PhoneNumberComment, Capture } from '@/lib/mockData'
+import AppLayout from '@/components/AppLayout.vue'
 import NumberDetailModal from '@/components/NumberDetailModal.vue'
 import {
   Phone as PhoneIcon,
