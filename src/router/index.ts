@@ -19,11 +19,6 @@ const router = createRouter({
       component: () => import('@/views/PagesView.vue')
     },
     {
-      path: '/numbers',
-      name: 'numbers',
-      component: () => import('@/views/NumbersView.vue')
-    },
-    {
       path: '/livraison',
       name: 'livraison',
       component: () => import('@/views/LivraisonView.vue')
@@ -57,16 +52,6 @@ const router = createRouter({
       path: '/return-verification',
       name: 'return-verification',
       component: () => import('@/views/ReturnVerificationView.vue')
-    },
-    {
-      path: '/racing-bar',
-      name: 'racing-bar',
-      component: () => import('@/views/RacingBarView.vue')
-    },
-    {
-      path: '/funky-comic',
-      name: 'funky-comic',
-      component: () => import('@/views/FunkyComicView.vue')
     }
   ]
 })
