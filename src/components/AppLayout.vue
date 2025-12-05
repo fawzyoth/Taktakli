@@ -4,7 +4,6 @@
       :is-open="sidebarOpen"
       @close="sidebarOpen = false"
       @open-partnership="showDeliveryModal = true"
-      @open-number-search="handleNumberSearch"
     />
 
     <main class="flex-1 overflow-y-auto w-full lg:w-auto">
@@ -26,12 +25,6 @@
       @close="showDeliveryModal = false"
       @continue="handleDeliverySubmit"
     />
-
-    <NumberSearchModal
-      :is-open="showNumberSearchModal"
-      :phone-number="searchPhoneNumber"
-      @close="showNumberSearchModal = false"
-    />
   </div>
 </template>
 
@@ -39,21 +32,12 @@
 import { ref } from 'vue'
 import AppSidebar from './AppSidebar.vue'
 import DeliveryConfirmationModal from './DeliveryConfirmationModal.vue'
-import NumberSearchModal from './NumberSearchModal.vue'
 import { Menu as MenuIcon } from 'lucide-vue-next'
 
 const sidebarOpen = ref(false)
 const showDeliveryModal = ref(false)
-const showNumberSearchModal = ref(false)
-const searchPhoneNumber = ref('')
 
 function handleDeliverySubmit() {
   console.log('Delivery form submitted')
-}
-
-function handleNumberSearch(phoneNumber: string) {
-  searchPhoneNumber.value = phoneNumber
-  showNumberSearchModal.value = true
-  sidebarOpen.value = false
 }
 </script>
