@@ -57,6 +57,11 @@ const router = createRouter({
       path: '/return-verification',
       name: 'return-verification',
       component: () => import('@/views/ReturnVerificationView.vue')
+    },
+    {
+      path: '/racing-bar',
+      name: 'racing-bar',
+      component: () => import('@/views/RacingBarView.vue')
     }
   ]
 })
