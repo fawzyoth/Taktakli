@@ -69,7 +69,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon, Phone, BarChart3 } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon, Phone, BarChart3, Trophy } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
@@ -87,6 +87,7 @@ const navigation = [
   { name: 'Dashboard', path: '/', icon: LayoutDashboard },
   { name: 'Code Capture', path: '/live-code-capture', icon: Code },
   { name: 'Racing Bar', path: '/racing-bar', icon: BarChart3 },
+  { name: 'Results', path: '/results', icon: Trophy },
   { name: 'Numbers', path: '/numbers', icon: Phone },
   { name: 'Pages', path: '/pages', icon: FileText },
   { name: 'Livraison', path: '/livraison', icon: Package },
