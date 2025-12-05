@@ -31,7 +31,10 @@
         v-for="(participant, index) in sortedParticipants"
         :key="participant.id"
         class="participant-row"
-        :class="{ 'top-rank': index < 3 }"
+        :class="[
+          { 'top-rank': index < 3 },
+          `rank-${index + 1}`
+        ]"
         :style="{ animationDelay: `${index * 0.1}s` }"
       >
         <div class="rank-badge" :class="`rank-${index + 1}`">
@@ -596,7 +599,22 @@ onUnmounted(() => {
   text-align: left;
   white-space: nowrap;
   min-width: 150px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.participant-row.rank-1 .participant-name {
+  color: #FFD700;
+  text-shadow: 0 2px 8px rgba(255, 215, 0, 0.8);
+}
+
+.participant-row.rank-2 .participant-name {
+  color: #C0C0C0;
+  text-shadow: 0 2px 8px rgba(192, 192, 192, 0.8);
+}
+
+.participant-row.rank-3 .participant-name {
+  color: #CD7F32;
+  text-shadow: 0 2px 8px rgba(205, 127, 50, 0.8);
 }
 
 .name-text {
