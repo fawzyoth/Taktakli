@@ -20,14 +20,16 @@
     <button
       @click="toggleAudio"
       class="audio-button"
-      :title="isMuted ? 'Unmute' : 'Mute'"
+      :class="{ 'audio-playing': !isMuted }"
+      :title="isMuted ? 'Click to play music' : 'Mute music'"
     >
       <Volume2Icon v-if="!isMuted" class="w-6 h-6" />
       <VolumeXIcon v-else class="w-6 h-6" />
     </button>
 
-    <audio ref="audioRef" loop>
-      <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_d1718ab41b.mp3" type="audio/mpeg">
+    <audio ref="audioRef" loop preload="auto">
+      <source src="https://assets.mixkit.co/active_storage/sfx/2997/2997-preview.mp3" type="audio/mpeg">
+      <source src="https://cdn.pixabay.com/audio/2022/03/24/audio_1d0b25165e.mp3" type="audio/mpeg">
     </audio>
 
     <div class="animated-background">
@@ -160,7 +162,7 @@ interface Winner {
 const containerRef = ref<HTMLElement | null>(null)
 const audioRef = ref<HTMLAudioElement | null>(null)
 const isFullscreen = ref(false)
-const isMuted = ref(false)
+const isMuted = ref(true)
 const currentStage = ref(-1)
 
 const winners = ref<Winner[]>([
@@ -236,7 +238,14 @@ let animationTimeout: number | null = null
 
 const playAudio = () => {
   if (audioRef.value && !isMuted.value) {
-    audioRef.value.play().catch(err => console.log('Audio play failed:', err))
+    audioRef.value.volume = 0.6
+    const playPromise = audioRef.value.play()
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.log('Audio play failed:', err)
+        isMuted.value = true
+      })
+    }
   }
 }
 
@@ -258,7 +267,6 @@ const toggleAudio = () => {
 
 const startAnimation = () => {
   currentStage.value = 0
-  playAudio()
 
   setTimeout(() => {
     currentStage.value = 1
@@ -281,10 +289,14 @@ const resetAnimation = () => {
   if (animationTimeout) {
     clearTimeout(animationTimeout)
   }
+  const wasPlaying = !isMuted.value
   pauseAudio()
   currentStage.value = -1
   setTimeout(() => {
     startAnimation()
+    if (wasPlaying) {
+      playAudio()
+    }
   }, 100)
 }
 
@@ -431,6 +443,21 @@ onUnmounted(() => {
   transform: scale(1.1);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
   background: rgba(255, 255, 255, 1);
+}
+
+.audio-button.audio-playing {
+  animation: audioPulse 1.5s ease-in-out infinite;
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.5);
+}
+
+@keyframes audioPulse {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15), 0 0 0 8px rgba(255, 215, 0, 0);
+  }
 }
 
 .logo-container {
