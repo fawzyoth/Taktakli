@@ -58,7 +58,7 @@
         <div
           v-if="currentStage >= 2"
           class="podium-position first-place"
-          :class="{ 'move-to-left': currentStage === 4 }"
+          :class="{ 'winner-reveal': currentStage === 4 }"
         >
           <div class="crown gold-crown">
             <div class="crown-icon">👑</div>
@@ -443,13 +443,13 @@ onUnmounted(() => {
   transform-origin: center center;
 }
 
-.first-place.move-to-left {
-  animation: moveToLeft 1.5s ease-out forwards;
+.first-place.winner-reveal {
+  animation: winnerReveal 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes moveToLeft {
+@keyframes winnerReveal {
   to {
-    transform: translateX(-400px) scale(1.1);
+    transform: scale(1.15);
   }
 }
 
@@ -815,13 +815,13 @@ onUnmounted(() => {
     font-size: 2rem;
   }
 
-  .first-place.move-to-left {
-    animation: moveToLeftMobile 1.5s ease-out forwards;
+  .first-place.winner-reveal {
+    animation: winnerRevealMobile 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
-  @keyframes moveToLeftMobile {
+  @keyframes winnerRevealMobile {
     to {
-      transform: translateX(-100px) scale(1.05);
+      transform: scale(1.1);
     }
   }
 }
