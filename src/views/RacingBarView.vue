@@ -769,8 +769,8 @@ onUnmounted(() => {
 .points-value {
   font-size: 1.25rem;
   font-weight: 900;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #000000;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
   animation: countUp 0.8s ease-out;
 }
 
@@ -788,7 +788,7 @@ onUnmounted(() => {
 .points-label {
   font-size: 0.65rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(0, 0, 0, 0.7);
   text-transform: uppercase;
 }
 
