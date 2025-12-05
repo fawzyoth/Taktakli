@@ -323,9 +323,8 @@ onUnmounted(() => {
 <style scoped>
 .racing-bar-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #4facfe 60%, #00f2fe 80%, #43e97b 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite, fadeIn 0.6s ease-in;
+  background: url('/foulen_ben_foulen_(1).jpg') center center / cover no-repeat;
+  animation: fadeIn 0.6s ease-in;
   padding: 1rem;
   display: flex;
   flex-direction: column;
