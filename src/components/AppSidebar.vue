@@ -25,7 +25,7 @@
         @click="$emit('close')"
         class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors"
         :class="isActive(item.path)
-          ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400'
+          ? 'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-white'
           : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'"
       >
         <component :is="item.icon" class="w-5 h-5" />
@@ -36,7 +36,7 @@
     <div class="p-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
       <button
         @click="$emit('openPartnership')"
-        class="w-full p-4 rounded-xl bg-gradient-to-br from-blue-50 to-orange-50 dark:from-blue-900/20 dark:to-orange-900/20 border-2 border-blue-200 dark:border-blue-700 hover:scale-[1.02] hover:shadow-lg transition-all duration-200 cursor-pointer group"
+        class="w-full p-4 rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 border border-gray-200 dark:border-gray-700 hover:scale-[1.02] hover:shadow-lg transition-all duration-200 cursor-pointer group"
       >
         <img
           src="/Design sans titre (1).png"

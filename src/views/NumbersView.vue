@@ -3,12 +3,12 @@
     <div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
       <div class="mb-8">
         <div class="flex items-center gap-4 mb-3">
-          <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div class="w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center shadow-lg">
             <PhoneIcon class="w-7 h-7 text-white" />
           </div>
           <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
-              📞 Numbers Directory
+              Numbers Directory
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
               Track all phone numbers and their session history
@@ -18,7 +18,7 @@
       </div>
 
       <div v-if="loading" class="flex items-center justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600"></div>
       </div>
 
       <div v-else-if="phoneNumbers.length === 0" class="text-center py-12">
@@ -40,7 +40,7 @@
           <div class="flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-4">
               <div class="text-center">
-                <div class="text-3xl font-black text-blue-600 dark:text-blue-400">
+                <div class="text-3xl font-black text-gray-900 dark:text-white">
                   {{ phoneNumbers.length }}
                 </div>
                 <div class="text-xs text-gray-600 dark:text-gray-400 font-medium">
@@ -49,7 +49,7 @@
               </div>
               <div class="w-px h-12 bg-gray-200 dark:bg-gray-700"></div>
               <div class="text-center">
-                <div class="text-3xl font-black text-green-600 dark:text-green-400">
+                <div class="text-3xl font-black text-gray-900 dark:text-white">
                   {{ totalSessions }}
                 </div>
                 <div class="text-xs text-gray-600 dark:text-gray-400 font-medium">
@@ -62,7 +62,7 @@
                 v-model="searchQuery"
                 type="text"
                 placeholder="Search numbers..."
-                class="px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="px-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
               />
             </div>
           </div>
@@ -73,11 +73,11 @@
             v-for="phoneNumber in filteredPhoneNumbers"
             :key="phoneNumber.id"
             @click="selectNumber(phoneNumber)"
-            class="bg-white dark:bg-gray-900 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-600 transition-all hover:shadow-lg text-left group"
+            class="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 transition-all hover:shadow-lg text-left group"
           >
             <div class="flex items-start gap-4">
               <div class="relative flex-shrink-0">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                <div class="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                   {{ phoneNumber.username ? phoneNumber.username.charAt(0).toUpperCase() : '📱' }}
                 </div>
                 <div
@@ -88,7 +88,7 @@
 
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2 mb-2">
-                  <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
                     {{ phoneNumber.username || 'Anonymous' }}
                   </h3>
                   <span class="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-semibold">
@@ -118,7 +118,7 @@
                 </div>
               </div>
 
-              <ChevronRightIcon class="w-5 h-5 text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-shrink-0 mt-2" />
+              <ChevronRightIcon class="w-5 h-5 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors flex-shrink-0 mt-2" />
             </div>
           </button>
         </div>

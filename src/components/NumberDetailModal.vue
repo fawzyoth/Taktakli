@@ -7,36 +7,35 @@
         @click.self="close"
       >
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col">
-          <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 px-6 py-6 flex items-center justify-between relative overflow-hidden">
-            <div class="absolute inset-0 bg-white/5 backdrop-blur-sm"></div>
-            <div class="flex items-center gap-3 relative z-10">
-              <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg">
-                <HistoryIcon class="w-6 h-6 text-white" />
+          <div class="bg-gray-900 dark:bg-gray-800 px-6 py-6 flex items-center justify-between border-b border-gray-700">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 bg-gray-800 dark:bg-gray-700 rounded-xl flex items-center justify-center shadow-lg">
+                <HistoryIcon class="w-6 h-6 text-gray-300" />
               </div>
               <div>
                 <h3 class="text-2xl font-bold text-white flex items-center gap-2">
-                  📊 Session History
+                  Session History
                 </h3>
-                <p class="text-sm text-blue-100 mt-0.5">Complete activity timeline</p>
+                <p class="text-sm text-gray-400 mt-0.5">Complete activity timeline</p>
               </div>
             </div>
             <button
               @click="close"
-              class="relative z-10 p-2 hover:bg-white/20 rounded-xl transition-all hover:scale-110"
+              class="p-2 hover:bg-gray-800 dark:hover:bg-gray-700 rounded-xl transition-colors"
             >
-              <XIcon class="w-6 h-6 text-white" />
+              <XIcon class="w-6 h-6 text-gray-400 hover:text-white" />
             </button>
           </div>
 
           <div class="flex-1 overflow-y-auto p-6">
             <div v-if="loading" class="flex items-center justify-center py-12">
-              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600"></div>
             </div>
 
             <div v-else>
-              <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-2xl p-6 mb-6 border-2 border-blue-200 dark:border-blue-800 shadow-lg">
+              <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 mb-6 border border-gray-200 dark:border-gray-700 shadow-sm">
                 <div class="flex items-center gap-4 mb-4">
-                  <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                  <div class="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                     {{ phoneNumber.username ? phoneNumber.username.charAt(0).toUpperCase() : '📱' }}
                   </div>
                   <div class="flex-1">
@@ -52,9 +51,9 @@
                   </div>
                 </div>
 
-                <div class="grid grid-cols-3 gap-4 pt-4 border-t-2 border-blue-200 dark:border-blue-800">
+                <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                   <div class="text-center">
-                    <div class="text-2xl font-black text-blue-600 dark:text-blue-400">
+                    <div class="text-2xl font-black text-gray-900 dark:text-white">
                       {{ sessions.length }}
                     </div>
                     <div class="text-xs text-gray-600 dark:text-gray-400 font-medium mt-1">
@@ -89,14 +88,14 @@
 
               <div v-else class="space-y-4">
                 <h5 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2 mb-4">
-                  <LayersIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <LayersIcon class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                   All Sessions
                 </h5>
 
                 <div
                   v-for="(session, index) in sessions"
                   :key="session.id"
-                  class="bg-white dark:bg-gray-800 rounded-xl p-5 border-2 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 transition-all shadow-sm hover:shadow-md"
+                  class="bg-white dark:bg-gray-800 rounded-xl p-5 border border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 transition-all shadow-sm hover:shadow-md"
                 >
                   <div class="flex items-start gap-4">
                     <div class="flex-shrink-0">
@@ -146,20 +145,36 @@
                       <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-4">
                         <div class="grid grid-cols-2 gap-4">
                           <div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Status</p>
-                            <div class="flex items-center gap-2">
+                            <label class="text-xs text-gray-500 dark:text-gray-400 mb-2 block font-medium">
+                              Contact Status
+                            </label>
+                            <div class="relative">
+                              <select
+                                v-model="session.contact_status"
+                                @change="updateSessionStatus(session)"
+                                class="w-full px-3 py-2 pr-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-semibold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600 transition-all appearance-none cursor-pointer hover:border-gray-400 dark:hover:border-gray-600"
+                              >
+                                <option value="not_called">Not Called</option>
+                                <option value="called_no_answer">Called - No Answer</option>
+                                <option value="called_answered">Called - Answered</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="declined">Declined</option>
+                                <option value="callback_requested">Callback Requested</option>
+                                <option value="invalid_contact">Invalid Contact</option>
+                                <option value="completed">Completed</option>
+                              </select>
+                              <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <ChevronDownIcon class="w-4 h-4 text-gray-400" />
+                              </div>
                               <div
-                                class="w-2.5 h-2.5 rounded-full"
+                                class="absolute left-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full pointer-events-none"
                                 :style="{ backgroundColor: getStatusColor(session.contact_status) }"
                               ></div>
-                              <span class="text-sm font-semibold text-gray-900 dark:text-white">
-                                {{ getStatusLabel(session.contact_status) }}
-                              </span>
                             </div>
                           </div>
                           <div>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">Source</p>
-                            <span class="text-sm font-semibold text-gray-900 dark:text-white">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 block font-medium">Source</p>
+                            <span class="text-sm font-semibold text-gray-900 dark:text-white block px-3 py-2">
                               {{ session.page_source || 'Unknown' }}
                             </span>
                           </div>
@@ -198,7 +213,7 @@
                         <div
                           v-for="comment in session.comments"
                           :key="comment.id"
-                          class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 text-sm text-gray-900 dark:text-white border border-blue-200 dark:border-blue-800"
+                          class="bg-gray-100 dark:bg-gray-950 rounded-lg p-3 text-sm text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700"
                         >
                           {{ comment.comment_text }}
                         </div>
@@ -226,7 +241,8 @@ import {
   Calendar as CalendarIcon,
   Clock as ClockIcon,
   Layers as LayersIcon,
-  MessageCircle as MessageCircleIcon
+  MessageCircle as MessageCircleIcon,
+  ChevronDown as ChevronDownIcon
 } from 'lucide-vue-next'
 
 interface SessionWithDetails extends DetectedPhoneNumber {
@@ -314,6 +330,15 @@ function formatRelativeTime(date: string) {
   if (diffMins < 60) return `${diffMins} minute${diffMins > 1 ? 's' : ''} ago`
   if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`
   return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`
+}
+
+async function updateSessionStatus(session: SessionWithDetails) {
+  try {
+    await mockDataService.updatePhoneNumberStatus(session.id, session.contact_status)
+    console.log('Status updated successfully')
+  } catch (error) {
+    console.error('Error updating status:', error)
+  }
 }
 
 function getStatusLabel(status: string) {
