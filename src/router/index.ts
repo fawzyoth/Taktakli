@@ -62,6 +62,11 @@ const router = createRouter({
       path: '/racing-bar',
       name: 'racing-bar',
       component: () => import('@/views/RacingBarView.vue')
+    },
+    {
+      path: '/funky-comic',
+      name: 'funky-comic',
+      component: () => import('@/views/FunkyComicView.vue')
     }
   ]
 })
