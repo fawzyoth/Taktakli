@@ -126,7 +126,7 @@ export const PageManagement: React.FC<PageManagementProps> = ({ onClose, pages }
                   value={pageName}
                   onChange={(e) => setPageName(e.target.value)}
                   placeholder="e.g., Main TikTok Account"
-                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   disabled={loading}
                   autoFocus
                 />
@@ -142,7 +142,7 @@ export const PageManagement: React.FC<PageManagementProps> = ({ onClose, pages }
                   value={pageUrl}
                   onChange={(e) => setPageUrl(e.target.value)}
                   placeholder="https://tiktok.com/@username"
-                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                  className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                   disabled={loading}
                 />
               </div>
@@ -195,10 +195,10 @@ export const PageManagement: React.FC<PageManagementProps> = ({ onClose, pages }
               <div className="text-center py-8">
                 <div className="flex justify-center mb-3">
                   <div className="bg-gray-100 p-4 rounded-full">
-                    <FolderOpen className="w-8 h-8 text-gray-400" />
+                    <FolderOpen className="w-8 h-8 text-gray-500" />
                   </div>
                 </div>
-                <p className="text-gray-500 text-sm">No pages yet. Add your first page above.</p>
+                <p className="text-gray-600 text-sm">No pages yet. Add your first page above.</p>
               </div>
             ) : (
               <div className="space-y-2">

@@ -35,7 +35,7 @@
               v-else
               class="w-16 h-16 rounded-lg bg-gray-200 dark:bg-gray-700 flex items-center justify-center"
             >
-              <PackageIcon class="w-8 h-8 text-gray-400" />
+              <PackageIcon class="w-8 h-8 text-gray-600" />
             </div>
           </div>
 
@@ -45,16 +45,16 @@
                 <h4 class="font-semibold text-gray-900 dark:text-white mb-1">
                   {{ item.item_name }}
                 </h4>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <p class="text-sm text-gray-700 dark:text-gray-400 mb-1">
                   SKU: {{ item.item_sku }}
                 </p>
                 <div class="flex items-center space-x-2">
-                  <BarcodeIcon class="w-4 h-4 text-gray-400" />
-                  <code class="text-xs font-mono text-gray-600 dark:text-gray-400">
+                  <BarcodeIcon class="w-4 h-4 text-gray-600" />
+                  <code class="text-xs font-mono text-gray-700 dark:text-gray-400">
                     {{ item.item_barcode }}
                   </code>
                 </div>
-                <p v-if="item.item_notes" class="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                <p v-if="item.item_notes" class="text-xs text-gray-600 dark:text-gray-500 mt-1">
                   {{ item.item_notes }}
                 </p>
               </div>

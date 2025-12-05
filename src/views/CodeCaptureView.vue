@@ -90,7 +90,7 @@
         <div v-if="currentSession.codes.length === 0" class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-8 text-center">
           <div class="flex justify-center mb-4">
             <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-              <PackageIcon class="w-10 h-10 text-gray-400" />
+              <PackageIcon class="w-10 h-10 text-gray-500" />
             </div>
           </div>
           <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No Codes Yet</h3>

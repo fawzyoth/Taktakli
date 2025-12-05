@@ -25,7 +25,7 @@
             aria-label="إغلاق النافذة"
             ref="closeButtonRef"
           >
-            <XIcon class="w-6 h-6 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" />
+            <XIcon class="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200" />
           </button>
 
           <div class="p-6 sm:p-8 lg:p-10" dir="rtl">

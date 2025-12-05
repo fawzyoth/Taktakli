@@ -61,7 +61,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Captures</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Active Captures</span>
             <VideoIcon class="w-5 h-5 text-green-500" />
           </div>
           <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.activeCaptures }}</p>
@@ -69,7 +69,7 @@
 
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Numbers</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total Numbers</span>
             <PhoneIcon class="w-5 h-5 text-blue-500" />
           </div>
           <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.totalNumbers }}</p>
@@ -77,7 +77,7 @@
 
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Views</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total Views</span>
             <EyeIcon class="w-5 h-5 text-purple-500" />
           </div>
           <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.totalViews.toLocaleString() }}</p>
@@ -85,7 +85,7 @@
 
         <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
           <div class="flex items-center justify-between mb-2">
-            <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Comments</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Total Comments</span>
             <MessageCircleIcon class="w-5 h-5 text-orange-500" />
           </div>
           <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.totalComments }}</p>

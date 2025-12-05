@@ -24,7 +24,7 @@
       <div v-else-if="phoneNumbers.length === 0" class="text-center py-12">
         <div class="flex justify-center mb-6">
           <div class="bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-3xl">
-            <PhoneIcon class="w-16 h-16 text-gray-400" />
+            <PhoneIcon class="w-16 h-16 text-gray-500" />
           </div>
         </div>
         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">

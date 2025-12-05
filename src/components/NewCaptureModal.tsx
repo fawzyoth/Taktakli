@@ -140,11 +140,11 @@ export const NewCaptureModal: React.FC<NewCaptureModalProps> = ({ onClose, onCap
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Monday Evening Stream"
-              className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-600 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               disabled={loading}
               autoFocus
             />
-            <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            <p className="mt-2 text-xs text-gray-600 dark:text-gray-400">
               Give your capture a descriptive name to easily identify it later
             </p>
           </div>
@@ -156,8 +156,8 @@ export const NewCaptureModal: React.FC<NewCaptureModalProps> = ({ onClose, onCap
 
             {pages.length === 0 ? (
               <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 text-center">
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">No pages available</p>
-                <p className="text-gray-500 dark:text-gray-400 text-xs">
+                <p className="text-gray-700 dark:text-gray-400 text-sm mb-3">No pages available</p>
+                <p className="text-gray-600 dark:text-gray-400 text-xs">
                   Please add pages in the sidebar before creating a capture
                 </p>
               </div>

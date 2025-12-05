@@ -67,16 +67,16 @@
           <div class="border-t-2 border-gray-400 pt-4">
             <p class="text-sm text-gray-600 font-semibold text-center">Signature du Livreur</p>
             <div class="h-20"></div>
-            <p class="text-xs text-gray-500 text-center">Date: _______________</p>
+            <p class="text-xs text-gray-700 text-center">Date: _______________</p>
           </div>
           <div class="border-t-2 border-gray-400 pt-4">
             <p class="text-sm text-gray-600 font-semibold text-center">Signature du Client</p>
             <div class="h-20"></div>
-            <p class="text-xs text-gray-500 text-center">Date: _______________</p>
+            <p class="text-xs text-gray-700 text-center">Date: _______________</p>
           </div>
         </div>
 
-        <div class="mt-8 pt-4 border-t border-gray-300 text-xs text-gray-500 text-center">
+        <div class="mt-8 pt-4 border-t border-gray-300 text-xs text-gray-700 text-center">
           <p>Ce document est une preuve de livraison. Merci de le conserver.</p>
         </div>
       </div>
