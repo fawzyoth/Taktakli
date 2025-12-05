@@ -1,20 +1,27 @@
 <template>
   <div class="racing-bar-container">
-    <div class="animated-background">
-      <div class="floating-circle" v-for="i in 20" :key="i" :style="getCircleStyle(i)"></div>
-    </div>
-
-    <div class="logo-container">
-      <img src="/Design sans titre.png" alt="Shopa.ovh" class="logo" />
-    </div>
-
-    <div class="engagement-info">
-      <div class="info-text">
-        <span class="info-icon">⚡</span>
-        <strong>Point System:</strong> Comments +2 pts | Likes +1 pt | Shares +3 pts/min
-        <span class="pulse-dot"></span>
-        Live
+    <div class="header-section">
+      <div class="logo-container">
+        <img src="/Design sans titre.png" alt="Shopa.ovh" class="logo" />
       </div>
+
+      <div class="engagement-info">
+        <div class="live-indicator">
+          <span class="live-dot"></span>
+          <span class="live-text">LIVE</span>
+        </div>
+        <div class="info-text">
+          <span class="info-label">Engagement Points:</span>
+          <span class="info-detail">Comments +2 · Likes +1 · Shares +3/min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="leaderboard-header">
+      <div class="header-rank">Rank</div>
+      <div class="header-name">Participant</div>
+      <div class="header-progress">Progress</div>
+      <div class="header-points">Points</div>
     </div>
 
     <div class="leaderboard">
@@ -22,14 +29,11 @@
         v-for="(participant, index) in sortedParticipants"
         :key="participant.id"
         class="participant-row"
-        :class="{ 'top-rank': index < 3 }"
+        :class="{ 'is-leader': index === 0 }"
         :style="{ animationDelay: `${index * 0.1}s` }"
       >
         <div class="rank-badge" :class="`rank-${index + 1}`">
-          <span v-if="index === 0" class="trophy">👑</span>
-          <span v-else-if="index === 1" class="trophy">🥈</span>
-          <span v-else-if="index === 2" class="trophy">🥉</span>
-          <span v-else class="rank-number">{{ index + 1 }}</span>
+          <span class="rank-number">{{ index + 1 }}</span>
         </div>
 
         <div class="participant-name">
@@ -47,32 +51,27 @@
             }"
           >
             <div class="bar-shine"></div>
-            <div class="bar-glow"></div>
-            <div class="bar-pattern"></div>
           </div>
           <div
             class="avatar-container"
             :style="{ left: `${getBarWidth(participant.points)}%` }"
           >
-            <div class="avatar-glow" :style="{ background: participant.glowColor }"></div>
             <div class="avatar" :style="{ background: participant.avatarColor }">
               <div class="avatar-icon">{{ participant.initials }}</div>
             </div>
           </div>
         </div>
 
-        <div class="points-display" :class="`points-rank-${index + 1}`">
+        <div class="points-display">
           <span class="points-value">{{ participant.points.toLocaleString() }}</span>
-          <span class="points-label">pts</span>
         </div>
       </div>
     </div>
 
     <div class="footer-text">
-      <span class="footer-icon">🎯</span>
-      Live Engagement Leaderboard
-      <span class="footer-separator">•</span>
-      <span class="footer-brand">Shopa.ovh</span>
+      <span>Real-time Engagement Leaderboard</span>
+      <span class="footer-separator">|</span>
+      <span class="footer-brand">Powered by Shopa.ovh</span>
     </div>
   </div>
 </template>
@@ -86,7 +85,6 @@ interface Participant {
   points: number
   initials: string
   avatarColor: string
-  glowColor: string
 }
 
 const participants = ref<Participant[]>([
@@ -95,40 +93,35 @@ const participants = ref<Participant[]>([
     name: 'Sarah Martinez',
     points: 150,
     initials: 'SM',
-    avatarColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    glowColor: 'radial-gradient(circle, rgba(102, 126, 234, 0.4) 0%, transparent 70%)'
+    avatarColor: 'linear-gradient(135deg, #2E5EAA 0%, #1e3a8a 100%)'
   },
   {
     id: 2,
     name: 'Ahmed Hassan',
     points: 120,
     initials: 'AH',
-    avatarColor: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-    glowColor: 'radial-gradient(circle, rgba(240, 147, 251, 0.4) 0%, transparent 70%)'
+    avatarColor: 'linear-gradient(135deg, #0891b2 0%, #0e7490 100%)'
   },
   {
     id: 3,
     name: 'Emily Chen',
     points: 95,
     initials: 'EC',
-    avatarColor: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    glowColor: 'radial-gradient(circle, rgba(79, 172, 254, 0.4) 0%, transparent 70%)'
+    avatarColor: 'linear-gradient(135deg, #0284c7 0%, #0369a1 100%)'
   },
   {
     id: 4,
     name: 'Marcus Johnson',
     points: 80,
     initials: 'MJ',
-    avatarColor: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-    glowColor: 'radial-gradient(circle, rgba(67, 233, 123, 0.4) 0%, transparent 70%)'
+    avatarColor: 'linear-gradient(135deg, #64748b 0%, #475569 100%)'
   },
   {
     id: 5,
     name: 'Isabella Romano',
     points: 65,
     initials: 'IR',
-    avatarColor: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    glowColor: 'radial-gradient(circle, rgba(250, 112, 154, 0.4) 0%, transparent 70%)'
+    avatarColor: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'
   }
 ])
 
@@ -142,23 +135,6 @@ const sortedParticipants = computed(() => {
 
 const getBarWidth = (points: number): number => {
   return Math.min((points / maxPoints.value) * 80, 80)
-}
-
-const getCircleStyle = (index: number) => {
-  const size = Math.random() * 100 + 50
-  const duration = Math.random() * 20 + 15
-  const delay = Math.random() * 5
-  const left = Math.random() * 100
-  const opacity = Math.random() * 0.15 + 0.05
-
-  return {
-    width: `${size}px`,
-    height: `${size}px`,
-    left: `${left}%`,
-    animationDuration: `${duration}s`,
-    animationDelay: `${delay}s`,
-    opacity: opacity
-  }
 }
 
 const simulateRealTimeUpdates = () => {
@@ -183,123 +159,127 @@ onUnmounted(() => {
 <style scoped>
 .racing-bar-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 20%, #f093fb 40%, #4facfe 60%, #00f2fe 80%, #43e97b 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite, fadeIn 0.6s ease-in;
-  padding: 2rem;
+  background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  overflow: hidden;
+  gap: 2rem;
 }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animated-background {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.floating-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
-  animation: float 20s infinite ease-in-out;
-  bottom: -100px;
-}
-
-@keyframes float {
-  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+.header-section {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1rem;
 }
 
 .logo-container {
-  margin-bottom: 2rem;
-  animation: slideDown 0.8s ease-out;
-  position: relative;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 1.5rem 3rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-@keyframes slideDown {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  background: white;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
 }
 
 .logo {
-  height: 80px;
+  height: 60px;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
 }
 
 .engagement-info {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  padding: 1.25rem 2.5rem;
-  border-radius: 50px;
-  margin-bottom: 3rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  max-width: 900px;
-  width: 100%;
-  position: relative;
-  z-index: 10;
-  animation: slideDown 0.8s ease-out 0.2s backwards;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: white;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #fef2f2;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #dc2626;
+  border-radius: 50%;
+  animation: livePulse 2s infinite;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.live-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #dc2626;
+  letter-spacing: 0.05em;
 }
 
 .info-text {
-  color: #1a1a1a;
-  font-size: 1rem;
-  text-align: center;
-  line-height: 1.5;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.info-icon {
-  font-size: 1.5rem;
-  animation: bounce 2s infinite;
+.info-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+.info-detail {
+  font-size: 0.875rem;
+  color: #334155;
+  font-weight: 500;
 }
 
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #ef4444;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-  margin-left: 0.5rem;
+.leaderboard-header {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 70px 250px 1fr 140px;
+  gap: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+.leaderboard-header > div {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.header-rank {
+  text-align: center;
+}
+
+.header-points {
+  text-align: center;
 }
 
 .leaderboard {
@@ -307,156 +287,132 @@ onUnmounted(() => {
   max-width: 1400px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  position: relative;
-  z-index: 10;
+  gap: 1rem;
 }
 
 .participant-row {
   display: grid;
-  grid-template-columns: 80px 250px 1fr 140px;
+  grid-template-columns: 70px 250px 1fr 140px;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.5);
-  animation: slideInFromLeft 0.6s ease-out forwards;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease forwards;
   opacity: 0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .participant-row:hover {
-  transform: translateX(5px);
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
 }
 
-.participant-row.top-rank {
-  border: 3px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
-}
-
-@keyframes slideInFromLeft {
-  from { transform: translateX(-100px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+.participant-row.is-leader {
+  border: 2px solid #2E5EAA;
+  box-shadow: 0 4px 16px rgba(46, 94, 170, 0.15);
 }
 
 .rank-badge {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  animation: rotate3d 3s infinite ease-in-out;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: #475569;
+  border: 2px solid #e2e8f0;
+  margin: 0 auto;
 }
 
 .rank-badge.rank-1 {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6);
-  animation: rotate3d 3s infinite ease-in-out, glow 2s infinite;
+  background: linear-gradient(135deg, #2E5EAA 0%, #1e3a8a 100%);
+  color: white;
+  border-color: #2E5EAA;
+  box-shadow: 0 2px 8px rgba(46, 94, 170, 0.25);
 }
 
 .rank-badge.rank-2 {
-  background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%);
-  box-shadow: 0 4px 20px rgba(192, 192, 192, 0.6);
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+  color: white;
+  border-color: #0891b2;
 }
 
 .rank-badge.rank-3 {
-  background: linear-gradient(135deg, #CD7F32 0%, #B8860B 100%);
-  box-shadow: 0 4px 20px rgba(205, 127, 50, 0.6);
-}
-
-@keyframes rotate3d {
-  0%, 100% { transform: rotateY(0deg); }
-  50% { transform: rotateY(180deg); }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-  50% { box-shadow: 0 4px 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.5); }
-}
-
-.trophy {
-  font-size: 2rem;
-  animation: bounce 2s infinite;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  color: white;
+  border-color: #0284c7;
 }
 
 .rank-number {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .participant-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1a1a1a;
-  text-align: left;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 .name-text {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  display: block;
 }
 
 .bar-container {
   position: relative;
-  height: 70px;
+  height: 48px;
   width: 100%;
 }
 
 .bar-background {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
 .progress-bar {
   height: 100%;
-  border-radius: 16px;
+  border-radius: 8px;
   position: relative;
   overflow: hidden;
-  transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 -2px 10px rgba(0, 0, 0, 0.2);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bar-rank-1 {
-  background: linear-gradient(90deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+  background: linear-gradient(90deg, #2E5EAA 0%, #1e3a8a 100%);
 }
 
 .bar-rank-2 {
-  background: linear-gradient(90deg, #C0C0C0 0%, #E8E8E8 50%, #C0C0C0 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+  background: linear-gradient(90deg, #0891b2 0%, #0e7490 100%);
 }
 
 .bar-rank-3 {
-  background: linear-gradient(90deg, #CD7F32 0%, #DDA15E 50%, #CD7F32 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
+  background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);
 }
 
-.bar-rank-4, .bar-rank-5 {
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
-  background-size: 200% 100%;
-  animation: shimmer 3s infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+.bar-rank-4,
+.bar-rank-5 {
+  background: linear-gradient(90deg, #64748b 0%, #475569 100%);
 }
 
 .bar-shine {
@@ -465,7 +421,7 @@ onUnmounted(() => {
   left: -100%;
   width: 50%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   animation: shine 3s infinite;
 }
 
@@ -474,238 +430,153 @@ onUnmounted(() => {
   100% { left: 150%; }
 }
 
-.bar-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-  opacity: 0.5;
-}
-
-.bar-pattern {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(255, 255, 255, 0.1) 10px,
-    rgba(255, 255, 255, 0.1) 20px
-  );
-}
-
 .avatar-container {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  transition: left 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left 1s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
 }
 
-.avatar-glow {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: pulseGlow 2s ease-in-out infinite;
-  z-index: -1;
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-}
-
 .avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 5px solid white;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-  position: relative;
-  animation: avatarBounce 2s ease-in-out infinite;
-}
-
-@keyframes avatarBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  border: 3px solid white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .avatar-icon {
   color: white;
-  font-size: 1.75rem;
-  font-weight: 800;
-  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  font-size: 1.125rem;
+  font-weight: 700;
 }
 
 .points-display {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
 }
 
 .points-value {
-  font-size: 2.25rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  animation: countUp 0.8s ease-out;
-}
-
-.points-rank-1 .points-value {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: countUp 0.8s ease-out, sparkle 2s infinite;
-}
-
-@keyframes sparkle {
-  0%, 100% { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1)); }
-  50% { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
-}
-
-.points-label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #666;
-  text-transform: uppercase;
-}
-
-@keyframes countUp {
-  from { opacity: 0; transform: scale(0.8); }
-  to { opacity: 1; transform: scale(1); }
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #1e293b;
 }
 
 .footer-text {
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 50px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1a1a1a;
+  background: white;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
   text-align: center;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  position: relative;
-  z-index: 10;
-}
-
-.footer-icon {
-  font-size: 1.5rem;
+  gap: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
 }
 
 .footer-separator {
-  color: #999;
-  margin: 0 0.5rem;
+  color: #cbd5e1;
 }
 
 .footer-brand {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+  color: #2E5EAA;
+  font-weight: 700;
 }
 
 @media (max-width: 1024px) {
+  .leaderboard-header,
   .participant-row {
     grid-template-columns: 60px 180px 1fr 120px;
     gap: 1rem;
-    padding: 0.75rem;
+    padding: 1rem;
   }
 
   .rank-badge {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.125rem;
   }
 
   .participant-name {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   .bar-container {
-    height: 60px;
+    height: 44px;
   }
 
   .avatar {
-    width: 70px;
-    height: 70px;
-    border-width: 4px;
-  }
-
-  .avatar-icon {
-    font-size: 1.5rem;
+    width: 52px;
+    height: 52px;
   }
 
   .points-value {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 }
 
 @media (max-width: 768px) {
   .racing-bar-container {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .logo-container {
-    padding: 1rem 2rem;
+    text-align: center;
   }
 
-  .logo {
-    height: 60px;
+  .engagement-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .leaderboard-header {
+    display: none;
   }
 
   .participant-row {
     grid-template-columns: 50px 1fr 100px;
     gap: 0.75rem;
-    padding: 0.5rem;
-  }
-
-  .participant-name {
-    font-size: 1rem;
-    grid-column: 2 / 3;
+    padding: 0.875rem;
   }
 
   .rank-badge {
-    width: 45px;
-    height: 45px;
-    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .participant-name {
+    font-size: 0.875rem;
+    grid-column: 2 / 3;
   }
 
   .bar-container {
-    height: 50px;
     grid-column: 1 / 4;
     grid-row: 2;
+    height: 40px;
   }
 
   .avatar {
-    width: 60px;
-    height: 60px;
-    border-width: 3px;
-  }
-
-  .avatar-glow {
-    width: 90px;
-    height: 90px;
+    width: 48px;
+    height: 48px;
   }
 
   .avatar-icon {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 
   .points-display {
@@ -714,26 +585,17 @@ onUnmounted(() => {
   }
 
   .points-value {
-    font-size: 1.5rem;
-  }
-
-  .points-label {
-    font-size: 0.75rem;
-  }
-
-  .engagement-info {
-    padding: 1rem 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .info-text {
-    font-size: 0.85rem;
+    font-size: 1.25rem;
   }
 
   .footer-text {
-    font-size: 0.9rem;
-    padding: 0.75rem 1.5rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .footer-separator {
+    display: none;
   }
 }
 </style>
