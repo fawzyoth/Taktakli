@@ -91,7 +91,11 @@
                   <h3 class="text-lg font-bold text-gray-900 dark:text-white truncate group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
                     {{ phoneNumber.username || 'Anonymous' }}
                   </h3>
-                  <span class="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 font-semibold">
+                  <span
+                    class="text-xs px-2.5 py-1 rounded-full font-semibold flex-shrink-0 transition-all"
+                    :class="getSessionBadgeClass(phoneNumber.sessionCount)"
+                    :style="phoneNumber.sessionCount >= 4 ? 'animation: pulse-badge 2s infinite' : ''"
+                  >
                     {{ phoneNumber.sessionCount }} session{{ phoneNumber.sessionCount > 1 ? 's' : '' }}
                   </span>
                 </div>
@@ -101,6 +105,26 @@
                   <span class="font-mono text-sm font-semibold text-gray-900 dark:text-white">
                     {{ phoneNumber.phone_number }}
                   </span>
+                </div>
+
+                <div class="flex items-center gap-3 mb-2.5 text-xs font-semibold flex-wrap">
+                  <div
+                    class="flex items-center gap-1.5"
+                    :class="getActivityColorClass(phoneNumber.todaySubmissions)"
+                  >
+                    <CalendarIcon class="w-3.5 h-3.5" />
+                    <span>Today: {{ phoneNumber.todaySubmissions }}</span>
+                  </div>
+                  <div class="w-px h-3.5 bg-gray-300 dark:bg-gray-600"></div>
+                  <div
+                    class="flex items-center gap-1.5"
+                    :class="getActivityColorClass(phoneNumber.weekSubmissions)"
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>This week: {{ phoneNumber.weekSubmissions }}</span>
+                  </div>
                 </div>
 
                 <div class="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
@@ -149,6 +173,9 @@ import {
 interface PhoneNumberWithSessions extends DetectedPhoneNumber {
   comments: PhoneNumberComment[]
   sessionCount: number
+  todaySubmissions: number
+  weekSubmissions: number
+  sessionTimes: string[]
 }
 
 const loading = ref(true)
@@ -183,17 +210,34 @@ async function loadPhoneNumbers() {
     const allNumbers = await mockDataService.getAllPhoneNumbers()
 
     const uniqueNumbers = new Map<string, PhoneNumberWithSessions>()
+    const now = new Date()
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    const weekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
 
     for (const number of allNumbers) {
       const key = number.phone_number
+      const detectedDate = new Date(number.detected_at)
+
       if (!uniqueNumbers.has(key)) {
         uniqueNumbers.set(key, {
           ...number,
-          sessionCount: 1
+          sessionCount: 1,
+          todaySubmissions: detectedDate >= todayStart ? 1 : 0,
+          weekSubmissions: detectedDate >= weekStart ? 1 : 0,
+          sessionTimes: [number.detected_at]
         })
       } else {
         const existing = uniqueNumbers.get(key)!
         existing.sessionCount += 1
+        existing.sessionTimes.push(number.detected_at)
+
+        if (detectedDate >= todayStart) {
+          existing.todaySubmissions += 1
+        }
+        if (detectedDate >= weekStart) {
+          existing.weekSubmissions += 1
+        }
+
         if (new Date(number.detected_at) < new Date(existing.detected_at)) {
           existing.detected_at = number.detected_at
         }
@@ -257,4 +301,39 @@ function getStatusColor(status: string): string {
   }
   return colors[status] || '#6B7280'
 }
+
+function getSessionBadgeClass(count: number): string {
+  if (count === 1) {
+    return 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400'
+  } else if (count <= 3) {
+    return 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+  } else {
+    return 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+  }
+}
+
+function getActivityColorClass(count: number): string {
+  if (count === 0) {
+    return 'text-gray-500 dark:text-gray-400'
+  } else if (count <= 2) {
+    return 'text-gray-700 dark:text-gray-300'
+  } else if (count <= 5) {
+    return 'text-blue-600 dark:text-blue-400'
+  } else {
+    return 'text-emerald-600 dark:text-emerald-400'
+  }
+}
 </script>
+
+<style scoped>
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+</style>
