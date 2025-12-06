@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
           <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800">
             <div class="flex items-center space-x-3 mb-2">
               <EyeIcon class="w-5 h-5 text-purple-500" />
@@ -68,6 +68,95 @@
               <span class="text-sm font-medium text-gray-600 dark:text-gray-400">Comments</span>
             </div>
             <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ capture.total_comments }}</p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-800 mb-6 sm:mb-8">
+          <div class="flex items-center gap-2 mb-4">
+            <PhoneIcon class="w-5 h-5 text-blue-600 dark:text-blue-400" />
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Contact Status Breakdown</h3>
+            <span class="ml-auto text-2xl font-bold text-gray-900 dark:text-white">
+              {{ phoneNumbers.length }} Total
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            <div class="bg-green-50 dark:bg-green-900/20 rounded-lg p-3 border-2 border-green-200 dark:border-green-800">
+              <div class="text-xs font-medium text-green-700 dark:text-green-400 mb-1">Confirmed</div>
+              <div class="text-2xl font-bold text-green-900 dark:text-green-200">
+                {{ statusCounts.confirmed }}
+              </div>
+            </div>
+
+            <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-3 border-2 border-emerald-200 dark:border-emerald-800">
+              <div class="text-xs font-medium text-emerald-700 dark:text-emerald-400 mb-1">Completed</div>
+              <div class="text-2xl font-bold text-emerald-900 dark:text-emerald-200">
+                {{ statusCounts.completed }}
+              </div>
+            </div>
+
+            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border-2 border-blue-200 dark:border-blue-800">
+              <div class="text-xs font-medium text-blue-700 dark:text-blue-400 mb-1">Answered</div>
+              <div class="text-2xl font-bold text-blue-900 dark:text-blue-200">
+                {{ statusCounts.called_answered }}
+              </div>
+            </div>
+
+            <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-3 border-2 border-purple-200 dark:border-purple-800">
+              <div class="text-xs font-medium text-purple-700 dark:text-purple-400 mb-1">Callback</div>
+              <div class="text-2xl font-bold text-purple-900 dark:text-purple-200">
+                {{ statusCounts.callback_requested }}
+              </div>
+            </div>
+
+            <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border-2 border-yellow-200 dark:border-yellow-800">
+              <div class="text-xs font-medium text-yellow-700 dark:text-yellow-400 mb-1">No Answer</div>
+              <div class="text-2xl font-bold text-yellow-900 dark:text-yellow-200">
+                {{ statusCounts.called_no_answer }}
+              </div>
+            </div>
+
+            <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-3 border-2 border-red-200 dark:border-red-800">
+              <div class="text-xs font-medium text-red-700 dark:text-red-400 mb-1">Declined</div>
+              <div class="text-2xl font-bold text-red-900 dark:text-red-200">
+                {{ statusCounts.declined }}
+              </div>
+            </div>
+
+            <div class="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border-2 border-orange-200 dark:border-orange-800">
+              <div class="text-xs font-medium text-orange-700 dark:text-orange-400 mb-1">Invalid</div>
+              <div class="text-2xl font-bold text-orange-900 dark:text-orange-200">
+                {{ statusCounts.invalid_contact }}
+              </div>
+            </div>
+
+            <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border-2 border-gray-200 dark:border-gray-700">
+              <div class="text-xs font-medium text-gray-700 dark:text-gray-400 mb-1">Not Called</div>
+              <div class="text-2xl font-bold text-gray-900 dark:text-gray-200">
+                {{ statusCounts.not_called }}
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+            <div class="flex items-center justify-between text-sm">
+              <div class="flex items-center gap-4">
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span class="text-gray-600 dark:text-gray-400">Success Rate:</span>
+                  <span class="font-bold text-gray-900 dark:text-white">
+                    {{ successRate }}%
+                  </span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-3 h-3 rounded-full bg-blue-500"></div>
+                  <span class="text-gray-600 dark:text-gray-400">Contact Rate:</span>
+                  <span class="font-bold text-gray-900 dark:text-white">
+                    {{ contactRate }}%
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -485,6 +574,22 @@ const statusCounts = computed(() => {
   })
 
   return counts
+})
+
+const successRate = computed(() => {
+  const total = phoneNumbers.value.length
+  if (total === 0) return 0
+
+  const successful = statusCounts.value.confirmed + statusCounts.value.completed
+  return Math.round((successful / total) * 100)
+})
+
+const contactRate = computed(() => {
+  const total = phoneNumbers.value.length
+  if (total === 0) return 0
+
+  const contacted = total - statusCounts.value.not_called
+  return Math.round((contacted / total) * 100)
 })
 
 const filteredPhoneNumbers = computed(() => {
