@@ -240,6 +240,72 @@
                     </div>
                   </div>
 
+                  <div v-if="phoneData.callHistory && phoneData.callHistory.totalAttempts > 0" class="flex items-center gap-2 mb-3 flex-wrap">
+                    <div
+                      v-if="phoneData.callHistory.confirmedCount > 0"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
+                      :title="`${phoneData.callHistory.confirmedCount} confirmed contact${phoneData.callHistory.confirmedCount > 1 ? 's' : ''}`"
+                    >
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{{ phoneData.callHistory.confirmedCount }}×</span>
+                    </div>
+
+                    <div
+                      v-if="phoneData.callHistory.declinedCount > 0"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
+                      :title="`${phoneData.callHistory.declinedCount} declined call${phoneData.callHistory.declinedCount > 1 ? 's' : ''}`"
+                    >
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{{ phoneData.callHistory.declinedCount }}×</span>
+                    </div>
+
+                    <div
+                      v-if="phoneData.callHistory.noAnswerCount > 0"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 border border-yellow-200 dark:border-yellow-800"
+                      :title="`${phoneData.callHistory.noAnswerCount} no answer${phoneData.callHistory.noAnswerCount > 1 ? 's' : ''}`"
+                    >
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{{ phoneData.callHistory.noAnswerCount }}×</span>
+                    </div>
+
+                    <div
+                      v-if="phoneData.callHistory.answeredCount > 0"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800"
+                      :title="`${phoneData.callHistory.answeredCount} answered call${phoneData.callHistory.answeredCount > 1 ? 's' : ''}`"
+                    >
+                      <PhoneIcon class="w-3 h-3" />
+                      <span>{{ phoneData.callHistory.answeredCount }}×</span>
+                    </div>
+
+                    <div
+                      v-if="phoneData.callHistory.callbackCount > 0"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800"
+                      :title="`${phoneData.callHistory.callbackCount} callback request${phoneData.callHistory.callbackCount > 1 ? 's' : ''}`"
+                    >
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                      <span>{{ phoneData.callHistory.callbackCount }}×</span>
+                    </div>
+
+                    <div
+                      v-if="phoneData.callHistory.successRate >= 50"
+                      class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400"
+                      :title="`${phoneData.callHistory.successRate.toFixed(0)}% success rate`"
+                    >
+                      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                      </svg>
+                      <span>{{ phoneData.callHistory.successRate.toFixed(0) }}%</span>
+                    </div>
+                  </div>
+
                   <div v-if="phoneData.comments && phoneData.comments.length > 0" class="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                     <div class="flex items-center justify-between">
                       <div class="flex items-center gap-2">
@@ -337,10 +403,29 @@ import CommentsModal from '@/components/CommentsModal.vue'
 import StatusFilterBar from '@/components/StatusFilterBar.vue'
 import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon, Search as SearchIcon, SlidersHorizontal as SortIcon, X as XIcon, Clock as ClockIcon } from 'lucide-vue-next'
 
+interface CallHistorySummary {
+  totalAttempts: number
+  declinedCount: number
+  noAnswerCount: number
+  answeredCount: number
+  confirmedCount: number
+  callbackCount: number
+  invalidCount: number
+  completedCount: number
+  lastContactAt: string | null
+  lastOutcome: string
+  successRate: number
+}
+
+interface PhoneNumberWithHistory extends DetectedPhoneNumber {
+  comments: PhoneNumberComment[]
+  callHistory?: CallHistorySummary
+}
+
 const route = useRoute()
 const router = useRouter()
 const capture = ref<Capture | null>(null)
-const phoneNumbers = ref<(DetectedPhoneNumber & { comments: PhoneNumberComment[] })[]>([])
+const phoneNumbers = ref<PhoneNumberWithHistory[]>([])
 const loading = ref(true)
 const activeTab = ref<'numbers' | 'chat'>('numbers')
 const selectedPhoneData = ref<(DetectedPhoneNumber & { comments: PhoneNumberComment[] }) | null>(null)
@@ -457,7 +542,19 @@ async function fetchCapture() {
   try {
     capture.value = await mockDataService.getCapture(route.params.id as string)
     if (capture.value) {
-      phoneNumbers.value = await mockDataService.getPhoneNumbers(capture.value.id)
+      const numbers = await mockDataService.getPhoneNumbers(capture.value.id)
+
+      const numbersWithHistory = await Promise.all(
+        numbers.map(async (number) => {
+          const callHistory = await mockDataService.getCallHistorySummary(number.phone_number)
+          return {
+            ...number,
+            callHistory
+          }
+        })
+      )
+
+      phoneNumbers.value = numbersWithHistory
     }
   } catch (error) {
     console.error('Error fetching capture:', error)
