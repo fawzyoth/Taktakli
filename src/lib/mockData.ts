@@ -320,5 +320,91 @@ export const mockDataService = {
   deletePage: async (id: string): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 300))
     mockPages = mockPages.filter(p => p.id !== id)
+  },
+
+  getCallHistorySummary: async (phoneNumber: string): Promise<any> => {
+    await new Promise(resolve => setTimeout(resolve, 150))
+
+    const mockHistories: Record<string, any> = {
+      '+1 (555) 123-4567': {
+        totalAttempts: 5,
+        declinedCount: 0,
+        noAnswerCount: 1,
+        answeredCount: 2,
+        confirmedCount: 2,
+        callbackCount: 0,
+        invalidCount: 0,
+        completedCount: 0,
+        lastContactAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+        lastOutcome: 'confirmed',
+        successRate: 80
+      },
+      '+1 (555) 987-6543': {
+        totalAttempts: 3,
+        declinedCount: 0,
+        noAnswerCount: 1,
+        answeredCount: 2,
+        confirmedCount: 0,
+        callbackCount: 0,
+        invalidCount: 0,
+        completedCount: 0,
+        lastContactAt: new Date(Date.now() - 20 * 60 * 1000).toISOString(),
+        lastOutcome: 'called_answered',
+        successRate: 66.67
+      },
+      '+1 (555) 456-7890': {
+        totalAttempts: 4,
+        declinedCount: 0,
+        noAnswerCount: 2,
+        answeredCount: 1,
+        confirmedCount: 0,
+        callbackCount: 1,
+        invalidCount: 0,
+        completedCount: 0,
+        lastContactAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+        lastOutcome: 'callback_requested',
+        successRate: 25
+      },
+      '+1 (555) 234-5678': {
+        totalAttempts: 0,
+        declinedCount: 0,
+        noAnswerCount: 0,
+        answeredCount: 0,
+        confirmedCount: 0,
+        callbackCount: 0,
+        invalidCount: 0,
+        completedCount: 0,
+        lastContactAt: null,
+        lastOutcome: 'not_called',
+        successRate: 0
+      },
+      '+1 (555) 876-5432': {
+        totalAttempts: 6,
+        declinedCount: 3,
+        noAnswerCount: 2,
+        answeredCount: 1,
+        confirmedCount: 0,
+        callbackCount: 0,
+        invalidCount: 0,
+        completedCount: 0,
+        lastContactAt: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
+        lastOutcome: 'declined',
+        successRate: 0
+      }
+    }
+
+    return mockHistories[phoneNumber] || {
+      totalAttempts: 0,
+      declinedCount: 0,
+      noAnswerCount: 0,
+      answeredCount: 0,
+      confirmedCount: 0,
+      callbackCount: 0,
+      invalidCount: 0,
+      completedCount: 0,
+      lastContactAt: null,
+      lastOutcome: 'not_called',
+      successRate: 0
+    }
   }
 }
