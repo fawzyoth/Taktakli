@@ -161,46 +161,6 @@ const participants = ref<Participant[]>([
     initials: 'LG',
     avatarColor: 'linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)',
     glowColor: 'radial-gradient(circle, rgba(161, 196, 253, 0.4) 0%, transparent 70%)'
-  },
-  {
-    id: 8,
-    name: 'James Wilson',
-    points: 48,
-    initials: 'JW',
-    avatarColor: 'linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)',
-    glowColor: 'radial-gradient(circle, rgba(251, 194, 235, 0.4) 0%, transparent 70%)'
-  },
-  {
-    id: 9,
-    name: 'Aisha Patel',
-    points: 45,
-    initials: 'AP',
-    avatarColor: 'linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%)',
-    glowColor: 'radial-gradient(circle, rgba(253, 203, 241, 0.4) 0%, transparent 70%)'
-  },
-  {
-    id: 10,
-    name: 'Oliver Brown',
-    points: 42,
-    initials: 'OB',
-    avatarColor: 'linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%)',
-    glowColor: 'radial-gradient(circle, rgba(255, 234, 167, 0.4) 0%, transparent 70%)'
-  },
-  {
-    id: 11,
-    name: 'Sofia Lopez',
-    points: 38,
-    initials: 'SL',
-    avatarColor: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)',
-    glowColor: 'radial-gradient(circle, rgba(116, 185, 255, 0.4) 0%, transparent 70%)'
-  },
-  {
-    id: 12,
-    name: 'Ryan Taylor',
-    points: 35,
-    initials: 'RT',
-    avatarColor: 'linear-gradient(135deg, #fab1a0 0%, #ff7675 100%)',
-    glowColor: 'radial-gradient(circle, rgba(250, 177, 160, 0.4) 0%, transparent 70%)'
   }
 ])
 
@@ -506,7 +466,7 @@ onUnmounted(() => {
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.5rem;
   position: relative;
   z-index: 10;
   padding-bottom: 1rem;
@@ -515,13 +475,13 @@ onUnmounted(() => {
 .participant-row {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  background: transparent;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.4);
   animation: slideInFromLeft 0.6s ease-out forwards;
   opacity: 0;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -543,18 +503,19 @@ onUnmounted(() => {
 }
 
 .rank-badge {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 800;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
   animation: rotate3d 3s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 .rank-badge.rank-1 {
@@ -584,22 +545,23 @@ onUnmounted(() => {
 }
 
 .trophy {
-  font-size: 1.3rem;
+  font-size: 2rem;
   animation: bounce 2s infinite;
 }
 
 .rank-number {
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 .participant-name {
-  font-size: 0.9rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #000000;
   text-align: left;
   white-space: nowrap;
-  min-width: 150px;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  min-width: 180px;
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
 }
 
 .participant-row.rank-1 .participant-name {
@@ -623,25 +585,27 @@ onUnmounted(() => {
 
 .bar-container {
   position: relative;
-  height: 40px;
+  height: 60px;
   flex: 1;
-  min-width: 200px;
+  min-width: 250px;
 }
 
 .bar-background {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.05);
-  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .progress-bar {
   height: 100%;
-  border-radius: 16px;
+  border-radius: 20px;
   position: relative;
   overflow: hidden;
   transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), inset 0 -2px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3), inset 0 -2px 10px rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .bar-rank-1 {
@@ -662,8 +626,26 @@ onUnmounted(() => {
   animation: shimmer 3s infinite;
 }
 
-.bar-rank-4, .bar-rank-5 {
+.bar-rank-4 {
   background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.bar-rank-5 {
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 50%, #43e97b 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.bar-rank-6 {
+  background: linear-gradient(90deg, #fa709a 0%, #fee140 50%, #fa709a 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.bar-rank-7 {
+  background: linear-gradient(90deg, #4facfe 0%, #00f2fe 50%, #4facfe 100%);
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
@@ -717,8 +699,8 @@ onUnmounted(() => {
 
 .avatar-glow {
   position: absolute;
-  width: 70px;
-  height: 70px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   top: 50%;
   left: 50%;
@@ -733,14 +715,14 @@ onUnmounted(() => {
 }
 
 .avatar {
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 3px solid white;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 4px solid white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   animation: avatarBounce 2s ease-in-out infinite;
 }
@@ -752,7 +734,7 @@ onUnmounted(() => {
 
 .avatar-icon {
   color: white;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   font-weight: 800;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -761,16 +743,16 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.1rem;
-  min-width: 80px;
+  gap: 0.2rem;
+  min-width: 100px;
   flex-shrink: 0;
 }
 
 .points-value {
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 900;
   color: #000000;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 2px 4px rgba(255, 255, 255, 0.6);
   animation: countUp 0.8s ease-out;
 }
 
@@ -786,10 +768,11 @@ onUnmounted(() => {
 }
 
 .points-label {
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.8);
   text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes countUp {
