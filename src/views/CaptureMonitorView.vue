@@ -327,6 +327,27 @@
                     </p>
                   </div>
 
+                  <div v-if="phoneData.sessionAppearances !== undefined && phoneData.sessionAppearances > 0" class="flex items-center gap-2 mb-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/10 dark:to-orange-900/10 rounded-lg border border-amber-200 dark:border-amber-800">
+                    <div class="flex items-center gap-2 flex-1">
+                      <HistoryIcon class="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                      <div>
+                        <div class="text-sm font-semibold text-amber-900 dark:text-amber-200">
+                          Previously Seen
+                        </div>
+                        <div class="text-xs text-amber-700 dark:text-amber-400">
+                          Appeared in {{ phoneData.sessionAppearances }} other {{ phoneData.sessionAppearances === 1 ? 'session' : 'sessions' }}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      @click.stop="openHistoryModal(phoneData)"
+                      class="px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      <ClockIcon class="w-4 h-4" />
+                      History
+                    </button>
+                  </div>
+
                   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
                     <ContactStatusDropdown
                       :phone-number-id="phoneData.id"
@@ -389,6 +410,14 @@
       :username="selectedPhoneData.username || 'Anonymous User'"
       @close="closeCommentsModal"
     />
+
+    <NumberHistoryModal
+      v-if="historyPhoneData"
+      :is-open="isHistoryModalOpen"
+      :phone-number="historyPhoneData.phone_number"
+      :username="historyPhoneData.username || 'Anonymous User'"
+      @close="closeHistoryModal"
+    />
   </AppLayout>
 </template>
 
@@ -400,8 +429,9 @@ import type { Capture, DetectedPhoneNumber, PhoneNumberComment, ContactStatus } 
 import AppLayout from '@/components/AppLayout.vue'
 import ContactStatusDropdown from '@/components/ContactStatusDropdown.vue'
 import CommentsModal from '@/components/CommentsModal.vue'
+import NumberHistoryModal from '@/components/NumberHistoryModal.vue'
 import StatusFilterBar from '@/components/StatusFilterBar.vue'
-import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon, Search as SearchIcon, SlidersHorizontal as SortIcon, X as XIcon, Clock as ClockIcon } from 'lucide-vue-next'
+import { ArrowLeft as ArrowLeftIcon, Eye as EyeIcon, Heart as HeartIcon, MessageCircle as MessageCircleIcon, Phone as PhoneIcon, Search as SearchIcon, SlidersHorizontal as SortIcon, X as XIcon, Clock as ClockIcon, History as HistoryIcon } from 'lucide-vue-next'
 
 interface CallHistorySummary {
   totalAttempts: number
@@ -420,6 +450,7 @@ interface CallHistorySummary {
 interface PhoneNumberWithHistory extends DetectedPhoneNumber {
   comments: PhoneNumberComment[]
   callHistory?: CallHistorySummary
+  sessionAppearances?: number
 }
 
 const route = useRoute()
@@ -430,6 +461,8 @@ const loading = ref(true)
 const activeTab = ref<'numbers' | 'chat'>('numbers')
 const selectedPhoneData = ref<(DetectedPhoneNumber & { comments: PhoneNumberComment[] }) | null>(null)
 const isModalOpen = ref(false)
+const historyPhoneData = ref<PhoneNumberWithHistory | null>(null)
+const isHistoryModalOpen = ref(false)
 const selectedFilters = ref<(ContactStatus | 'all')[]>(['all'])
 const searchQuery = ref('')
 const sortBy = ref<'newest' | 'oldest' | 'alphabetical'>('newest')
@@ -529,6 +562,16 @@ function closeCommentsModal() {
   selectedPhoneData.value = null
 }
 
+function openHistoryModal(phoneData: PhoneNumberWithHistory) {
+  historyPhoneData.value = phoneData
+  isHistoryModalOpen.value = true
+}
+
+function closeHistoryModal() {
+  isHistoryModalOpen.value = false
+  historyPhoneData.value = null
+}
+
 function handleStatusChange(phoneNumberId: string, newStatus: ContactStatus) {
   const index = phoneNumbers.value.findIndex(p => p.id === phoneNumberId)
   if (index !== -1) {
@@ -546,10 +589,14 @@ async function fetchCapture() {
 
       const numbersWithHistory = await Promise.all(
         numbers.map(async (number) => {
-          const callHistory = await mockDataService.getCallHistorySummary(number.phone_number)
+          const [callHistory, sessionAppearances] = await Promise.all([
+            mockDataService.getCallHistorySummary(number.phone_number),
+            mockDataService.getNumberAppearanceCount(number.phone_number, capture.value!.id)
+          ])
           return {
             ...number,
-            callHistory
+            callHistory,
+            sessionAppearances
           }
         })
       )

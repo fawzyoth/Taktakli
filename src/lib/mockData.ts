@@ -197,6 +197,68 @@ let mockPhoneNumbers: (DetectedPhoneNumber & { comments: PhoneNumberComment[] })
         created_at: new Date(Date.now() - 120 * 60 * 1000).toISOString()
       }
     ]
+  },
+  {
+    id: '6',
+    capture_id: '2',
+    phone_number: '+1 (555) 123-4567',
+    username: 'sarah_miller',
+    detected_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(),
+    page_source: 'comment',
+    contact_status: 'confirmed',
+    status_updated_at: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
+    sequence_number: 1,
+    comments: [
+      {
+        id: '8',
+        phone_number_id: '6',
+        comment_text: 'Saw this in the tech review, interested!',
+        created_at: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString()
+      }
+    ]
+  },
+  {
+    id: '7',
+    capture_id: '2',
+    phone_number: '+1 (555) 987-6543',
+    username: 'mike_johnson',
+    detected_at: new Date(Date.now() - 22 * 60 * 60 * 1000).toISOString(),
+    page_source: 'comment',
+    contact_status: 'called_no_answer',
+    status_updated_at: new Date(Date.now() - 15 * 60 * 60 * 1000).toISOString(),
+    sequence_number: 2,
+    comments: []
+  },
+  {
+    id: '8',
+    capture_id: '3',
+    phone_number: '+1 (555) 123-4567',
+    username: 'sarah_miller',
+    detected_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    page_source: 'comment',
+    contact_status: 'not_called',
+    status_updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    sequence_number: 1,
+    comments: [
+      {
+        id: '9',
+        phone_number_id: '8',
+        comment_text: 'Love your cooking videos! Reach out anytime',
+        created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString()
+      }
+    ]
+  },
+  {
+    id: '9',
+    capture_id: '3',
+    phone_number: '+1 (555) 876-5432',
+    username: 'lisa_anderson',
+    detected_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+    page_source: 'comment',
+    contact_status: 'declined',
+    status_updated_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
+    sequence_number: 2,
+    comments: []
   }
 ]
 
@@ -406,5 +468,47 @@ export const mockDataService = {
       lastOutcome: 'not_called',
       successRate: 0
     }
+  },
+
+  getNumberSessionHistory: async (phoneNumber: string): Promise<{
+    totalSessions: number
+    sessions: Array<{
+      capture: Capture
+      detectedAt: string
+      username: string | null
+      contactStatus: ContactStatus
+    }>
+  }> => {
+    await new Promise(resolve => setTimeout(resolve, 200))
+
+    const appearances = mockPhoneNumbers.filter(p => p.phone_number === phoneNumber)
+    const sessions = appearances.map(appearance => {
+      const capture = mockCaptures.find(c => c.id === appearance.capture_id)
+      return {
+        capture: capture!,
+        detectedAt: appearance.detected_at,
+        username: appearance.username,
+        contactStatus: appearance.contact_status
+      }
+    }).filter(s => s.capture)
+
+    sessions.sort((a, b) => new Date(b.detectedAt).getTime() - new Date(a.detectedAt).getTime())
+
+    return {
+      totalSessions: sessions.length,
+      sessions
+    }
+  },
+
+  getNumberAppearanceCount: async (phoneNumber: string, excludeCaptureId?: string): Promise<number> => {
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    const appearances = mockPhoneNumbers.filter(p =>
+      p.phone_number === phoneNumber &&
+      (!excludeCaptureId || p.capture_id !== excludeCaptureId)
+    )
+
+    const uniqueCaptures = new Set(appearances.map(p => p.capture_id))
+    return uniqueCaptures.size
   }
 }
