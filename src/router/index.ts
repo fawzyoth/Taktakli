@@ -72,6 +72,33 @@ const router = createRouter({
       path: '/delivery-tracker',
       name: 'delivery-tracker',
       component: () => import('@/views/DeliveryTrackerView.vue')
+    },
+    // Mobile App Routes
+    {
+      path: '/mobile',
+      component: () => import('@/views/mobile/MobileApp.vue'),
+      children: [
+        {
+          path: '',
+          name: 'mobile-home',
+          component: () => import('@/views/mobile/DailyTasksView.vue')
+        },
+        {
+          path: 'pickup',
+          name: 'mobile-pickup',
+          component: () => import('@/views/mobile/PickupScanView.vue')
+        },
+        {
+          path: 'return',
+          name: 'mobile-return',
+          component: () => import('@/views/mobile/ReturnScanView.vue')
+        },
+        {
+          path: 'tasks',
+          name: 'mobile-tasks',
+          component: () => import('@/views/mobile/DailyTasksView.vue')
+        }
+      ]
     }
   ]
 })
