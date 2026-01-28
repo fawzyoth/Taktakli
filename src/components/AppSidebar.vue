@@ -17,6 +17,18 @@
       </button>
     </div>
 
+    <!-- Delivery Tracker Button -->
+    <div class="p-4 border-b border-gray-200 dark:border-gray-800">
+      <button
+        @click="openDeliveryTracker"
+        class="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium transition-all duration-200 shadow-md hover:shadow-lg"
+      >
+        <Truck class="w-5 h-5" />
+        <span>Delivery Tracker</span>
+        <ExternalLink class="w-4 h-4 opacity-70" />
+      </button>
+    </div>
+
     <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
       <RouterLink
         v-for="item in navigation"
@@ -69,7 +81,7 @@
 import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useThemeStore } from '@/stores/theme'
-import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon, Phone, BarChart3, Trophy } from 'lucide-vue-next'
+import { LayoutDashboard, FileText, Package, ShoppingBag, Code, PackageCheck, Sun, Moon, X as XIcon, Phone, BarChart3, Trophy, Truck, ExternalLink } from 'lucide-vue-next'
 
 defineProps<{
   isOpen: boolean
@@ -103,5 +115,9 @@ function isActive(path: string) {
 
 function toggleTheme() {
   themeStore.toggleTheme()
+}
+
+function openDeliveryTracker() {
+  window.open('/delivery-tracker', '_blank')
 }
 </script>
