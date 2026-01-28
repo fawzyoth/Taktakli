@@ -8,15 +8,9 @@
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json",
-    "cap:sync": "npx cap sync",
-    "cap:android": "npx cap open android",
-    "build:android": "npm run build && npx cap sync android"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
-    "@capacitor/android": "^8.0.2",
-    "@capacitor/cli": "^8.0.2",
-    "@capacitor/core": "^8.0.2",
     "@supabase/supabase-js": "^2.81.1",
     "lucide-vue-next": "^0.547.0",
     "pinia": "^2.1.7",
