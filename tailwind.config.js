@@ -6,7 +6,18 @@ export default {
   ],
   darkMode: 'class',
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'cta': {
+          DEFAULT: '#f97316',
+          hover: '#ea580c',
+        },
+        'primary-blue': {
+          DEFAULT: '#4959b4',
+          hover: '#3a4791',
+        },
+      },
+    },
   },
   plugins: [],
 }
